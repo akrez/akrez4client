@@ -21,7 +21,16 @@ use yii\web\IdentityInterface;
  */
 class Customer extends Model implements IdentityInterface
 {
-
+    public $id;
+    public $created_at;
+    public $updated_at;
+    public $status;
+    public $token;
+    public $password_hash;
+    public $reset_token;
+    public $reset_at;
+    public $email;
+    public $blog_name;
     public $password;
 
     public static function tableName()
@@ -61,17 +70,17 @@ class Customer extends Model implements IdentityInterface
 
     public static function findIdentity($id)
     {
-        return static::find()->where(['id' => $id])->one();
+        return null;
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::find()->where(['token' => $token])->one();
+        return null;
     }
 
     public function getId()
     {
-        return $this->getPrimaryKey();
+        return $this->id;
     }
 
     public function getAuthKey()
@@ -103,8 +112,32 @@ class Customer extends Model implements IdentityInterface
         }
     }
 
-    public function getCustomer()
+    public static function getToken()
     {
-        return $this->_customer;
+        $_token = Yii::$app->session->get(Yii::$app->user->authKeyParam);
+        if ($_token) {
+            return $_token;
+        }
+        return null;
+    }
+
+    public static function setToken($token)
+    {
+        if (Yii::$app->session->has(Yii::$app->user->authKeyParam)) {
+            self::removeToken();
+        }
+        Yii::$app->session->set(Yii::$app->user->authKeyParam, $token);
+        return self::getToken();
+    }
+
+    public static function removeToken()
+    {
+        return Yii::$app->session->remove(Yii::$app->user->authKeyParam);
+    }
+
+    public function signout()
+    {
+        Yii::$app->user->logout();
+        self::removeToken();
     }
 }
