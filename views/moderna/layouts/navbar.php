@@ -1,70 +1,67 @@
 <?php
 
-use app\components\BlogHelper;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
+use app\models\Blog;
+use yii\bootstrap4\Nav;
+use yii\bootstrap4\NavBar;
 use yii\helpers\Html;
 
 NavBar::begin([
-    'brandLabel' => Html::tag('span', Yii::$app->blog->attribute('title'), ['style' => 'margin: 0px;font-size: 18px;']),
-    'brandUrl' => BlogHelper::blogFirstPageUrl(),
-    'renderInnerContainer' => false,
+    'brandLabel' => Html::tag('span', Blog::print('title'), ['style' => 'margin: 0px;font-size: 18px;']),
+    'brandUrl' => Blog::firstPageUrl(),
     'options' => [
-        'class' => 'navbar navbar-default',
+        'class' => 'navbar navbar-expand-lg navbar-light bg-light',
     ],
 ]);
 
-if (isset(Yii::$app->view->params['_categories']) && Yii::$app->view->params['_categories']) {
-    $menuItems = [];
-    foreach (Yii::$app->view->params['_categories'] as $categoryId => $category) {
-        $menuItems[] = ['label' => $category, 'url' => BlogHelper::url('site/category', ['id' => $categoryId])];
-    }
-    echo Nav::widget([
-        'items' => [
-            [
-                'label' => Yii::t('app', 'Products Categories'),
-                'items' => $menuItems,
-            ],
-        ],
-        'options' => ['class' => 'navbar-nav navbar-right'],
-    ]);
+$menuItems = [];
+foreach (Blog::categories() as $categoryId => $category) {
+    $menuItems[] = ['label' => $category, 'url' => Blog::url('site/category', ['id' => $categoryId])];
 }
+echo Nav::widget([
+    'items' => [
+        [
+            'label' => Yii::t('app', 'Products Categories'),
+            'items' => $menuItems,
+        ],
+    ],
+    'options' => ['class' => 'navbar-nav ml-auto'],
+]);
+?>
 
+<?= Html::beginForm(Blog::firstPageUrl(), 'GET', ['class' => 'form-inline mr-auto']); ?>
+<div class="input-group flex-fill">
+    <?= Html::textInput('Search[title][0][value]', null, ['class' => 'form-control']) ?>
+    <?= Html::hiddenInput('Search[title][0][operation]', 'LIKE') ?>
+    <div class="input-group-append">
+        <?= Html::submitButton('<i class="fa fa-search" aria-hidden="true" style="font-size: 18px;"></i>', ['class' => 'btn btn-primary']); ?>
+    </div>
+</div>
+<?= Html::endForm(); ?>
+
+<?php
 if (Yii::$app->user->isGuest) {
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-left'],
+        'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => Yii::t('app', 'Signup'), 'url' => BlogHelper::url('site/signup')],
-            ['label' => Yii::t('app', 'Signin'), 'url' => BlogHelper::url('site/signin')],
+            ['label' => Yii::t('app', 'Signup'), 'url' => Blog::url('site/signup')],
+            ['label' => Yii::t('app', 'Signin'), 'url' => Blog::url('site/signin')],
         ],
     ]);
 } else {
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-left'],
+        'options' => ['class' => 'navbar-nav'],
         'items' => [
             [
-                'label' => strtoupper(Yii::$app->user->getIdentity()->email),
+                'label' => strtoupper(Blog::print('email')),
                 'items' => [
-                    ['label' => Yii::t('app', 'Basket'), 'url' => BlogHelper::url('site/basket')],
-                    ['label' => Yii::t('app', 'Invoice'), 'url' => BlogHelper::url('site/invoice')],
-                    ['label' => Yii::t('app', 'Signout'), 'url' => BlogHelper::url('site/signout')],
+                    ['label' => Yii::t('app', 'Basket'), 'url' => Blog::url('site/basket')],
+                    ['label' => Yii::t('app', 'Invoice'), 'url' => Blog::url('site/invoice')],
+                    ['label' => Yii::t('app', 'Signout'), 'url' => Blog::url('site/signout')],
                 ],
             ],
         ],
     ]);
 }
 ?>
-
-<?= Html::beginForm(BlogHelper::blogFirstPageUrl(), 'GET', ['class' => 'navbar-form navbar-left']); ?>
-<div class="input-group">
-    <div class="form-group">
-        <?= Html::textInput('Search[title][0][value]', null, ['class' => 'form-control']) ?>
-        <?= Html::hiddenInput('Search[title][0][operation]', 'LIKE') ?>
-    </div>
-    <span class="input-group-btn">
-        <?= Html::submitButton('<span class="glyphicon glyphicon-search" aria-hidden="true" style="font-size: 18px;"></span>', ['style' => 'height: 34px;', 'class' => 'btn btn-default']); ?>
-    </span>
-</div>
-<?= Html::endForm(); ?>
 
 <?php NavBar::end(); ?>
