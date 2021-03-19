@@ -28,13 +28,3 @@
     font-weight: 900;
     font-style: normal;
 }
-@font-face {
-    font-family: Sahel;
-    src: url('../fonts/Sahel-Thin-FD.eot');
-    src: url('../fonts/Sahel-Thin-FD.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/Sahel-Thin-FD.woff2') format('woff2'),
-         url('../fonts/Sahel-Thin-FD.woff') format('woff'),
-         url('../fonts/Sahel-Thin-FD.ttf') format('truetype');
-    font-weight: 100;
-    font-style: normal;
-}
