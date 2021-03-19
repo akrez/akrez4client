@@ -13,19 +13,21 @@ NavBar::begin([
     ],
 ]);
 
-$menuItems = [];
-foreach (Blog::categories() as $categoryId => $category) {
-    $menuItems[] = ['label' => $category, 'url' => Blog::url('site/category', ['id' => $categoryId])];
-}
-echo Nav::widget([
-    'items' => [
-        [
-            'label' => Yii::t('app', 'Products Categories'),
-            'items' => $menuItems,
+if (Blog::categories()) {
+    $menuItems = [];
+    foreach (Blog::categories() as $categoryId => $category) {
+        $menuItems[] = ['label' => $category, 'url' => Blog::url('site/category', ['id' => $categoryId])];
+    }
+    echo Nav::widget([
+        'items' => [
+            [
+                'label' => Yii::t('app', 'Products Categories'),
+                'items' => $menuItems,
+            ],
         ],
-    ],
-    'options' => ['class' => 'navbar-nav ml-auto'],
-]);
+        'options' => ['class' => 'navbar-nav ml-auto'],
+    ]);
+}
 ?>
 
 <?= Html::beginForm(Blog::firstPageUrl(), 'GET', ['class' => 'form-inline mr-auto']); ?>
@@ -33,7 +35,7 @@ echo Nav::widget([
     <?= Html::textInput('Search[title][0][value]', null, ['class' => 'form-control']) ?>
     <?= Html::hiddenInput('Search[title][0][operation]', 'LIKE') ?>
     <div class="input-group-append">
-        <?= Html::submitButton('<i class="fa fa-search" aria-hidden="true" style="font-size: 18px;"></i>', ['class' => 'btn btn-primary']); ?>
+        <?= Html::submitButton('<i class="fa fa-search" aria-hidden="true"></i>', ['class' => 'btn btn-info']); ?>
     </div>
 </div>
 <?= Html::endForm(); ?>
