@@ -2,6 +2,7 @@
 
 namespace app\components;
 
+use app\models\Customer;
 use Yii;
 use yii\base\Component;
 use yii\httpclient\Client;
@@ -19,14 +20,12 @@ use yii\web\UnsupportedMediaTypeHttpException;
 
 class Http extends Component
 {
-
-    private static function postRequest($url, $postData = [], $params = [], $setBlogIdentity = true)
+    private static function postRequest($url, $postData = [], $params = [])
     {
-        $_token = Yii::$app->session->get(Yii::$app->user->getAuthKey());
-        if ($_token) {
-            $params['_token'] = $_token;
-        }
-        $params['_blog'] = Yii::$app->params['blogName'];
+        $params = [
+            '_token' => Customer::getIdentityToken(),
+            '_blog'  => Yii::$app->params['blogName'],
+        ] + $params;
         $fullUrl = Yii::$app->params['apiBaseUrl'] . $url . ($params ? '?' . http_build_query($params) : '');
         $data = (new Client(['transport' => 'yii\httpclient\CurlTransport']))
             ->createRequest()
@@ -37,12 +36,11 @@ class Http extends Component
             ->setData($postData)
             ->send()
             ->getData();
-        if ($data['code'] == 200) {
-            if ($setBlogIdentity && $data['_customer']) {
-                $customer = new Customer();
-                $customer->load($data, '_customer');
-                Yii::$app->user->login($customer);
-            }
+        if (isset($data['_blog']) && $data['_blog']) {
+            Yii::$app->blog->load($data, '_blog');
+        }
+        if (isset($data['_categories']) && $data['_categories']) {
+            Yii::$app->blog->categories = $data['_categories'];
         }
         return $data;
     }
@@ -50,7 +48,7 @@ class Http extends Component
     private static function post($url, $postData = [], $params = [])
     {
         $data = self::postRequest($url, $postData, $params);
-        switch ($data['code']) {
+        switch ($data['_code']) {
             case 200:
                 return $data;
             case 400:
