@@ -1,10 +1,15 @@
 <?php
 
-function dd(...$input)
+function vd(...$input)
 {
     foreach ($input as $i) {
         var_dump($i);
     }
+}
+
+function v(...$input)
+{
+    vd($input);
     die;
 }
 
@@ -74,6 +79,12 @@ $config = [
                     'js' => [
                         YII_ENV !== 'prod' ? 'js/bootstrap.js' : 'js/bootstrap.min.js',
                     ]
+                ],
+                'yii\bootstrap4\BootstrapPluginAsset' => [
+                    'js' => [],
+                ],
+                'yii\bootstrap4\BootstrapAsset' => [
+                    'css' => [],
                 ]
             ],
         ],
@@ -116,7 +127,7 @@ $config = [
             'identityCookie' => ['name' => '_identity-app', 'httpOnly' => true],
         ],
         'blog' => [
-            'class' => 'app\components\BlogContainer',
+            'class' => 'app\models\Blog',
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -163,11 +174,11 @@ if (YII_ENV == 'dev') {
 }
 
 $application = new yii\web\Application($config);
-$application->on(yii\web\Application::EVENT_BEFORE_REQUEST, function(yii\base\Event $event) {
-    $event->sender->response->on(yii\web\Response::EVENT_BEFORE_SEND, function($e) {
+$application->on(yii\web\Application::EVENT_BEFORE_REQUEST, function (yii\base\Event $event) {
+    $event->sender->response->on(yii\web\Response::EVENT_BEFORE_SEND, function ($e) {
         ob_start("ob_gzhandler");
     });
-    $event->sender->response->on(yii\web\Response::EVENT_AFTER_SEND, function($e) {
+    $event->sender->response->on(yii\web\Response::EVENT_AFTER_SEND, function ($e) {
         ob_end_flush();
     });
 });
