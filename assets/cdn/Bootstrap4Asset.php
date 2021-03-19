@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
+
 namespace app\assets\cdn;
 
 use yii\web\AssetBundle;
@@ -19,7 +21,10 @@ class Bootstrap4Asset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'cdn/css/bootstrap4-rtl.min.css',
+        YII_ENV !== 'prod' ? 'cdn/css/bootstrap4-rtl.css' : 'cdn/css/bootstrap4-rtl.min.css',
+    ];
+    public $js = [
+        'cdn/js/bootstrap.bundle.min.js',
     ];
     public $depends = [
         'yii\bootstrap4\BootstrapAsset',
