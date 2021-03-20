@@ -4,12 +4,12 @@ $domains = require(__DIR__ . '/domains.php');
 $serverName = $_SERVER['SERVER_NAME'];
 
 $params = [
-    'baseUrl' => '/akrez3client',
+    'baseUrl' => '/akrez4client',
     'cookieValidationKey' => 'abcdefgh12345678abcdefgh12345678',
-    'theme' => 'blog',
+    'theme' => 'moderna',
     'db' => [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=localhost;dbname=akrezir_client',
+        'dsn' => 'mysql:host=localhost;dbname=akrez4client',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -18,7 +18,7 @@ $params = [
         'enableSchemaCache' => true,
     ],
     'params' => [
-        'apiBaseUrl' => 'http://localhost/akrez3/api/v1/',
+        'apiBaseUrl' => 'http://localhost/akrez4/api1/',
         'apiBaseGalleryUrl' => 'http://localhost/akrez3/site/gallery/',
     ],
 ];
