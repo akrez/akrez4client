@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Html;
 use yii\web\IdentityInterface;
 
 /**
@@ -19,18 +20,8 @@ use yii\web\IdentityInterface;
  * @property string|null $email
  * @property string $blog_name
  */
-class Customer extends Model implements IdentityInterface
+class Customer extends ActiveRecord implements IdentityInterface
 {
-    public $id;
-    public $created_at;
-    public $updated_at;
-    public $status;
-    public $token;
-    public $password_hash;
-    public $reset_token;
-    public $reset_at;
-    public $email;
-    public $blog_name;
     public $password;
 
     public static function tableName()
@@ -70,17 +61,21 @@ class Customer extends Model implements IdentityInterface
 
     public static function findIdentity($id)
     {
-        return null;
+        return static::find()
+        ->where(['id' => $id])
+        ->one();
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return null;
+        return static::find()
+        ->where(['token' => $token])
+        ->one();
     }
 
     public function getId()
     {
-        return $this->id;
+        return $this->getPrimaryKey();
     }
 
     public function getAuthKey()
@@ -94,7 +89,6 @@ class Customer extends Model implements IdentityInterface
     }
 
     /////
-
 
     public function minLenValidation($attribute, $params, $validator)
     {
@@ -112,32 +106,38 @@ class Customer extends Model implements IdentityInterface
         }
     }
 
-    public static function getToken()
+    public static function getIdentityToken()
     {
-        $_token = Yii::$app->session->get(Yii::$app->user->authKeyParam);
-        if ($_token) {
-            return $_token;
+        return self::getIdentityAttribute('token', false);
+    }
+
+    public static function getIdentityAttribute($attribute, $encode = true)
+    {
+        $value = null;
+        if (Yii::$app->user->getIdentity()) {
+            $value = Yii::$app->user->getIdentity()->$attribute;
+            if ($encode) {
+                $value = Html::encode($value);
+            }
         }
-        return null;
+        return $value;
     }
 
-    public static function setToken($token)
+    public static function getCustomerByHttpDataForLogin($data)
     {
-        if (Yii::$app->session->has(Yii::$app->user->authKeyParam)) {
-            self::removeToken();
+        $customer = new Customer();
+        $customer->load($data, '_customer');
+        $customer = self::findIdentityByAccessToken($customer->token);
+        if (empty($customer)) {
+            $customer = new Customer();
         }
-        Yii::$app->session->set(Yii::$app->user->authKeyParam, $token);
-        return self::getToken();
+        $customer->load($data, '_customer');
+        $customer->save();
+        return $customer;
     }
 
-    public static function removeToken()
+    public function getCustomer()
     {
-        return Yii::$app->session->remove(Yii::$app->user->authKeyParam);
-    }
-
-    public function signout()
-    {
-        Yii::$app->user->logout();
-        self::removeToken();
+        return $this->_customer;
     }
 }
