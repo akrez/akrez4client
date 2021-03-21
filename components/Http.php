@@ -36,18 +36,21 @@ class Http extends Component
             ->setData($postData)
             ->send()
             ->getData();
-        if (isset($data['_blog']) && $data['_blog']) {
-            Yii::$app->blog->load($data, '_blog');
-        }
-        if (isset($data['_categories']) && $data['_categories']) {
-            Yii::$app->blog->categories = $data['_categories'];
-        }
         return $data;
     }
 
     private static function post($url, $postData = [], $params = [])
     {
         $data = self::postRequest($url, $postData, $params);
+        if (isset($data['_blog']) && $data['_blog']) {
+            Yii::$app->blog->load($data, '_blog');
+        }
+        if (isset($data['_constant_hash']) && $data['_constant_hash']) {
+            Yii::$app->blog->setConstant(self::constant($data['_constant_hash']));
+        }
+        if (isset($data['_categories']) && $data['_categories']) {
+            Yii::$app->blog->categories = $data['_categories'];
+        }
         switch ($data['_code']) {
             case 200:
                 return $data;
