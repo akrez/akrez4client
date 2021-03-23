@@ -1,47 +1,36 @@
-<div class="site-index">
+<?php
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+use app\models\Blog;
+use yii\helpers\Html;
+use yii\helpers\HtmlPurifier;
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+$blogSlug = (Blog::print('slug') ? Blog::print('slug') : '');
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => Blog::normalizeArrayUnorder([Blog::print('title'), $blogSlug, Blog::print('name')], false, ',') . (isset(Yii::$app->view->params['_categories']) && Yii::$app->view->params['_categories'] ? ',' . implode(',', Yii::$app->view->params['_categories']) : ''),
+]);
+?>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
+<div class="v1-default-index">
+    <h1 class="mt-0" style="display: inline-block;"><?= Blog::print('title') ?></h1>
+    <h2 class="mt-0 h2text" style="display: inline-block;margin-right: 10px;"><?= Blog::print('slug') ?></h2>
+    <h3 class="mt-0" style="text-align: justify;line-height: 1.62em;font-size: 14px;"><?= Blog::print('des') ?></h3>
+</div>
 
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+<div class="row pt-2 pb-2">
+    <div class="col-sm-4">
+        <?= Html::beginForm(Blog::url('site/index'), 'GET', ['class' => 'form-inline']); ?>
+        <div class="input-group flex-fill">
+            <?= Html::textInput('Product[title][0][value]', (isset(Yii::$app->view->params['Product']['title'][0]['value']) ? Yii::$app->view->params['Product']['title'][0]['value'] : null), ['class' => 'form-control']); ?>
+            <?= Html::hiddenInput('Product[title][0][operation]', 'LIKE'); ?>
+            <div class="input-group-append">
+                <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-secondary btn-block']); ?>
             </div>
         </div>
-
+        <?= Html::endForm(); ?>
     </div>
 </div>
+
+<?php
+echo $this->render('_products_container') 
+?>
