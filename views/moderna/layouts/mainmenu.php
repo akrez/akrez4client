@@ -88,9 +88,7 @@ $this->registerCss('
         </div>
     </div>
 
-    <?= Html::beginForm(Blog::url('site/category', ['id' => Yii::$app->view->params['categoryId']]), 'GET'); ?>
-
-
+    <?= Html::beginForm(Blog::url('site/category', ['id' => Blog::getData('categoryId')]), 'GET'); ?>
 
     <div class="row">
 
