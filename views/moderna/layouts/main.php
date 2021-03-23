@@ -14,7 +14,7 @@ FontawesomeAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+<html lang="<?= Yii::$app->language ?>" dir="rtl">
 
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
@@ -27,27 +27,19 @@ FontawesomeAsset::register($this);
 
 <body>
     <?php $this->beginBody() ?>
-
     <div class="wrap">
         <?= $this->render('navbar'); ?>
-
-        <div class="container">
+        <div class="container mt-2">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
             <?= Alert::widget() ?>
-            <?= $content ?>
+            <div class="row">
+                <div class="col-sm-3"><?= $this->render('mainmenu'); ?></div>
+                <div class="col-sm-9"><?= $content ?></div>
+            </div>
         </div>
     </div>
-
-    <footer class="footer">
-        <div class="container">
-            <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-            <p class="pull-right"><?= Yii::powered() ?></p>
-        </div>
-    </footer>
-
     <?php $this->endBody() ?>
 </body>
 
