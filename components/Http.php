@@ -3,6 +3,7 @@
 namespace app\components;
 
 use app\models\Customer;
+use phpDocumentor\Reflection\Types\Boolean;
 use Yii;
 use yii\base\Component;
 use yii\httpclient\Client;
@@ -46,7 +47,14 @@ class Http extends Component
             Yii::$app->blog->load($data, '_blog');
         }
         if (isset($data['_constant_hash']) && $data['_constant_hash']) {
-            Yii::$app->blog->setConstant(self::constant($data['_constant_hash']));
+            $path = Yii::getAlias("@webroot") . "/cdn/constant/" . $data['_constant_hash'] . ".json";
+            if (file_exists($path)) {
+                $constantData = json_decode(file_get_contents($path), true);
+            } else {
+                $constantData = self::postRequest('constant', [], [], false);
+                file_put_contents($path, json_encode($constantData));
+            }
+            Yii::$app->blog->setConstant($constantData);
         }
         if (isset($data['_categories']) && $data['_categories']) {
             Yii::$app->blog->categories = $data['_categories'];
@@ -78,38 +86,14 @@ class Http extends Component
         throw new ServerErrorHttpException('An internal server error occurred.');
     }
 
-    public static function gallery($type, $whq, $name)
+    public static function downloadImage($type, $path, $name)
     {
-        $type = preg_replace('/[^A-Za-z0-9\-\.\_]/', '', $type);
-        $whq = preg_replace('/[^A-Za-z0-9\-\.\_]/', '', $whq);
-        $name = preg_replace('/[^A-Za-z0-9\-\.\_]/', '', $name);
-        //
-        $basePath = Yii::getAlias("@webroot/gallery/$type/$whq");
-        $path = "$basePath/$name";
-        $apiUrl = Yii::$app->params['apiBaseGalleryUrl'] . "$type/$whq/$name";
-        $url = Yii::getAlias("@web") . "/gallery/$type/$whq/$name";
-        //
-        if (file_exists($path)) {
-            return $url;
-        }
-        //
+        $apiUrl = Yii::$app->params['apiBaseGalleryUrl'] . "image/$type/$name";
         $response = (new Client(['transport' => 'yii\httpclient\CurlTransport']))->createRequest()->setMethod('GET')->setUrl($apiUrl)->send();
         if ($response->statusCode == 200) {
-            file_exists($basePath) || mkdir($basePath, '755', true);
-            file_put_contents($path, $response->getContent());
+            return (bool) file_put_contents($path, $response->getContent());
         }
-        return $url;
-    }
-
-    public static function constant($constantId)
-    {
-        $path = Yii::getAlias("@webroot") . "/cdn/constant/$constantId.json";
-        if (file_exists($path)) {
-            return json_decode(file_get_contents($path), true);
-        }
-        $data = self::postRequest('constant', [], [], false);
-        file_put_contents($path, json_encode($data));
-        return $data;
+        return false;
     }
 
     public static function exist()
