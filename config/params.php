@@ -19,7 +19,7 @@ $params = [
     ],
     'params' => [
         'apiBaseUrl' => 'http://localhost/akrez4/api1/',
-        'apiBaseGalleryUrl' => 'http://localhost/akrez3/site/gallery/',
+        'apiBaseGalleryUrl' => 'http://localhost/akrez4/',
     ],
 ];
 
