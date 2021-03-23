@@ -32,8 +32,8 @@ if (Blog::categories()) {
 
 <?= Html::beginForm(Blog::firstPageUrl(), 'GET', ['class' => 'form-inline mr-auto']); ?>
 <div class="input-group flex-fill">
-    <?= Html::textInput('Search[title][0][value]', null, ['class' => 'form-control']) ?>
-    <?= Html::hiddenInput('Search[title][0][operation]', 'LIKE') ?>
+    <?= Html::textInput('Product[title][0][value]', null, ['class' => 'form-control']) ?>
+    <?= Html::hiddenInput('Product[title][0][operation]', 'LIKE') ?>
     <div class="input-group-append">
         <?= Html::submitButton('<i class="fa fa-search" aria-hidden="true"></i>', ['class' => 'btn btn-info']); ?>
     </div>
