@@ -80,7 +80,7 @@ $this->registerCss('
     </div>
 <?php endif; ?>
 
-<?php if ($this->context->id == 'site' && $this->context->action->id == 'category') : ?>
+<?php if ($this->context->id == 'site' && in_array($this->context->action->id, ['category'])) : ?>
 
     <div class="row pb20">
         <div class="col-sm-12">
