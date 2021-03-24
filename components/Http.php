@@ -59,6 +59,8 @@ class Http extends Component
         if (isset($data['_categories']) && $data['_categories']) {
             Yii::$app->blog->categories = $data['_categories'];
         }
+        Yii::$app->blog->categories = $data['_categories'];
+        Yii::$app->blog->setData($data);
         switch ($data['_code']) {
             case 200:
                 return $data;
@@ -108,7 +110,7 @@ class Http extends Component
 
     public static function category($id, $params)
     {
-        return self::post('search', (array) $params, ['categoryId' => $id]);
+        return self::post('search', (array) $params, ['category_id' => $id]);
     }
 
     public static function product($id, $params)
