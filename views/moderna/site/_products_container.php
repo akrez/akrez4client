@@ -146,7 +146,7 @@ a.card {
 <?php else : ?>
 
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-sm-12">
             <div class="alert alert-warning" role="alert">
                 <?= Yii::t('yii', 'No results found.'); ?>
             </div>
