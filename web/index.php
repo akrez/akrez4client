@@ -9,7 +9,9 @@ function vd(...$input)
 
 function v(...$input)
 {
-    vd($input);
+    foreach ($input as $i) {
+        var_dump($i);
+    }
     die;
 }
 
