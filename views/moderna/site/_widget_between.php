@@ -44,11 +44,25 @@ $filter['value_max'] = floatval($filter['value_max']);
         <?= HtmlPurifier::process($field['title']) ?>
         <?= $field['unit'] ? ' <small>(' . HtmlPurifier::process($field['unit']) . ')</small> ' : '' ?>
     </div>
-    <div class="card-body p-2 collapse <?= $disabled ? '' : 'show' ?>">
+    <div class="card-body text-center p-2 collapse <?= $disabled ? '' : 'show' ?>">
+
+        <div>
+            <?php
+            echo Html::tag('span', number_format($filter['value_min']), ['class' => 'float-left', 'id' => $idPrefix . '-label-min']);
+            echo Html::tag('span', number_format($filter['value_max']), ['class' => 'float-right', 'id' => $idPrefix . '-label-max']);
+            echo '<div class="clearfix"></div>';
+            echo Html::hiddenInput($namePrefix . '[value_min]', $filter['value_min'], ['id' => $idPrefix . '-input-min']);
+            echo Html::hiddenInput($namePrefix . '[value_max]', $filter['value_max'], ['id' => $idPrefix . '-input-max']);
+            ?>
+        </div>
 
         <?php
-        echo "<div><span style='float: left;' id='$idPrefix-label-min'>" . number_format($filter['value_min']) . "</span><span style='float: right;' id='$idPrefix-label-max'>" . number_format($filter['value_max']) . "</span><div class='clearfix'></div></div>";
-        echo "<div class='text-center'>";
+        if (isset(Yii::$app->params['bsVersion'])) {
+            $bsVersion = Yii::$app->params['bsVersion'];
+        } else {
+            $bsVersion = null;
+        }
+        Yii::$app->params['bsVersion'] = '4.6';
         echo Slider::widget([
             'options' => [
                 'id' => $idPrefix . '-slider',
@@ -71,10 +85,7 @@ $filter['value_max'] = floatval($filter['value_max']);
                     "}"),
             ],
         ]);
-        echo "</div>";
-
-        echo Html::hiddenInput($namePrefix . '[value_min]', $filter['value_min'], ['id' => $idPrefix . '-input-min']);
-        echo Html::hiddenInput($namePrefix . '[value_max]', $filter['value_max'], ['id' => $idPrefix . '-input-max']);
+        Yii::$app->params['bsVersion'] = $bsVersion;
         ?>
 
 
