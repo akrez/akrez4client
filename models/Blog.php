@@ -26,6 +26,39 @@ class Blog extends Model
     //
     public $categories = [];
     //
+    public static $data = null;
+
+    public static function setData($data)
+    {
+        self::$data = $data;
+    }
+
+    public static function getData(...$levels)
+    {
+        $value = self::$data;
+        foreach ($levels as $level) {
+            if (isset($value[$level])) {
+                $value = $value[$level];
+            } else {
+                return null;
+            }
+        }
+        return $value;
+    }
+
+    public static function removeData(...$levels)
+    {
+        $value = self::$data;
+        foreach ($levels as $level) {
+            if (isset($value[$level])) {
+                $value = $value[$level];
+            } else {
+                return null;
+            }
+        }
+        return $value;
+    }
+    //
     public static $constant = null;
 
     public static function setConstant($constant)
@@ -33,17 +66,15 @@ class Blog extends Model
         self::$constant = $constant;
     }
 
-    public static function getConstant($level1 = null, $level2 = null, $level3 = null)
+    public static function getConstant(...$levels)
     {
         $value = self::$constant;
-        if (!empty(strlen($level1))) {
-            $value = $value[$level1];
-        }
-        if (!empty(strlen($level2))) {
-            $value = $value[$level2];
-        }
-        if (!empty(strlen($level3))) {
-            $value = $value[$level3];
+        foreach ($levels as $level) {
+            if (isset($value[$level])) {
+                $value = $value[$level];
+            } else {
+                return null;
+            }
         }
         return $value;
     }
@@ -131,5 +162,19 @@ class Blog extends Model
             return $arr;
         }
         return implode($glue, $arr);
+    }
+
+    public static function filterArray($arr, $doFilter = true, $checkUnique = true, $doTrim = true)
+    {
+        if ($doTrim) {
+            $arr = array_map('trim', $arr);
+        }
+        if ($checkUnique) {
+            $arr = array_unique($arr);
+        }
+        if ($doFilter) {
+            $arr = array_filter($arr, 'strlen');
+        }
+        return $arr;
     }
 }
