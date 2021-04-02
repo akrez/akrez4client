@@ -6,7 +6,6 @@ use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
 use yii\web\JsExpression;
 
-$idPrefix = 'Search-' . $i;
 
 $min = 0;       //default value
 $max = 100;     //default value
