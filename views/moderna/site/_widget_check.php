@@ -3,7 +3,9 @@
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
 
-if ($isSingle) {
+$items = array_keys($items);
+
+if ($filter['widget'] == "SINGLE") {
     $operation = '=';
     $input = Html::radioList($namePrefix . '[value]', $filter['value'], array_combine($items, $items), ['separator' => "<br />", 'encode' => false]);
     $noneBtnType = 'radio';

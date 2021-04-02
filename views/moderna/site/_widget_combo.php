@@ -1,8 +1,23 @@
 <?php
 
-
+use app\models\Blog;
 use yii\helpers\Html;
 
+if ($filter['widget'] == "COMBO NUMBER") {
+    $operationList = [
+        '>=' => Blog::getConstant('widget', '>='),
+        '<=' => Blog::getConstant('widget', '<='),
+        '=' => Blog::getConstant('widget', '='),
+        '<>' => Blog::getConstant('widget', '<>'),
+    ];
+} else {
+    $operationList = [
+        'LIKE' => Blog::getConstant('widget', 'LIKE'),
+        'NOT LIKE' => Blog::getConstant('widget', 'NOT LIKE'),
+        '=' => Blog::getConstant('widget', '='),
+        '<>' => Blog::getConstant('widget', '<>'),
+    ];
+}
 ?>
 <div class="input-group flex-fill">
     <div class="input-group-prepend">
