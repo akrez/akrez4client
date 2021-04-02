@@ -30,7 +30,9 @@ FontawesomeAsset::register($this);
     <div class="wrap">
         <div class="container mt-2">
             <?= Alert::widget() ?>
-            <?= $content ?>
+            <div class="row">
+                <div class="col-sm-12"><?= $content ?></div>
+            </div>
         </div>
     </div>
     <?php $this->endBody() ?>
