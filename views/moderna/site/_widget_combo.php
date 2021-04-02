@@ -21,7 +21,7 @@ if ($filter['widget'] == "COMBO NUMBER") {
 ?>
 <div class="input-group flex-fill">
     <div class="input-group-prepend">
-        <?= Html::tag('span', Html::encode($field['title']), ['class' => 'input-group-text']) ?>
+        <?= Html::tag('span', Html::encode($field['label']), ['class' => 'input-group-text']) ?>
     </div>
     <?= Html::dropDownList($namePrefix . '[operation]', $filter['operation'], $operationList, ['class' => 'form-control']); ?>
     <?= Html::textInput($namePrefix . '[value]', $filter['value'], ['class' => 'form-control']); ?>

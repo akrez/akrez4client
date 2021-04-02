@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
 
-$items = array_keys($items);
+$items = array_keys($field['options']);
 
 if ($filter['widget'] == "SINGLE") {
     $operation = '=';
@@ -19,7 +19,7 @@ if ($filter['widget'] == "SINGLE") {
 <div class="card card-akrez">
     <div class="card-header p-2">
         <?= Html::checkbox($namePrefix . '[operation]', !$disabled, ['value' => $operation, 'class' => 'ml-1']); ?>
-        <?= HtmlPurifier::process($field['title']) ?>
+        <?= HtmlPurifier::process($field['label']) ?>
         <?= $field['unit'] ? ' <small>(' . HtmlPurifier::process($field['unit']) . ')</small> ' : '' ?>
     </div>
     <div class="card-body p-2 collapse <?= $disabled ? '' : 'show' ?>">

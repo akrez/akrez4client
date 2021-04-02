@@ -6,7 +6,7 @@ use yii\helpers\Html;
 ?>
 <div class="input-group flex-fill">
     <div class="input-group-prepend">
-        <?= Html::tag('span', Html::encode($field['title']) . ' ' . Blog::getConstant('widget', $filter['widget']), ['class' => 'input-group-text']) ?>
+        <?= Html::tag('span', Html::encode($field['label']) . ' ' . Blog::getConstant('widget', $filter['widget']), ['class' => 'input-group-text']) ?>
     </div>
     <?= Html::hiddenInput($namePrefix . '[operation]', $filter['widget']); ?>
     <?= Html::textInput($namePrefix . '[value]', $filter['value'], ['class' => 'form-control']); ?>

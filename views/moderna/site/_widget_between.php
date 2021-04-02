@@ -10,7 +10,7 @@ use yii\web\JsExpression;
 $min = 0;       //default value
 $max = 100;     //default value
 
-$items = array_keys($items);
+$items = array_keys($field['options']);
 $items = array_map('floatval', $items);
 $items = Blog::filterArray($items);
 if (count($items) > 0) {
@@ -40,7 +40,7 @@ $filter['value_max'] = floatval($filter['value_max']);
 <div class="card card-akrez">
     <div class="card-header p-2">
         <?= Html::checkbox($namePrefix . '[operation]', !$disabled, ['value' => 'BETWEEN', 'class' => 'ml-1']); ?>
-        <?= HtmlPurifier::process($field['title']) ?>
+        <?= HtmlPurifier::process($field['label']) ?>
         <?= $field['unit'] ? ' <small>(' . HtmlPurifier::process($field['unit']) . ')</small> ' : '' ?>
     </div>
     <div class="card-body text-center p-2 collapse <?= $disabled ? '' : 'show' ?>">
