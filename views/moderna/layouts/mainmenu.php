@@ -77,70 +77,60 @@ $this->registerCss('
     <div class="row">
 
         <?php
-        $i = 0;
+        $section = 'Product';
+        $fieldId = 'title';
+        echo $this->render('/site/_widgets', [
+            'section' => $section,
+            'searchParams' => (array)Blog::getData($section, $fieldId),
+            'field' => [
+                "id" => null,
+                "title" => $fieldId,
+                "seq" => null,
+                "in_summary" => 1,
+                "category_id" => null,
+                "unit" => null,
+                "label_no" => null,
+                "label_yes" => null,
+                "widgets" => ['LIKE'],
+                "label" => Yii::t('app', 'Title'),
+                "options" => [],
+            ],
+        ]);
+
+        $priceMin = Blog::getData('category', 'price_min');
+        $priceMax = Blog::getData('category', 'price_max');
+        if ($priceMin && $priceMax) {
+            $section = 'Package';
+            $fieldId = 'price';
+            echo $this->render('/site/_widgets', [
+                'section' => $section,
+                'searchParams' => (array)Blog::getData($section, $fieldId),
+                'field' => [
+                    "id" => null,
+                    "title" => $fieldId,
+                    "seq" => null,
+                    "in_summary" => 1,
+                    "category_id" => null,
+                    "unit" => "ریال",
+                    "label_no" => null,
+                    "label_yes" => null,
+                    "widgets" => ['BETWEEN'],
+                    "label" => Yii::t('app', 'Price'),
+                    "options" => [$priceMin => null, $priceMax => null,],
+                ],
+            ]);
+        }
+
         foreach ((array)Blog::getData('fields') as $fieldId => $field) : ///
-            $searchParams = (array)Blog::getData('ProductField', $fieldId); ///
-            $widgets = ($field['widgets'] ? (array) $field['widgets'] : []);
-            foreach ($widgets as $widget) :
-
-                $filter = [
-                    'operation' => null,
-                    'value' => null,
-                    'values' => [],
-                    'value_min' => null,
-                    'value_max' => null,
-                    'widget' => $widget,
-                    'field' => $fieldId,
-                ];
-
-                $disabled = true;
-                foreach ($searchParams as $fieldFilterKey => $fieldFilter) :
-                    if ($fieldFilter['widget'] == $widget) {
-                        $filter = $searchParams[$fieldFilterKey];
-                        unset($searchParams[$fieldFilterKey]);
-                        $disabled = false;
-                        break;
-                    }
-                endforeach;
-
-                $namePrefix = 'ProductField[' . $fieldId . '][' . $i . ']'; //
-                echo Html::hiddenInput($namePrefix . '[widget]', $widget);
-
-                echo '<div class="col-sm-12 pb-2">';
-                if (in_array($widget, ["LIKE", "NOT LIKE", "=", "<>", ">=", "<=",])) :
-                    echo $this->render('/site/_widget_input', [
-                        'namePrefix' => $namePrefix,
-                        'field' => $field,
-                        'filter' => $filter,
-                    ]);
-                elseif (in_array($widget, ["COMBO STRING", "COMBO NUMBER",])) :
-                    echo $this->render('/site/_widget_combo', [
-                        'namePrefix' => $namePrefix,
-                        'field' => $field,
-                        'filter' => $filter,
-                    ]);
-                elseif (in_array($widget, ["SINGLE", "MULTI",])) :
-                    echo $this->render('/site/_widget_check', [
-                        'namePrefix' => $namePrefix,
-                        'field' => $field,
-                        'filter' => $filter,
-                        'disabled' => $disabled,
-                        'items' => (array)Blog::getData('options', $fieldId),
-                    ]);
-                elseif (in_array($widget, ["BETWEEN",])) :
-                    echo $this->render('/site/_widget_between', [
-                        'namePrefix' => $namePrefix,
-                        'field' => $field,
-                        'filter' => $filter,
-                        'disabled' => $disabled,
-                        'items' => (array)Blog::getData('options', $fieldId),
-                        'i' => $i,
-                    ]);
-                endif;
-                echo '</div>';
-
-                $i++;
-            endforeach;
+            $section = 'ProductField';
+            echo $this->render('/site/_widgets', [
+                'section' => $section,
+                'searchParams' => (array)Blog::getData($section, $fieldId),
+                'field' => $field + [
+                    'label' => $field['title'],
+                    'options' => (array)Blog::getData('options', $field['id']),
+                ],
+            ]);
         endforeach;
         ?>
 
