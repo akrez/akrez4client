@@ -114,39 +114,13 @@ $this->registerCss('
                         'filter' => $filter,
                     ]);
                 elseif (in_array($widget, ["COMBO STRING", "COMBO NUMBER",])) :
-                    if ($widget == "COMBO NUMBER") {
-                        $operationList = [
-                            '>=' => Blog::getConstant('widget', '>='),
-                            '<=' => Blog::getConstant('widget', '<='),
-                            '=' => Blog::getConstant('widget', '='),
-                            '<>' => Blog::getConstant('widget', '<>'),
-                        ];
-                    } else {
-                        $operationList = [
-                            'LIKE' => Blog::getConstant('widget', 'LIKE'),
-                            'NOT LIKE' => Blog::getConstant('widget', 'NOT LIKE'),
-                            '=' => Blog::getConstant('widget', '='),
-                            '<>' => Blog::getConstant('widget', '<>'),
-                        ];
-                    }
                     echo $this->render('/site/_widget_combo', [
                         'namePrefix' => $namePrefix,
                         'field' => $field,
                         'filter' => $filter,
-                        'operationList' => $operationList,
                     ]);
-                elseif (in_array($widget, ["SINGLE",])) :
+                elseif (in_array($widget, ["SINGLE", "MULTI",])) :
                     echo $this->render('/site/_widget_check', [
-                        'isSingle' => true,
-                        'namePrefix' => $namePrefix,
-                        'field' => $field,
-                        'filter' => $filter,
-                        'disabled' => $disabled,
-                        'items' => (array)Blog::getData('options', $fieldId),
-                    ]);
-                elseif (in_array($widget, ["MULTI",])) :
-                    echo $this->render('/site/_widget_check', [
-                        'isSingle' => false,
                         'namePrefix' => $namePrefix,
                         'field' => $field,
                         'filter' => $filter,
@@ -155,12 +129,12 @@ $this->registerCss('
                     ]);
                 elseif (in_array($widget, ["BETWEEN",])) :
                     echo $this->render('/site/_widget_between', [
-                        'i' => $i,
                         'namePrefix' => $namePrefix,
                         'field' => $field,
                         'filter' => $filter,
                         'disabled' => $disabled,
                         'items' => (array)Blog::getData('options', $fieldId),
+                        'i' => $i,
                     ]);
                 endif;
                 echo '</div>';
