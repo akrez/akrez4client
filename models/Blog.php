@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\Http;
+use app\components\Image;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -77,23 +78,42 @@ class Blog extends Model
         return $value;
     }
     //
-    public static function getImage($type, $whq, $name)
+    public static function getImage($type, $whqm, $name)
     {
+        $default = '';
+
         $type = preg_replace('/[^A-Za-z0-9\-\.\_]/', '', $type);
-        $whq = preg_replace('/[^A-Za-z0-9\-\.\_]/', '', $whq);
+        $whqm = preg_replace('/[^A-Za-z0-9\-\.\_]/', '', $whqm);
         $name = preg_replace('/[^A-Za-z0-9\-\.\_]/', '', $name);
-        //
-        $basePath = Yii::getAlias("@webroot/gallery/$type/$whq");
-        $path = "$basePath/$name";
-        $url = Yii::getAlias("@web") . "/gallery/$type/$whq/$name";
-        //
-        if (file_exists($path)) {
-            return $url;
+
+        $imagePath = Yii::getAlias("@webroot") . "/gallery/$type/$whqm/$name";
+        $imageUrl = Yii::getAlias("@web") . "/gallery/$type/$whqm/$name";
+
+        if (file_exists($imagePath)) {
+            return $imageUrl;
         }
-        file_exists($basePath) || mkdir($basePath, '755', true);
-        if (Http::downloadImage($type, $path, $name)) {
-            return $url;
+
+        $imageDirectory = dirname($imagePath);
+        file_exists($imageDirectory) || mkdir($imageDirectory, '755', true);
+
+        $originalPath = Yii::getAlias("@webroot") . "/gallery/$type/$name";
+        $originalUrl = Yii::getAlias("@web") . "/gallery/$type/$name";
+
+        if (file_exists($originalPath) || Http::downloadImage($type, $originalPath, $name)) {
+            $whqm = explode('_', $whqm) + [0, 0, 0, 0];
+            $whqm = [
+                0 => intval($whqm[0]),
+                1 => intval($whqm[1]),
+                2 => intval($whqm[2]),
+                3 => intval($whqm[3]),
+            ];
+            $handler = new Image();
+            if ($handler->save($originalPath, $imagePath, $whqm[0], $whqm[1], $whqm[2], $whqm[3])) {
+                return $imageUrl;
+            }
+            return $originalUrl;
         }
+        return $default;
     }
     //
     public function rules()
