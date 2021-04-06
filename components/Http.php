@@ -56,10 +56,6 @@ class Http extends Component
             }
             Yii::$app->blog->setConstant($constantData);
         }
-        if (isset($data['_categories']) && $data['_categories']) {
-            Yii::$app->blog->categories = $data['_categories'];
-        }
-        Yii::$app->blog->categories = $data['_categories'];
         Yii::$app->blog->setData($data);
         switch ($data['_code']) {
             case 200:

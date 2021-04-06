@@ -24,8 +24,6 @@ class Blog extends Model
     public $address;
     public $twitter;
     //
-    public $categories = [];
-    //
     public static $data = null;
 
     public static function setData($data)
@@ -129,9 +127,12 @@ class Blog extends Model
         return self::url('site/index');
     }
 
-    public static function categories()
+    public static function categories($categoryId = null)
     {
-        return Yii::$app->blog->categories;
+        if ($categoryId === null) {
+            return self::getData('_categories');
+        }
+        return self::getData('_categories', $categoryId);
     }
 
     //
