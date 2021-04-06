@@ -35,7 +35,7 @@ class Image extends Component
         return $this->_error;
     }
 
-    public function save($srcFile, $des, $width = null, $height = null, $quality = null, $desIsAbsolute = true, $mode = 0)
+    public function save($srcFile, $des, $width = null, $height = null, $quality = null, $mode = 0)
     {
         try {
             $this->setError(null);
@@ -100,16 +100,9 @@ class Image extends Component
                 $image = Imagine::resize($image, $width, $height, false, true);
             }
 
-            if ($desIsAbsolute) {
-                $pathinfo = pathinfo($des);
-                $name = $pathinfo['basename'];
-                $desFile = $des;
-            } else {
-                do {
-                    $name = substr(uniqid(rand(), true), 0, 12) . '.' . $ext;
-                    $desFile = self::getOriginalImagePath($des, $name);
-                } while (file_exists($desFile));
-            }
+            $pathinfo = pathinfo($des);
+            $name = $pathinfo['basename'];
+            $desFile = $des;
 
             $image->save($desFile, ['quality' => $quality]);
 
@@ -143,29 +136,5 @@ class Image extends Component
         }
 
         return $this->_info = $info;
-    }
-
-    public static function getOriginalImagePath($type, $name)
-    {
-        return self::getGalleryPath() . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR . $name;
-    }
-
-    public static function getCacheImagePath($type, $whqm, $name)
-    {
-        return self::getGalleryPath() . DIRECTORY_SEPARATOR . $type . '-' . $whqm . '-' . $name;
-    }
-
-    public static function getGalleryPath()
-    {
-        $path = Yii::getAlias('@app') . DIRECTORY_SEPARATOR . 'gallery';
-        return self::buildPath($path);
-    }
-
-    public static function buildPath($path)
-    {
-        if (!file_exists($path)) {
-            mkdir($path, 755, true);
-        }
-        return $path;
     }
 }
