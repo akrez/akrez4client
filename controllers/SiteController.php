@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\Http;
 use app\models\Blog;
+use app\models\Customer;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\Url;
@@ -19,20 +20,8 @@ class SiteController extends Controller
                 'class' => 'yii\filters\AccessControl',
                 'rules' => [
                     [
-                        'actions' => ['signin', 'signup', 'reset-password-request', 'reset-password'],
-                        'allow' => true,
-                        'verbs' => ['GET', 'POST'],
-                        'roles' => ['?'],
-                    ],
-                    [
                         'actions' => ['error', 'index', 'category', 'product', 'sitemap', 'robots', 'manifest'],
                         'allow' => true,
-                    ],
-                    [
-                        'actions' => ['signout', 'basket', 'basket-remove', 'basket-add', 'invoice', 'invoice-view', 'invoice-remove',],
-                        'allow' => true,
-                        'verbs' => ['GET', 'POST'],
-                        'roles' => ['@'],
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {
@@ -51,7 +40,7 @@ class SiteController extends Controller
         if ($action->id == 'error') {
             $action->layout = 'blank';
             if (Yii::$app->params['blogName']) {
-                Http::exist();
+                Http::info();
                 if (Blog::name()) {
                     $action->layout = 'main';
                 }
@@ -71,7 +60,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        Http::exist();
+        $this->view->params = Http::search(Yii::$app->request->get());
         return $this->render('index');
     }
 
@@ -80,5 +69,17 @@ class SiteController extends Controller
         Http::signout();
         Yii::$app->user->logout();
         return $this->redirect(Blog::firstPageUrl());
+    }
+
+    public function actionProduct($id)
+    {
+        $this->view->params = Http::product($id, Yii::$app->request->get());
+        return $this->render('product');
+    }
+
+    public function actionCategory($id)
+    {
+        $this->view->params = Http::category($id, Yii::$app->request->get());
+        return $this->render('category');
     }
 }
