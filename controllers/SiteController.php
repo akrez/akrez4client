@@ -26,10 +26,12 @@ class SiteController extends Controller
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {
+                    /*
                     if (Yii::$app->user->isGuest) {
                         Yii::$app->user->setReturnUrl(Url::current());
                         return Yii::$app->controller->redirect(Blog::url('/site/signin'));
                     }
+                    */
                     throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
                 }
             ],
