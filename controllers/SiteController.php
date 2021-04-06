@@ -64,13 +64,6 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionSignout()
-    {
-        Http::signout();
-        Yii::$app->user->logout();
-        return $this->redirect(Blog::firstPageUrl());
-    }
-
     public function actionProduct($id)
     {
         $this->view->params = Http::product($id, Yii::$app->request->get());
