@@ -98,6 +98,35 @@ class SiteController extends Controller
         return $sitemap->asXML();
     }
 
+    public function actionManifest()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        //
+        Http::info();
+        //
+        $icons = [];
+        $logo = Blog::print('logo');
+        foreach (Yii::$app->params['manifestIconSizes'] as $widthsValue) {
+            $icons[] = [
+                "src" => Blog::getImage('logo', $widthsValue . "_" . $widthsValue . "_100_1", $logo),
+                "sizes" => $widthsValue . 'x' . $widthsValue,
+            ];
+        }
+        //
+        return [
+            "name" => Blog::name(),
+            "short_name" => ucfirst(Blog::name()),
+            "display" => "standalone",
+            "lang" => "fa",
+            "dir" => "rtl",
+            "start_url" => "/",
+            "background_color" => "#FFFFFF",
+            "theme_color" => Yii::$app->params['manifestThemeColor'],
+            "orientation" => "portrait",
+            "icons" => $icons,
+        ];
+    }
+
     public function actionIndex()
     {
         $this->view->params = Http::search(Yii::$app->request->get());
