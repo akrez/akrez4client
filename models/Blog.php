@@ -155,6 +155,57 @@ class Blog extends Model
         return self::getData('_categories', $categoryId);
     }
 
+    public static function getMetaKeyword()
+    {
+        /////
+        $blogName = Blog::print('name');
+        $blogTitle = Blog::print('title');
+        $blogSlug = Blog::print('slug');
+        //
+        $categories = (array)Blog::getData('_categories');
+        $categoryId = Blog::getData('categoryId');
+        $category = isset($categories[$categoryId]) ? $categories[$categoryId] : null;
+        //
+        $productTitle = Blog::getData('product', 'title');
+        /////
+        $words = [
+            'نمایندگی فروش',
+            'فروش',
+            'خرید اینترنتی محصولات',
+            'فروشگاه',
+            'فروشگاه اینترنتی',
+            'فروشگاه آنلاین',
+            'خرید آنلاین'
+        ];
+        /////
+        $keywords = [$blogTitle, $blogName, $blogTitle . '-' . $blogName, $blogTitle . '-' . $blogSlug];
+        //
+        if ($productTitle) {
+            $keywords = array_merge($keywords, [
+                $productTitle . ' ' . $blogTitle,
+                $productTitle,
+            ]);
+        }
+        //
+        if ($category) {
+            $keywords = array_merge($keywords, [$category, $category . ' ' . $blogTitle,], array_map(function ($value) use ($category) {
+                return $value . ' ' . $category;
+            }, $words));
+        }
+        //
+        if ($categories) {
+            $keywords = array_merge($keywords, $categories);
+        }
+        //
+        if ($blogTitle) {
+            $keywords = array_merge($keywords, array_map(function ($value) use ($blogTitle) {
+                return $value . ' ' . $blogTitle;
+            }, $words));
+        }
+        //
+        return implode(',', $keywords);
+    }
+
     //
 
     public static function normalizeArray($arr, $returnAsArray = false, $glue = ",")
