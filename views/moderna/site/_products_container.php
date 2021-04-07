@@ -10,9 +10,9 @@ use yii\bootstrap4\LinkPager;
 
 $pagination = new Pagination([
     'pageSizeParam' => 'page_size',
-    'pageSize' => Yii::$app->view->params['pagination']['page_size'],
-    'page' => Yii::$app->view->params['pagination']['page'],
-    'totalCount' => Yii::$app->view->params['pagination']['total_count'],
+    'pageSize' => Blog::getData('pagination', 'page_size'),
+    'page' => Blog::getData('pagination', 'page'),
+    'totalCount' => Blog::getData('pagination', 'total_count'),
 ]);
 
 $this->registerCss("
@@ -66,13 +66,13 @@ a.card {
 ");
 ?>
 
-<?php if (count(Yii::$app->view->params['products']) > 0) : ?>
+<?php if (count((array)Blog::getData('products')) > 0) : ?>
 
     <div class="row pt-2">
         <div class="col-sm-12">
             <ul class="pagination">
-                <?php foreach (Yii::$app->view->params['sort']['attributes'] as $sortAttributeId => $sortAttributeValue) : ?>
-                    <?php if (Yii::$app->view->params['sort']['attribute'] == $sortAttributeId) : ?>
+                <?php foreach (Blog::getData('sort', 'attributes') as $sortAttributeId => $sortAttributeValue) : ?>
+                    <?php if (Blog::getData('sort', 'attribute') == $sortAttributeId) : ?>
                         <li class="page-item active"><a class="page-link" href="#"><?= HtmlPurifier::process($sortAttributeValue) ?></a></li>
                     <?php else : ?>
                         <li class="page-item"><a class="page-link" href="<?= Url::current(['sort' => $sortAttributeId]) ?>"><?= HtmlPurifier::process($sortAttributeValue) ?></a></li>
@@ -84,7 +84,7 @@ a.card {
 
     <div class="card-columns">
         <?php
-        foreach (Yii::$app->view->params['products'] as $product) :
+        foreach (Blog::getData('products') as $product) :
             $title = HtmlPurifier::process($product['title']);
         ?>
             <a class="card" href="<?= Blog::url('site/product', ['id' => $product['id']]) ?>">

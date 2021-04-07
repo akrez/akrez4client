@@ -129,19 +129,19 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $this->view->params = Http::search(Yii::$app->request->get());
+        Http::search(Yii::$app->request->get());
         return $this->render('index');
     }
 
     public function actionProduct($id)
     {
-        $this->view->params = Http::product($id, Yii::$app->request->get());
+        Http::product($id, Yii::$app->request->get());
         return $this->render('product');
     }
 
     public function actionCategory($id)
     {
-        $this->view->params = Http::category($id, Yii::$app->request->get());
+        Http::category($id, Yii::$app->request->get());
         return $this->render('category');
     }
 }

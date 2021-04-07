@@ -7,7 +7,7 @@ use yii\helpers\HtmlPurifier;
 $blogSlug = (Blog::print('slug') ? Blog::print('slug') : '');
 $this->registerMetaTag([
     'name' => 'keywords',
-    'content' => Blog::normalizeArrayUnorder([Blog::print('title'), $blogSlug, Blog::print('name')], false, ',') . (isset(Yii::$app->view->params['_categories']) && Yii::$app->view->params['_categories'] ? ',' . implode(',', Yii::$app->view->params['_categories']) : ''),
+    'content' => Blog::normalizeArrayUnorder([Blog::print('title'), $blogSlug, Blog::print('name')], false, ',') . (Blog::getData('_categories') ? ',' . implode(',', (array)Blog::getData('_categories')) : ''),
 ]);
 ?>
 
@@ -21,7 +21,7 @@ $this->registerMetaTag([
     <div class="col-sm-4">
         <?= Html::beginForm(Blog::url('site/index'), 'GET', ['class' => 'form-inline']); ?>
         <div class="input-group flex-fill">
-            <?= Html::textInput('Product[title][0][value]', (isset(Yii::$app->view->params['Product']['title'][0]['value']) ? Yii::$app->view->params['Product']['title'][0]['value'] : null), ['class' => 'form-control']); ?>
+            <?= Html::textInput('Product[title][0][value]', Blog::getData('Product', 'title', 0, 'value'), ['class' => 'form-control']); ?>
             <?= Html::hiddenInput('Product[title][0][operation]', 'LIKE'); ?>
             <div class="input-group-append">
                 <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-secondary btn-block']); ?>
@@ -32,5 +32,5 @@ $this->registerMetaTag([
 </div>
 
 <?php
-echo $this->render('_products_container') 
+echo $this->render('_products_container')
 ?>
