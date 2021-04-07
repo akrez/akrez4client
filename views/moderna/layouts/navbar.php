@@ -42,6 +42,7 @@ if (Blog::categories()) {
 
 <?php
 if (Yii::$app->user->isGuest) {
+    /*
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
@@ -49,6 +50,7 @@ if (Yii::$app->user->isGuest) {
             ['label' => Yii::t('app', 'Signin'), 'url' => Blog::url('site/signin')],
         ],
     ]);
+    */
 } else {
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
