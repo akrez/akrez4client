@@ -128,7 +128,7 @@ $this->registerCss('
                 'searchParams' => (array)Blog::getData($section, $fieldId),
                 'field' => $field + [
                     'label' => $field['title'],
-                    'options' => (array)Blog::getData('options', $field['id']),
+                    'options' => (array)Blog::getData('options', $field['title']),
                 ],
             ]);
         endforeach;
