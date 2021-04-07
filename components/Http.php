@@ -3,7 +3,6 @@
 namespace app\components;
 
 use app\models\Customer;
-use phpDocumentor\Reflection\Types\Boolean;
 use Yii;
 use yii\base\Component;
 use yii\httpclient\Client;
@@ -21,7 +20,7 @@ use yii\web\UnsupportedMediaTypeHttpException;
 
 class Http extends Component
 {
-    private static function postRequest($url, $postData = [], $params = [])
+    private static function post($url, $postData = [], $params = [], $routeByHttpCode = true, $setData = true)
     {
         $params = [
             '_token' => Customer::getIdentityToken(),
@@ -37,51 +36,53 @@ class Http extends Component
             ->setData($postData)
             ->send()
             ->getData();
-        return $data;
-    }
 
-    private static function post($url, $postData = [], $params = [])
-    {
-        $data = self::postRequest($url, $postData, $params);
-        if (isset($data['_blog']) && $data['_blog']) {
-            Yii::$app->blog->load($data, '_blog');
-        }
-        if (isset($data['_constant_hash']) && $data['_constant_hash']) {
-            $path = Yii::getAlias("@webroot") . "/cdn/constant/" . $data['_constant_hash'] . ".json";
-            if (file_exists($path)) {
-                $constantData = json_decode(file_get_contents($path), true);
-            } else {
-                $constantData = self::postRequest('constant', [], [], false);
-                file_put_contents($path, json_encode($constantData));
+        if ($setData) {
+            if (isset($data['_blog']) && $data['_blog']) {
+                Yii::$app->blog->load($data, '_blog');
             }
-            Yii::$app->blog->setConstant($constantData);
+            if (isset($data['_constant_hash']) && $data['_constant_hash']) {
+                $path = Yii::getAlias("@webroot") . "/cdn/constant/" . $data['_constant_hash'] . ".json";
+                if (file_exists($path)) {
+                    $constantData = json_decode(file_get_contents($path), true);
+                } else {
+                    $constantData = self::post('constant', [], [], false, false);
+                    file_put_contents($path, json_encode($constantData));
+                }
+                Yii::$app->blog->setConstant($constantData);
+            }
+            Yii::$app->blog->setData($data);
         }
-        Yii::$app->blog->setData($data);
-        switch ($data['_code']) {
-            case 200:
-                return $data;
-            case 400:
-                throw new BadRequestHttpException;
-            case 401:
-                throw new UnauthorizedHttpException;
-            case 403:
-                throw new ForbiddenHttpException('You are not allowed to perform this action.');
-            case 404:
-                throw new NotFoundHttpException('Page not found.');
-            case 405:
-                throw new MethodNotAllowedHttpException;
-            case 406:
-                throw new NotAcceptableHttpException;
-            case 409:
-                throw new ConflictHttpException;
-            case 410:
-                throw new GoneHttpException;
-            case 415:
-                throw new UnsupportedMediaTypeHttpException;
-            case 429:
-                throw new TooManyRequestsHttpException;
+
+        if ($routeByHttpCode) {
+            switch ($data['_code']) {
+                case 200:
+                    return $data;
+                case 400:
+                    throw new BadRequestHttpException;
+                case 401:
+                    throw new UnauthorizedHttpException;
+                case 403:
+                    throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+                case 404:
+                    throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
+                case 405:
+                    throw new MethodNotAllowedHttpException;
+                case 406:
+                    throw new NotAcceptableHttpException;
+                case 409:
+                    throw new ConflictHttpException;
+                case 410:
+                    throw new GoneHttpException;
+                case 415:
+                    throw new UnsupportedMediaTypeHttpException;
+                case 429:
+                    throw new TooManyRequestsHttpException;
+            }
+            throw new ServerErrorHttpException('An internal server error occurred.');
         }
-        throw new ServerErrorHttpException('An internal server error occurred.');
+
+        return $data;
     }
 
     public static function downloadImage($type, $path, $name)
@@ -96,7 +97,7 @@ class Http extends Component
 
     public static function exist()
     {
-        return self::postRequest('info');
+        return self::post('info', [], [], false);
     }
 
     public static function search($params)
