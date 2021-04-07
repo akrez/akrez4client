@@ -8,11 +8,25 @@ use app\components\Alert;
 use yii\helpers\Html;
 use yii\bootstrap4\Breadcrumbs;
 use app\assets\ModernaAsset;
+use app\models\Blog;
+use yii\widgets\Spaceless;
 
 ModernaAsset::register($this);
 FontawesomeAsset::register($this);
+
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => Blog::getMetaKeyword(),
+]);
+$blogSlug = Blog::print('slug');
+$this->title = Blog::normalizeArrayUnorder([$this->title, Blog::print('title'), $blogSlug], false, ' | ');
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => (Blog::print('des') ? Blog::print('des') : Blog::normalizeArray([Blog::print('title'), $blogSlug, Blog::print('name')], false, ' - ')),
+]);
 ?>
 <?php $this->beginPage() ?>
+<?php if (YII_ENV != 'dev') Spaceless::begin(); ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" dir="rtl">
 
@@ -22,6 +36,7 @@ FontawesomeAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <link href="<?= Blog::getImage('logo', '128_128_20_1', Blog::print('logo')) ?>" rel="icon">
     <?php $this->head() ?>
 </head>
 
@@ -44,4 +59,5 @@ FontawesomeAsset::register($this);
 </body>
 
 </html>
+<?php if (YII_ENV != 'dev') Spaceless::end(); ?>
 <?php $this->endPage() ?>
