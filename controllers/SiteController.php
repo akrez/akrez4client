@@ -74,7 +74,7 @@ class SiteController extends Controller
 
     public function actionSitemap()
     {
-        Http::search(['page_size' => -1]);
+        Http::index(['page_size' => -1]);
 
         Yii::$app->response->format = Response::FORMAT_RAW;
         Yii::$app->response->headers->add('Content-Type', 'application/xml; charset=UTF-8');
@@ -128,7 +128,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        Http::search(Yii::$app->request->get());
+        Http::index(Yii::$app->request->get());
         return $this->render('index');
     }
 

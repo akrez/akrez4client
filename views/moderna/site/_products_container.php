@@ -90,10 +90,10 @@ a.card {
             <a class="card" href="<?= Blog::url('site/product', ['id' => $product['id']]) ?>">
                 <?php
                 if ($product['image']) :
-                    echo Html::img(Blog::getImage('product', '400', $product['image']), ['class' => 'img-fluid rounded', 'alt' => $title]);
+                    echo Html::img(Blog::getImage('product', '400', $product['image']), ['class' => 'img-fluid rounded pt-3 pr-3 pl-3', 'alt' => $title]);
                 endif;
                 ?>
-                <div class="card-body">
+                <div class="card-body p-3">
                     <h5 class="card-title"><?= $title ?></h5>
                     <p class="card-text">
                         <?php

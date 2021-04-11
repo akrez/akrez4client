@@ -100,14 +100,14 @@ class Http extends Component
         return self::post('info', [], [], false);
     }
 
-    public static function search($params)
+    public static function index($params)
     {
-        return self::post('search', $params);
+        return self::post('index', $params);
     }
 
     public static function category($id, $params)
     {
-        return self::post('search', (array) $params, ['category_id' => $id]);
+        return self::post('category', (array) $params, ['category_id' => $id]);
     }
 
     public static function product($id, $params)
