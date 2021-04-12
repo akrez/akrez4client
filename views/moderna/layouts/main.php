@@ -37,6 +37,22 @@ $this->registerMetaTag([
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <link href="<?= Blog::getImage('logo', '128_128_20_1', Blog::print('logo')) ?>" rel="icon">
+
+    <?php foreach (["apple-touch-icon", "icon",] as $relsValue) : ?>
+        <?php foreach (Yii::$app->params['manifestIconSizes'] as $widthsValue) : ?>
+            <link sizes="<?= $widthsValue . 'x' . $widthsValue ?>" href="<?= Blog::getImage('logo', $widthsValue . "_" . $widthsValue . "__1", Blog::print('logo')) ?>" rel="<?= $relsValue ?>">
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+
+    <meta name="msapplication-TileImage" content="<?= Blog::getImage('logo', "144_144__1", Blog::print('logo')) ?>">
+    <meta name="msapplication-TileColor" content="#ffffff">
+
+    <meta name="theme-color" content="<?= Yii::$app->params['manifestThemeColor'] ?>">
+    <meta name="msapplication-navbutton-color" content="<?= Yii::$app->params['manifestThemeColor'] ?>">
+    <meta name="apple-mobile-web-app-status-bar-style" content="<?= Yii::$app->params['manifestThemeColor'] ?>">
+
+    <link rel="manifest" href="<?= Blog::url('/manifest.json') ?>">
+
     <?php $this->head() ?>
 </head>
 
