@@ -113,7 +113,7 @@ class SiteController extends Controller
         }
         //
         return [
-            "name" => Blog::name(),
+            "name" => Blog::print('title'),
             "short_name" => ucfirst(Blog::name()),
             "display" => "standalone",
             "lang" => "fa",
