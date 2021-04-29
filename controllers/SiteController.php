@@ -42,7 +42,7 @@ class SiteController extends Controller
         if ($action->id == 'error') {
             $action->layout = 'blank';
             if (Yii::$app->params['blogName']) {
-                Http::info();
+                Http::exist();
                 if (Blog::name()) {
                     $action->layout = 'main';
                 }
