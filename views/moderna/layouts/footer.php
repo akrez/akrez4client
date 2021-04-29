@@ -5,17 +5,16 @@
 
 use yii\helpers\Html;
 use app\models\Blog;
-use yii\helpers\HtmlPurifier;
 
 ?>
-<footer class="footer pb-4 pt-4">
+<footer class="footer pb-4 pt-2">
     <div class="container">
         <div class="row ">
-            <div class="col-sm-3 text-center">
+            <div class="col-sm-3 pt-2 text-center">
                 <h3 class="mt0"><?= Blog::print('title') ?></h3>
                 <h5 class="mt0"><?= Blog::print('slug') ?></h5>
             </div>
-            <div class="col-sm-7 text-center">
+            <div class="col-sm-7 pt-2 text-center">
                 <div class="row">
                     <div class="col-sm-12">
                         <?php
@@ -44,34 +43,34 @@ use yii\helpers\HtmlPurifier;
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 pt-2">
                 <div class="row">
                     <?php
                     if (Blog::print('facebook')) {
-                        $url = HtmlPurifier::process('https://www.facebook.com/' . Blog::print('facebook'));
+                        $url = ('https://www.facebook.com/' . Blog::print('facebook'));
                         $logo = Html::img(Yii::getAlias('@web/cdn/image/social/facebook.svg'), ['style' => 'margin: auto;', 'class' => 'img-fluid rounded', 'alt' => $url]);
-                        echo '<div class="col-sm-4 pull-left mb10">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
+                        echo '<div class="col-sm-4 col-3 mb10">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
                     }
                     ?>
                     <?php
                     if (Blog::print('twitter')) {
-                        $url = HtmlPurifier::process('https://twitter.com/' . Blog::print('twitter'));
+                        $url = ('https://twitter.com/' . Blog::print('twitter'));
                         $logo = Html::img(Yii::getAlias('@web/cdn/image/social/twitter.svg'), ['style' => 'margin: auto;', 'class' => 'img-fluid rounded', 'alt' => $url]);
-                        echo '<div class="col-sm-4 pull-left mb10">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
+                        echo '<div class="col-sm-4 col-3 mb10">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
                     }
                     ?>
                     <?php
                     if (Blog::print('telegram')) {
-                        $url = HtmlPurifier::process('https://telegram.me/' . Blog::print('telegram'));
+                        $url = ('https://telegram.me/' . Blog::print('telegram'));
                         $logo = Html::img(Yii::getAlias('@web/cdn/image/social/telegram.svg'), ['style' => 'margin: auto;', 'class' => 'img-fluid rounded', 'alt' => $url]);
-                        echo '<div class="col-sm-4 pull-left mb10">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
+                        echo '<div class="col-sm-4 col-3 mb10">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
                     }
                     ?>
                     <?php
                     if (Blog::print('instagram')) {
-                        $url = HtmlPurifier::process('https://www.instagram.com/' . Blog::print('instagram'));
+                        $url = ('https://www.instagram.com/' . Blog::print('instagram'));
                         $logo = Html::img(Yii::getAlias('@web/cdn/image/social/instagram.svg'), ['style' => 'margin: auto;', 'class' => 'img-fluid rounded', 'alt' => $url]);
-                        echo '<div class="col-sm-4 pull-left mb10">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
+                        echo '<div class="col-sm-4 col-3 mb10">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
                     }
                     ?>
                 </div>
