@@ -93,3 +93,12 @@ a.desc:before {
 div.grid-view table td {
     vertical-align: middle;
 }
+
+.footer {
+    flex-shrink: none;
+    background-color: #f8f9fa;
+}
+
+.wrap{
+    flex: 1 0 auto;
+}

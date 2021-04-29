@@ -56,7 +56,7 @@ $this->registerMetaTag([
     <?php $this->head() ?>
 </head>
 
-<body>
+<body class="d-flex flex-column">
     <?php $this->beginBody() ?>
     <div class="wrap">
         <?= $this->render('navbar'); ?>
@@ -71,6 +71,7 @@ $this->registerMetaTag([
             </div>
         </div>
     </div>
+    <?= $this->render('footer') ?>
     <?php $this->endBody() ?>
 </body>
 
