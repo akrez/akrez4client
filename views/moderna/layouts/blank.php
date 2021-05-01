@@ -6,13 +6,14 @@
 use app\assets\cdn\FontawesomeAsset;
 use app\components\Alert;
 use yii\helpers\Html;
-use yii\bootstrap4\Breadcrumbs;
+use yii\widgets\Spaceless;
 use app\assets\ModernaAsset;
 
 ModernaAsset::register($this);
 FontawesomeAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
+<?php if (YII_ENV != 'dev') Spaceless::begin(); ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" dir="rtl">
 
@@ -39,4 +40,5 @@ FontawesomeAsset::register($this);
 </body>
 
 </html>
+<?php if (YII_ENV != 'dev') Spaceless::end(); ?>
 <?php $this->endPage() ?>

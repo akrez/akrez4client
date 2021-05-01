@@ -40,11 +40,10 @@ class SiteController extends Controller
     public function beforeAction($action)
     {
         if ($action->id == 'error') {
-            $action->layout = 'blank';
             if (Yii::$app->params['blogName']) {
                 Http::exist();
-                if (Blog::name()) {
-                    $action->layout = 'main';
+                if (empty(Blog::name())) {
+                    $action->layout = 'blank';
                 }
             }
         }
