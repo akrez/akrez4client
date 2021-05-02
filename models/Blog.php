@@ -24,6 +24,7 @@ class Blog extends Model
     public $telegram;
     public $address;
     public $twitter;
+    public $language;
     //
     public static $data = null;
 
@@ -67,7 +68,14 @@ class Blog extends Model
 
     public static function getConstant(...$levels)
     {
-        $value = self::$constant;
+        $language = Yii::$app->language;
+
+        if (isset(self::$constant['constant'][$language])) {
+            $value = self::$constant['constant'][$language];
+        } else {
+            return null;
+        }
+
         foreach ($levels as $level) {
             if (isset($value[$level])) {
                 $value = $value[$level];
@@ -119,7 +127,7 @@ class Blog extends Model
     public function rules()
     {
         return [
-            [['created_at', 'name', 'title', 'slug', 'des', 'logo', 'email', 'facebook', 'phone', 'mobile', 'instagram', 'telegram', 'address', 'twitter',], 'safe']
+            [['created_at', 'name', 'title', 'slug', 'des', 'logo', 'email', 'facebook', 'phone', 'mobile', 'instagram', 'telegram', 'address', 'twitter', 'language'], 'safe']
         ];
     }
 
