@@ -40,6 +40,7 @@ class Http extends Component
         if ($setData) {
             if (isset($data['_blog']) && $data['_blog']) {
                 Yii::$app->blog->load($data, '_blog');
+                Yii::$app->language = Yii::$app->blog->language;
             }
             if (isset($data['_constant_hash']) && $data['_constant_hash']) {
                 $path = Yii::getAlias("@webroot") . "/cdn/constant/" . $data['_constant_hash'] . ".json";
