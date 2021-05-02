@@ -7,6 +7,7 @@ use app\models\Blog;
 use SimpleXMLElement;
 use Yii;
 use yii\web\Controller;
+use yii\web\ErrorAction;
 use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
@@ -39,12 +40,14 @@ class SiteController extends Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'error') {
-            if (Yii::$app->params['blogName']) {
-                Http::exist();
-                if (empty(Blog::name())) {
-                    $action->layout = 'blank';
-                }
+        if (Yii::$app->params['blogName'] && empty(Blog::name())) {
+            Http::exist();
+        }
+        if (empty(Blog::name())) {
+            if ($action instanceof ErrorAction) {
+                $action->layout = 'blank';
+            } else {
+                $action->controller->layout = 'blank';
             }
         }
         return parent::beforeAction($action);
