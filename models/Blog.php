@@ -163,6 +163,11 @@ class Blog extends Model
         return self::getData('_categories', $categoryId);
     }
 
+    public static function isRtl()
+    {
+        return in_array(Yii::$app->language, ['fa-IR']);
+    }
+
     public static function getMetaKeyword()
     {
         /////
