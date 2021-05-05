@@ -8,10 +8,15 @@ use app\components\Alert;
 use yii\helpers\Html;
 use yii\bootstrap4\Breadcrumbs;
 use app\assets\ModernaAsset;
+use app\assets\ModernaRtlAsset;
 use app\models\Blog;
 use yii\widgets\Spaceless;
 
-ModernaAsset::register($this);
+if (Blog::isRtl()) {
+    ModernaRtlAsset::register($this);
+} else {
+    ModernaAsset::register($this);
+}
 FontawesomeAsset::register($this);
 
 $this->registerMetaTag([
@@ -28,7 +33,7 @@ $this->registerMetaTag([
 <?php $this->beginPage() ?>
 <?php if (YII_ENV != 'dev') Spaceless::begin(); ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" dir="rtl">
+<html lang="<?= Yii::$app->language ?>" dir="<?= Blog::isRtl() ? 'rtl' : 'ltr' ?>">
 
 <head>
     <meta charset="<?= Yii::$app->charset ?>">

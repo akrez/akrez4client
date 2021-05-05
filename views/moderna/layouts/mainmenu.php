@@ -53,7 +53,7 @@ $this->registerCss('
 ?>
 
 <?php if ($this->context->id == 'site' && in_array($this->context->action->id, ['category']) == false) : ?>
-    <div class="row pb20">
+    <div class="row pb-2">
         <div class="col-sm-12">
             <?php
             $blogLogo = Blog::getImage('logo', '400__67', Blog::print('logo'));
@@ -68,7 +68,7 @@ $this->registerCss('
 
     <div class="row pt-2 pb-2">
         <div class="col-sm-12">
-            <h4>جستجو</h4>
+            <h4><?= Yii::t('app', 'Search') ?></h4>
         </div>
     </div>
 
@@ -136,7 +136,7 @@ $this->registerCss('
 
     </div>
 
-    <div class="row pb20">
+    <div class="row pb-2">
         <div class="col-sm-6">
             <button type="submit" class="btn btn-secondary btn-block"><?= Yii::t('app', 'Search') ?></button>
         </div>
@@ -148,7 +148,7 @@ $this->registerCss('
 
 <?php if ($this->context->id == 'site' && !in_array($this->context->action->id, ['category'])) : ?>
     <?php if (Blog::categories()) : ?>
-        <div class="row pb20">
+        <div class="row pb-2">
             <div class="col-sm-12">
                 <div class="list-group text-center">
                     <?php

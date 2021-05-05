@@ -21,16 +21,16 @@ if (Blog::categories()) {
     echo Nav::widget([
         'items' => [
             [
-                'label' => Yii::t('app', 'Products Categories'),
+                'label' => Yii::t('app', 'Categories'),
                 'items' => $menuItems,
             ],
         ],
-        'options' => ['class' => 'navbar-nav ml-auto'],
+        'options' => ['class' => 'navbar-nav ' . Blog::isRtl() ? '' : 'ml-auto',],
     ]);
 }
 ?>
 
-<?= Html::beginForm(Blog::firstPageUrl(), 'GET', ['class' => 'form-inline mr-auto']); ?>
+<?= Html::beginForm(Blog::firstPageUrl(), 'GET', ['class' => 'form-inline ' . (Blog::isRtl() ? 'mr-auto' : 'ml-auto')]); ?>
 <div class="input-group flex-fill">
     <?= Html::textInput('Product[title][0][value]', null, ['class' => 'form-control']) ?>
     <?= Html::hiddenInput('Product[title][0][operation]', 'LIKE') ?>

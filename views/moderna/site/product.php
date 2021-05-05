@@ -88,14 +88,14 @@ Breadcrumbs::widget([
 ?>
 
 <div class="row">
-    <div class="col-sm-12 pb20">
+    <div class="col-sm-12 pb-2">
         <h1 class="mb-0"><?= $secureTitle ?></h1>
     </div>
 </div>
 
 <div class="row">
 
-    <div class="col-sm-5 pb20">
+    <div class="col-sm-5 pb-2">
 
         <?php if (count(Blog::getData('images')) > 0) : ?>
             <div id="carouselExampleIndicators" class="carousel slide carousel-fade border rounded-lg" data-ride="carousel">
@@ -163,7 +163,7 @@ Breadcrumbs::widget([
 
 </div>
 
-<div class="row pb20">
+<div class="row pb-2">
     <div class="col-sm-12">
         <table class="table table-striped table-bordered table-hover table-sm">
             <tbody>

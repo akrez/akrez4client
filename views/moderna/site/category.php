@@ -27,8 +27,8 @@ Breadcrumbs::widget([
 ?>
 
 <div class="row">
-    <div class="col-sm-12 pb20">
-        <h1 class="mt0"><?= HtmlPurifier::process(Blog::getData('category', 'title')) ?></h1>
+    <div class="col-sm-12 pb-2">
+        <h1 class="mt-0"><?= HtmlPurifier::process(Blog::getData('category', 'title')) ?></h1>
     </div>
 </div>
 
