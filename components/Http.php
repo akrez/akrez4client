@@ -43,7 +43,7 @@ class Http extends Component
                 Yii::$app->language = Yii::$app->blog->language;
             }
             if (isset($data['_constant_hash']) && $data['_constant_hash']) {
-                $path = Yii::getAlias("@webroot") . "/cdn/constant/" . $data['_constant_hash'] . ".json";
+                $path = Yii::getAlias("@webroot") . "/constant/" . $data['_constant_hash'] . ".json";
                 if (file_exists($path)) {
                     $constantData = json_decode(file_get_contents($path), true);
                 } else {
