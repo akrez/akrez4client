@@ -16,13 +16,14 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Bootstrap4Asset extends AssetBundle
+class Bootstrap4RtlAsset extends AssetBundle
 {
-    public $sourcePath = '@npm/bootstrap/dist';
+    public $basePath = '@webroot';
+    public $baseUrl = '@web';
     public $css = [
-        YII_ENV === 'prod' ? 'css/bootstrap.min.css' : 'css/bootstrap.css',
+        YII_ENV === 'prod' ? 'cdn/css/bootstrap4-rtl.min.css' : 'cdn/css/bootstrap4-rtl.css',
     ];
     public $js = [
-        YII_ENV === 'prod' ? 'js/bootstrap.bundle.min.js' : 'js/bootstrap.bundle.js',
+        'cdn/js/bootstrap.bundle.min.js',
     ];
 }

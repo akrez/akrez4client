@@ -13,7 +13,7 @@ class BlogAsset extends AssetBundle
     public $depends = [
         'yii\web\YiiAsset',
         'app\assets\cdn\BootstrapAsset',
-        'app\assets\cdn\FontSahelAsset',
+        'app\assets\cdn\FontSahelFdAsset',
         //'yii\bootstrap\BootstrapThemeAsset',
     ];
 }
