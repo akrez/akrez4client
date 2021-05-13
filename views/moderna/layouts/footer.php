@@ -3,77 +3,57 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use yii\helpers\Html;
 use app\models\Blog;
+
+$this->registerCss("
+.footer-font-size {
+    line-height: 1.62em !important;
+    font-size: 18px;
+}
+.footer-font-size i {
+    width: 28px;
+    text-align: center;
+}
+");
 
 ?>
 <footer class="footer pb-4 pt-2">
     <div class="container">
-        <div class="row ">
-            <div class="col-sm-3 pt-2 text-center">
-                <h3 class="mt-0"><?= Blog::print('title') ?></h3>
-                <h5 class="mt-0"><?= Blog::print('slug') ?></h5>
+        <div class="row">
+            <div class="col-sm-9 pt-2 text-justify">
+                <h3 class="m-0 footer-font-size"><?= Blog::print('des') ?></h3>
+                <?php
+                if ($info = Blog::print('address')) {
+                    echo '<p class="footer-font-size"><i class="fa  fa-map-marker-alt text-secondary"></i>' . $info . '</p>';
+                }
+                ?>
             </div>
-            <div class="col-sm-7 pt-2 text-center">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <?php
-                        $parts = [];
-                        if (Blog::print('address')) {
-                            $parts[] = '<p>' . (Blog::print('address')) . '</p>';
-                        }
-                        $tels = [];
-                        if (Blog::print('email')) {
-                            $email = (Blog::print('email'));
-                            $tels[] = '<a href="mailto:' . $email . '">' . $email . '</a>';
-                        }
-                        if (Blog::print('phone')) {
-                            $phone = (Blog::print('phone'));
-                            $tels[] = '<a dir="ltr" href="tel:' . $phone . '">' . $phone . '</a>';
-                        }
-                        if (Blog::print('mobile')) {
-                            $mobile = (Blog::print('mobile'));
-                            $tels[] = '<a dir="ltr" href="tel:' . $mobile . '">' . $mobile . '</a>';
-                        }
-                        if ($tels) {
-                            $parts[] = implode(' | ', $tels);
-                        }
-                        echo implode('', $parts);
-                        ?>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2 pt-2">
-                <div class="row">
-                    <?php
-                    if (Blog::print('facebook')) {
-                        $url = ('https://www.facebook.com/' . Blog::print('facebook'));
-                        $logo = Html::img(Yii::getAlias('@web/cdn/image/social/facebook.svg'), ['style' => 'margin: auto;', 'class' => 'img-fluid rounded', 'alt' => $url]);
-                        echo '<div class="col-sm-4 col-3 mb-1">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
-                    }
-                    ?>
-                    <?php
-                    if (Blog::print('twitter')) {
-                        $url = ('https://twitter.com/' . Blog::print('twitter'));
-                        $logo = Html::img(Yii::getAlias('@web/cdn/image/social/twitter.svg'), ['style' => 'margin: auto;', 'class' => 'img-fluid rounded', 'alt' => $url]);
-                        echo '<div class="col-sm-4 col-3 mb-1">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
-                    }
-                    ?>
-                    <?php
-                    if (Blog::print('telegram')) {
-                        $url = ('https://telegram.me/' . Blog::print('telegram'));
-                        $logo = Html::img(Yii::getAlias('@web/cdn/image/social/telegram.svg'), ['style' => 'margin: auto;', 'class' => 'img-fluid rounded', 'alt' => $url]);
-                        echo '<div class="col-sm-4 col-3 mb-1">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
-                    }
-                    ?>
-                    <?php
-                    if (Blog::print('instagram')) {
-                        $url = ('https://www.instagram.com/' . Blog::print('instagram'));
-                        $logo = Html::img(Yii::getAlias('@web/cdn/image/social/instagram.svg'), ['style' => 'margin: auto;', 'class' => 'img-fluid rounded', 'alt' => $url]);
-                        echo '<div class="col-sm-4 col-3 mb-1">' . Html::a($logo, $url, ['style' => 'text-align: center;']) . '</div>';
-                    }
-                    ?>
-                </div>
+            <div class="col-sm-3 pt-2 text-left footer-font-size" dir="ltr">
+                <?php
+                $parts = [];
+                if ($info = Blog::print('mobile')) {
+                    $parts[] = '<div><i class="fa fa-mobile text-primary"></i><a dir="ltr" href="tel:' . $info . '">' . $info . '</a></div>';
+                }
+                if ($info = Blog::print('email')) {
+                    $parts[] = '<div><i class="fa  fa-envelope text-warning"></i><a href="mailto:' . $info . '">' . $info . '</a></div>';
+                }
+                if ($info = Blog::print('phone')) {
+                    $parts[] = '<div><i class="fa fa-phone text-info"></i><a dir="ltr" href="tel:' . $info . '">' . $info . '</a></div>';
+                }
+                if ($info = Blog::print('twitter')) {
+                    $parts[] = '<div><i class="fab fa-twitter text-primary"></i><a dir="ltr" href="https://twitter.com/' . $info . '">' . $info . '</a></div>';
+                }
+                if ($info = Blog::print('telegram')) {
+                    $parts[] = '<div><i class="fab fa-telegram text-info"></i><a dir="ltr" href="https://telegram.me/' . $info . '">' . $info . '</a></div>';
+                }
+                if ($info = Blog::print('facebook')) {
+                    $parts[] = '<div><i class="fab fa-facebook text-primary"></i><a dir="ltr" href="https://www.facebook.com/' . $info . '">' . $info . '</a></div>';
+                }
+                if ($info = Blog::print('instagram')) {
+                    $parts[] = '<div><i class="fab fa-instagram text-danger"></i><a dir="ltr" href="https://www.instagram.com/' . $info . '">' . $info . '</a></div>';
+                }
+                echo implode('', $parts);
+                ?>
             </div>
         </div>
     </div>
