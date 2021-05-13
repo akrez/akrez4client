@@ -19,6 +19,9 @@ class FontawesomeAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'cdn/css/font-awesome.css',
+        'cdn/css/fontawesome-regular.css',
+        'cdn/css/fontawesome-solid.css',
+        'cdn/css/fontawesome-brands.css',
+        'cdn/css/fontawesome.min.css',
     ];
 }
