@@ -8,7 +8,7 @@ use app\models\Blog;
 $this->registerCss("
 .footer-font-size {
     line-height: 1.62em !important;
-    font-size: 18px;
+    font-size: 16px;
 }
 .footer-font-size i {
     width: 28px;
