@@ -6,6 +6,7 @@ use app\components\Http;
 use app\components\Image;
 use Yii;
 use yii\helpers\Html;
+use yii\helpers\HtmlPurifier;
 use yii\helpers\Url;
 
 class Blog extends Model
@@ -138,7 +139,7 @@ class Blog extends Model
 
     public static function print($attribute)
     {
-        return Html::encode(Yii::$app->blog->{$attribute});
+        return HtmlPurifier::process(Yii::$app->blog->{$attribute});
     }
 
     public static function url($action, $config = [], $scheme = false)
