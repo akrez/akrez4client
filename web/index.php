@@ -28,8 +28,8 @@ function ed($input)
 
 ini_set('allow_url_fopen', 1);
 
-defined('YII_DEBUG') or define('YII_DEBUG', true);
-defined('YII_ENV') or define('YII_ENV', 'dev');
+defined('YII_DEBUG') or define('YII_DEBUG', false);
+defined('YII_ENV') or define('YII_ENV', 'prod');
 defined('BASE_PATH') or define('BASE_PATH', dirname(__DIR__));
 defined('VENDOR_PATH') or define('VENDOR_PATH', BASE_PATH . '/vendor');
 defined('APP_NAME') or define('APP_NAME', 'اکــرز');
