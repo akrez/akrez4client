@@ -92,11 +92,8 @@ Breadcrumbs::widget([
         <h1 class="mb-0"><?= $secureTitle ?></h1>
     </div>
 </div>
-
-<div class="row">
-
+<div class="row pb-2">
     <div class="col-sm-5 pb-2">
-
         <?php if (count(Blog::getData('images')) > 0) : ?>
             <div id="carouselExampleIndicators" class="carousel slide carousel-fade border rounded-lg" data-ride="carousel">
                 <div class="carousel-inner">
@@ -121,9 +118,7 @@ Breadcrumbs::widget([
             </div>
         <?php endif; ?>
     </div>
-
     <div class="col-sm-7">
-
         <div class="card-columns">
             <?php foreach (Blog::getData('packages') as $package) : ?>
                 <div class="card">
@@ -136,33 +131,28 @@ Breadcrumbs::widget([
                         <?php endif; ?>
                         <?php if ($package['color']) : ?>
                             <div class="card-text">
-
                                 <small class="mb-1 text-justify">
                                     <span class="border border-dark rounded" style="background-color: #<?= $package['color'] ?>">⠀⠀</span>
                                     <?= Blog::getConstant('color', $package['color']) ?>
                                 </small>
-
                             </div>
                         <?php endif; ?>
                         <div class="card-text text-left">
-
                             <small class="mb-1 text-justify">
                                 <?= HtmlPurifier::process(Yii::$app->formatter->asPrice($package['price'])) ?>
                             </small>
-
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
-
     </div>
-
-
-
-
 </div>
-
+<div class="row pb-2">
+    <div class="col-sm-12">
+        <?= HtmlPurifier::process($page) ?>
+    </div>
+</div>
 <div class="row pb-2">
     <div class="col-sm-12">
         <table class="table table-striped table-bordered table-hover table-sm">
