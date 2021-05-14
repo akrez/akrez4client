@@ -12,8 +12,7 @@ $this->registerMetaTag([
 ?>
 
 <div class="v1-default-index">
-    <h1 class="mt-0" style="display: inline-block;"><?= Blog::print('title') ?></h1><h2 class="mt-0 h2text <?= Blog::isRtl() ? 'mr-2' : 'ml-2' ?>" style="display: inline-block;"><?= Blog::print('slug') ?></h2>
-    <h3 class="mt-0" style="text-align: justify;line-height: 1.62em;font-size: 14px;"><?= Blog::print('des') ?></h3>
+    <h1 class="mt-0" style="display: inline-block;"><?= Blog::print('title') ?></h1><h2 class="mt-0 h2text <?= Blog::isRtl() ? 'mr-2' : 'ml-2' ?>" style="display: inline-block;"><?= Blog::print('slug') ?></h2><?= HtmlPurifier::process($page) ?>
 </div>
 
 <div class="row pt-2 pb-2">
