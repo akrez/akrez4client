@@ -6,6 +6,7 @@ use app\components\Http;
 use app\models\Blog;
 use SimpleXMLElement;
 use Yii;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\ErrorAction;
 use yii\web\ForbiddenHttpException;
@@ -26,38 +27,33 @@ class SiteController extends Controller
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {
-                    /*
                     if (Yii::$app->user->isGuest) {
                         Yii::$app->user->setReturnUrl(Url::current());
                         return Yii::$app->controller->redirect(Blog::url('/site/signin'));
                     }
-                    */
                     throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
                 }
             ],
         ];
     }
 
-    public function beforeAction($action)
-    {
-        if (Yii::$app->params['blogName'] && empty(Blog::name())) {
-            Http::exist();
-        }
-        if (empty(Blog::name())) {
-            if ($action instanceof ErrorAction) {
-                $action->layout = 'blank';
-            } else {
-                $action->controller->layout = 'blank';
-            }
-        }
-        return parent::beforeAction($action);
-    }
-
     public function actions()
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => 'app\components\ErrorAction',
+                'beforeAction' => function ($action) {
+                    if (Yii::$app->params['blogName'] && empty(Blog::name())) {
+                        Http::exist();
+                    }
+                    if (empty(Blog::name())) {
+                        if ($action instanceof ErrorAction) {
+                            $action->layout = 'blank';
+                        } else {
+                            $action->controller->layout = 'blank';
+                        }
+                    }
+                }
             ],
         ];
     }
@@ -131,7 +127,11 @@ class SiteController extends Controller
     public function actionIndex()
     {
         Http::index(Yii::$app->request->get());
-        return $this->render('index');
+        $page = '';
+        if (Blog::print('has_page_index')) {
+            $page = Http::page('blog', 'index');
+        }
+        return $this->render('index', ['page' => $page]);
     }
 
     public function actionProduct($id)
