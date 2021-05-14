@@ -22,7 +22,7 @@ class SiteController extends Controller
                 'class' => 'yii\filters\AccessControl',
                 'rules' => [
                     [
-                        'actions' => ['error', 'index', 'category', 'product', 'sitemap', 'robots', 'manifest'],
+                        'actions' => ['error', 'index', 'category', 'product', 'page', 'sitemap', 'robots', 'manifest'],
                         'allow' => true,
                     ],
                 ],
@@ -124,12 +124,21 @@ class SiteController extends Controller
         ];
     }
 
+    public function actionPage($id)
+    {
+        Http::info();
+        return $this->render('page', [
+            'id' => $id,
+            'page' => Http::page('Blog', $id),
+        ]);
+    }
+
     public function actionIndex()
     {
         Http::index(Yii::$app->request->get());
         $page = '';
-        if (Blog::print('has_page_index')) {
-            $page = Http::page('blog', 'index');
+        if (in_array('Index', Blog::pages())) {
+            $page = Http::page('Blog', 'index');
         }
         return $this->render('index', ['page' => $page]);
     }
@@ -137,12 +146,16 @@ class SiteController extends Controller
     public function actionProduct($id)
     {
         Http::product($id, Yii::$app->request->get());
-        return $this->render('product');
+        return $this->render('product', [
+            'page' => Http::page('Product', $id),
+        ]);
     }
 
     public function actionCategory($id)
     {
         Http::category($id, Yii::$app->request->get());
-        return $this->render('category');
+        return $this->render('category', [
+            'page' => Http::page('Category', $id),
+        ]);
     }
 }
