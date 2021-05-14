@@ -53,7 +53,7 @@ $config = [
     'id' => 'basic',
     'name' => APP_NAME,
     'basePath' => BASE_PATH,
-    'language' => 'fa-IR',
+    'language' => 'en-US',
     'controllerNamespace' => 'app\controllers',
     'bootstrap' => [
         'log',
