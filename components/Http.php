@@ -20,27 +20,28 @@ use yii\web\UnsupportedMediaTypeHttpException;
 
 class Http extends Component
 {
-    private static function post($url, $postData = [], $params = [], $routeByHttpCode = true, $setData = true, $format = Client::FORMAT_JSON)
+    private static function post($url, $postData = [], $params = [])
     {
         $params = [
             '_token' => Customer::getIdentityToken(),
             '_blog'  => Yii::$app->params['blogName'],
         ] + $params;
         $fullUrl = Yii::$app->params['apiBaseUrl'] . $url . ($params ? '?' . http_build_query($params) : '');
-        $request = (new Client(['transport' => 'yii\httpclient\CurlTransport']))
+        return (new Client(['transport' => 'yii\httpclient\CurlTransport']))
             ->createRequest()
             ->setHeaders(['X-Forwarded-For' => \Yii::$app->request->getUserIP()])
             ->setOptions(['userAgent' => \Yii::$app->request->userAgent])
             ->setMethod('POST')
             ->setUrl($fullUrl)
-            ->setData($postData);
-        $response = $request->send();
+            ->setData($postData)
+            ->send();
+    }
+
+    private static function postJson($url, $postData = [], $params = [], $routeByHttpCode = true, $setData = true)
+    {
+        $response = self::post($url, $postData, $params);
         $code = $response->getStatusCode();
-        if ($format === null) {
-            $data = $response->getContent();
-        } else {
-            $data = $response->getData();
-        }
+        $data = $response->getData();
 
         if ($setData) {
             if (isset($data['_blog']) && $data['_blog']) {
@@ -52,7 +53,7 @@ class Http extends Component
                 if (file_exists($path)) {
                     $constantData = json_decode(file_get_contents($path), true);
                 } else {
-                    $constantData = self::post('constant', [], [], false, false);
+                    $constantData = self::postJson('constant', [], [], false, false);
                     file_put_contents($path, json_encode($constantData));
                 }
                 Yii::$app->blog->setConstant($constantData);
@@ -91,6 +92,15 @@ class Http extends Component
         return $data;
     }
 
+    public static function postContent($url, $postData, $params)
+    {
+        $response = self::post($url, $postData, $params);
+        if ($response->getStatusCode() == 200) {
+            return $response->getContent();
+        }
+        return '';
+    }
+
     public static function downloadImage($type, $path, $name)
     {
         $apiUrl = Yii::$app->params['apiBaseGalleryUrl'] . "image/$type/$name";
@@ -103,37 +113,37 @@ class Http extends Component
 
     public static function exist()
     {
-        return self::post('info', [], [], false);
+        return self::postJson('info', [], [], false);
     }
 
     public static function index($params)
     {
-        return self::post('index', $params);
+        return self::postJson('index', $params);
     }
 
-    public static function page($page, $id)
+    public static function page($entity, $entityId)
     {
-        return self::post('page-' . $page, [], ['id' => $id], false, false, null);
+        return self::postContent('page', [], ['entity' => $entity, 'entity_id' => $entityId,]);
     }
 
     public static function category($id, $params)
     {
-        return self::post('category', (array) $params, ['category_id' => $id]);
+        return self::postJson('category', (array) $params, ['category_id' => $id]);
     }
 
     public static function product($id, $params)
     {
-        return self::post('product', [], ['id' => $id]);
+        return self::postJson('product', [], ['id' => $id]);
     }
 
     public static function info()
     {
-        return self::post('info');
+        return self::postJson('info');
     }
 
     public static function signin($user)
     {
-        return self::post('signin', [
+        return self::postJson('signin', [
             'email' => $user->email,
             'password' => $user->password,
         ]);
@@ -141,7 +151,7 @@ class Http extends Component
 
     public static function signup($user)
     {
-        return self::post('signup', [
+        return self::postJson('signup', [
             'email' => $user->email,
             'password' => $user->password,
         ]);
@@ -149,19 +159,19 @@ class Http extends Component
 
     public static function signout()
     {
-        return self::post('signout');
+        return self::postJson('signout');
     }
 
     public static function resetPasswordRequest($user)
     {
-        return self::post('reset-password-request', [
+        return self::postJson('reset-password-request', [
             'email' => $user->email,
         ]);
     }
 
     public static function resetPassword($user)
     {
-        return self::post('reset-password', [
+        return self::postJson('reset-password', [
             'email' => $user->email,
             'password' => $user->password,
             'reset_token' => $user->reset_token,
@@ -170,24 +180,24 @@ class Http extends Component
 
     public static function basket()
     {
-        return self::post('basket');
+        return self::postJson('basket');
     }
 
     public static function basketRemove($id)
     {
-        return self::post('basket-remove', [], [
+        return self::postJson('basket-remove', [], [
             'package_id' => $id,
         ]);
     }
 
     public static function basketAdd($id, $cnt)
     {
-        return self::post('basket-add', ['cnt' => $cnt], ['package_id' => $id,]);
+        return self::postJson('basket-add', ['cnt' => $cnt], ['package_id' => $id,]);
     }
 
     public static function invoiceAdd($invoice)
     {
-        return self::post('invoice-add', [
+        return self::postJson('invoice-add', [
             'Invoice' => [
                 'name' => $invoice->name,
                 'phone' => $invoice->phone,
@@ -201,19 +211,19 @@ class Http extends Component
 
     public static function invoice($params)
     {
-        return self::post('invoice', $params);
+        return self::postJson('invoice', $params);
     }
 
     public static function invoiceRemove($id)
     {
-        return self::post('invoice-remove', [], [
+        return self::postJson('invoice-remove', [], [
             'id' => $id,
         ]);
     }
 
     public static function invoiceView($id)
     {
-        return self::post('invoice-view', [], [
+        return self::postJson('invoice-view', [], [
             'id' => $id,
         ]);
     }
