@@ -26,6 +26,9 @@ class Blog extends Model
     public $address;
     public $twitter;
     public $language;
+    public $has_page_index;
+    public $has_page_aboutus;
+    public $has_page_contactus;
     //
     public static $data = null;
 
@@ -128,7 +131,12 @@ class Blog extends Model
     public function rules()
     {
         return [
-            [['created_at', 'name', 'title', 'slug', 'des', 'logo', 'email', 'facebook', 'phone', 'mobile', 'instagram', 'telegram', 'address', 'twitter', 'language'], 'safe']
+            [[
+                'name', 'title', 'slug', 'des', 'logo', 'language', 'created_at',
+                'email', 'phone', 'mobile', 'address',
+                'facebook', 'instagram', 'telegram', 'twitter',
+                'has_page_index', 'has_page_aboutus', 'has_page_contactus',
+            ], 'safe']
         ];
     }
 
