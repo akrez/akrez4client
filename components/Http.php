@@ -20,22 +20,27 @@ use yii\web\UnsupportedMediaTypeHttpException;
 
 class Http extends Component
 {
-    private static function post($url, $postData = [], $params = [], $routeByHttpCode = true, $setData = true)
+    private static function post($url, $postData = [], $params = [], $routeByHttpCode = true, $setData = true, $format = Client::FORMAT_JSON)
     {
         $params = [
             '_token' => Customer::getIdentityToken(),
             '_blog'  => Yii::$app->params['blogName'],
         ] + $params;
         $fullUrl = Yii::$app->params['apiBaseUrl'] . $url . ($params ? '?' . http_build_query($params) : '');
-        $data = (new Client(['transport' => 'yii\httpclient\CurlTransport']))
+        $request = (new Client(['transport' => 'yii\httpclient\CurlTransport']))
             ->createRequest()
             ->setHeaders(['X-Forwarded-For' => \Yii::$app->request->getUserIP()])
             ->setOptions(['userAgent' => \Yii::$app->request->userAgent])
             ->setMethod('POST')
             ->setUrl($fullUrl)
-            ->setData($postData)
-            ->send()
-            ->getData();
+            ->setData($postData);
+        $response = $request->send();
+        $code = $response->getStatusCode();
+        if ($format === null) {
+            $data = $response->getContent();
+        } else {
+            $data = $response->getData();
+        }
 
         if ($setData) {
             if (isset($data['_blog']) && $data['_blog']) {
@@ -56,7 +61,7 @@ class Http extends Component
         }
 
         if ($routeByHttpCode) {
-            switch ($data['_code']) {
+            switch ($code) {
                 case 200:
                     return $data;
                 case 400:
@@ -104,6 +109,11 @@ class Http extends Component
     public static function index($params)
     {
         return self::post('index', $params);
+    }
+
+    public static function page($page, $id)
+    {
+        return self::post('page-' . $page, [], ['id' => $id], false, false, null);
     }
 
     public static function category($id, $params)
