@@ -26,9 +26,7 @@ class Blog extends Model
     public $address;
     public $twitter;
     public $language;
-    public $has_page_index;
-    public $has_page_aboutus;
-    public $has_page_contactus;
+    public $has_page;
     //
     public static $data = null;
 
@@ -135,7 +133,7 @@ class Blog extends Model
                 'name', 'title', 'slug', 'des', 'logo', 'language', 'created_at',
                 'email', 'phone', 'mobile', 'address',
                 'facebook', 'instagram', 'telegram', 'twitter',
-                'has_page_index', 'has_page_aboutus', 'has_page_contactus',
+                'has_page',
             ], 'safe']
         ];
     }
@@ -148,6 +146,11 @@ class Blog extends Model
     public static function print($attribute)
     {
         return HtmlPurifier::process(Yii::$app->blog->{$attribute});
+    }
+
+    public static function pages()
+    {
+        return (array) Yii::$app->blog->has_page;
     }
 
     public static function url($action, $config = [], $scheme = false)
