@@ -93,7 +93,7 @@ a.card {
                     echo Html::img(Blog::getImage('product', '400', $product['image']), ['class' => 'img-fluid rounded', 'alt' => $title]);
                 endif;
                 ?>
-                <div class="card-body p-3">
+                <div class="card-body">
                     <h5 class="card-title"><?= $title ?></h5>
                     <p class="card-text">
                         <?php

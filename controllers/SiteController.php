@@ -151,7 +151,7 @@ class SiteController extends Controller
     {
         Http::product($id, Yii::$app->request->get());
         return $this->render('product', [
-            'page' => Http::page('Product', $id),
+            'page' => Blog::getData('product', 'has_page') ? Http::page('Product', $id) : '',
         ]);
     }
 
@@ -159,7 +159,7 @@ class SiteController extends Controller
     {
         Http::category($id, Yii::$app->request->get());
         return $this->render('category', [
-            'page' => Http::page('Category', $id),
+            'page' => Blog::getData('category', 'has_page') ? Http::page('Category', $id) : '',
         ]);
     }
 }
