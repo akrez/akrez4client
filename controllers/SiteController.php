@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\ErrorAction;
 use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 class SiteController extends Controller
@@ -127,6 +128,9 @@ class SiteController extends Controller
     public function actionPage($id)
     {
         Http::info();
+        if (!in_array($id, Blog::pages())) {
+            throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
+        }
         return $this->render('page', [
             'id' => $id,
             'page' => Http::page('Blog', $id),
