@@ -32,7 +32,7 @@ foreach (Blog::pages() as $pageKey) {
 }
 if ($items) {
     echo Nav::widget([
-        'options' => ['class' => 'nav navbar-nav ' . (Blog::isRtl() ? '' : 'ml-auto'),],
+        'options' => ['class' => 'nav navbar-nav ',],
         'items' => $items,
     ]);
 }
