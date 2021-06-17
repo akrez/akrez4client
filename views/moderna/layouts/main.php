@@ -40,7 +40,7 @@ $this->registerMetaTag([
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php $this->registerCsrfMetaTags() ?>
-    <title><?= '|' . Html::encode($this->title) ?></title>
+    <title><?= Html::encode($this->title) ?></title>
     <link href="<?= Blog::getImage('logo', '128_128_20_1', Blog::print('logo')) ?>" rel="icon">
 
     <?php foreach (["apple-touch-icon", "icon",] as $relsValue) : ?>
