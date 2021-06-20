@@ -150,11 +150,6 @@ Breadcrumbs::widget([
 </div>
 <div class="row pb-2">
     <div class="col-sm-12">
-        <?= HtmlPurifier::process($page) ?>
-    </div>
-</div>
-<div class="row pb-2">
-    <div class="col-sm-12">
         <table class="table table-striped table-bordered table-hover table-sm">
             <tbody>
                 <?php foreach (Blog::getData('product', '_fields') as $productTitle => $productField) : ?>
@@ -171,5 +166,10 @@ Breadcrumbs::widget([
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
+</div>
+<div class="row pb-2">
+    <div class="col-sm-12">
+        <?= HtmlPurifier::process($page) ?>
     </div>
 </div>
