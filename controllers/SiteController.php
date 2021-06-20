@@ -133,7 +133,7 @@ class SiteController extends Controller
         }
         return $this->render('page', [
             'id' => $id,
-            'page' => Http::page('Blog', $id),
+            'page' => Http::page('Blog', $id, Blog::name()),
         ]);
     }
 
@@ -141,25 +141,32 @@ class SiteController extends Controller
     {
         Http::index(Yii::$app->request->get());
         $page = '';
-        if (in_array('Index', Blog::pages())) {
-            $page = Http::page('Blog', 'index');
-        }
-        return $this->render('index', ['page' => $page]);
+        $pages = Blog::pages();
+        $hasPage = boolval(isset($pages['Index']) && $pages['Index']);
+        return $this->render('index', [
+            'page' => ($hasPage ? Http::page('Blog', 'Index', Blog::name()) : '')
+        ]);
     }
 
     public function actionProduct($id)
     {
         Http::product($id, Yii::$app->request->get());
+        $hasPage = boolval(Blog::getData('product', 'has_page', 'Index'));
         return $this->render('product', [
-            'page' => Blog::getData('product', 'has_page') ? Http::page('Product', $id) : '',
+            'page' => ($hasPage ? Http::page('Product', 'Index', $id) : ''),
         ]);
     }
 
     public function actionCategory($id)
     {
         Http::category($id, Yii::$app->request->get());
+        $page = '';
+        $hasPage = boolval(Blog::getData('category', 'has_page', 'Index'));
+        if ($hasPage) {
+            $page = Http::page('Category', 'Index', $id);
+        }
         return $this->render('category', [
-            'page' => Blog::getData('category', 'has_page') ? Http::page('Category', $id) : '',
+            'page' => $page,
         ]);
     }
 }
