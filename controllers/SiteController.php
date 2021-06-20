@@ -160,13 +160,9 @@ class SiteController extends Controller
     public function actionCategory($id)
     {
         Http::category($id, Yii::$app->request->get());
-        $page = '';
         $hasPage = boolval(Blog::getData('category', 'has_page', 'Index'));
-        if ($hasPage) {
-            $page = Http::page('Category', 'Index', $id);
-        }
         return $this->render('category', [
-            'page' => $page,
+            'page' => ($hasPage ? Http::page('Category', 'Index', $id) : ''),
         ]);
     }
 }
