@@ -121,9 +121,9 @@ class Http extends Component
         return self::postJson('index', $params);
     }
 
-    public static function page($entity, $entityId)
+    public static function page($entity, $pageType, $entityId)
     {
-        return self::postContent('page', [], ['entity' => $entity, 'entity_id' => $entityId,]);
+        return self::postContent('page', [], ['entity' => $entity, 'page_type' => $pageType, 'entity_id' => $entityId,]);
     }
 
     public static function category($id, $params)
