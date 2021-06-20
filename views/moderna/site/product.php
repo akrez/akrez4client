@@ -89,7 +89,7 @@ Breadcrumbs::widget([
 
 <div class="row">
     <div class="col-sm-12 pb-2">
-        <h1 class="mb-0"><?= $secureTitle ?></h1>
+        <h1><?= $secureTitle ?></h1>
     </div>
 </div>
 <div class="row pb-2">
