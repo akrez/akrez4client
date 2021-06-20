@@ -24,11 +24,11 @@ if (Blog::categories()) {
         'items' => $menuItems,
     ];
 }
-foreach (Blog::pages() as $pageKey) {
-    if ($pageKey == 'Index') {
+foreach (Blog::pages() as $pageKey => $pageStatus) {
+    if (!$pageStatus || $pageKey == 'Index') {
         continue;
     }
-    $items[] = ['label' => Blog::getConstant('page_entity_blog', $pageKey), 'url' => Blog::url('site/page', ['id' => $pageKey])];
+    $items[] = ['label' => Blog::getConstant('entity_page', 'Blog', $pageKey), 'url' => Blog::url('site/page', ['id' => $pageKey])];
 }
 if ($items) {
     echo Nav::widget([
