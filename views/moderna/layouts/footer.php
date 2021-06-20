@@ -31,9 +31,6 @@ $this->registerCss("
             <div class="col-sm-3 pt-2 text-left footer-font-size" dir="ltr">
                 <?php
                 $parts = [];
-                if ($info = Blog::print('mobile')) {
-                    $parts[] = '<div><i class="fa fa-mobile text-primary"></i><a dir="ltr" href="tel:' . $info . '">' . $info . '</a></div>';
-                }
                 if ($info = Blog::print('email')) {
                     $parts[] = '<div><i class="fa  fa-envelope text-warning"></i><a href="mailto:' . $info . '">' . $info . '</a></div>';
                 }
