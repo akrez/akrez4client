@@ -146,7 +146,7 @@ Breadcrumbs::widget([
             <?php foreach (Blog::getData('packages') as $package) : ?>
                 <div class="card">
                     <div class="card-body p-2">
-                        <h6 class="card-text"><?= HtmlPurifier::process($package['guaranty']) ?></h6>
+                        <h6 class="card-text"><?= Yii::t('app', 'Guaranty') ?>: <?= HtmlPurifier::process($package['guaranty']) ?></h6>
                         <?php if ($package['des']) : ?>
                             <small class="mb-1 text-justify">
                                 <?= HtmlPurifier::process($package['des']) ?>
