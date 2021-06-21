@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    'Guaranty' => 'گارانتی',
     'Search' => 'جستجو',
     'Categories' => 'دسته‌بندی‌ها',
     'Basket' => 'سبد خرید من',
