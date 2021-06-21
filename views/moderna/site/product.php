@@ -12,7 +12,7 @@ $hasImages = (count(Blog::getData('images')) > 0);
 
 $this->registerCss("
 .h6, h6 {
-    font-size: .9rem;
+    font-size: .75rem;
 }
 .carousel-indicators li {
     color: gray;
@@ -145,8 +145,7 @@ Breadcrumbs::widget([
         <div class="card-columns">
             <?php foreach (Blog::getData('packages') as $package) : ?>
                 <div class="card">
-                    <div class="card-body p-2 pt-3">
-                        <h6 class="card-text"><?= HtmlPurifier::process($package['guaranty']) ?></h6>
+                    <div class="card-body p-2">
                         <?php if ($package['des']) : ?>
                             <small class="mb-1 text-justify">
                                 <?= HtmlPurifier::process($package['des']) ?>
@@ -165,6 +164,7 @@ Breadcrumbs::widget([
                                 <?= HtmlPurifier::process(Yii::$app->formatter->asPrice($package['price'])) ?>
                             </small>
                         </div>
+                        <h6 class="card-text"><?= HtmlPurifier::process($package['guaranty']) ?></h6>
                     </div>
                 </div>
             <?php endforeach; ?>
