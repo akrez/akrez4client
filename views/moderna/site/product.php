@@ -8,6 +8,8 @@ $secureTitle = HtmlPurifier::process(Blog::getData('product', 'title'));
 
 $this->title = $secureTitle;
 
+$hasImages = (count(Blog::getData('images')) > 0);
+
 $this->registerCss("
 .carousel-indicators li {
     color: gray;
@@ -47,28 +49,27 @@ $this->registerCss("
 }
 @media (min-width: 768px) {
     .card-columns {
-        -webkit-column-count: 1;
-        -moz-column-count: 1;
-        column-count: 1;
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
     }
 }
 @media (min-width: 992px) {
     .card-columns {
-        -webkit-column-count: 2;
-        -moz-column-count: 2;
-        column-count: 2;
+        -webkit-column-count: 3;
+        -moz-column-count: 3;
+        column-count: 3;
     }
 }
 @media (min-width: 1200px) {
     .card-columns {
-        -webkit-column-count: 2;
-        -moz-column-count: 2;
-        column-count: 2;
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
     }
 }
 ");
 ?>
-
 <?=
 Breadcrumbs::widget([
     'homeLink' => [
@@ -86,15 +87,14 @@ Breadcrumbs::widget([
     ],
 ]);
 ?>
-
 <div class="row">
     <div class="col-sm-12 pb-2">
         <h1><?= $secureTitle ?></h1>
     </div>
 </div>
 <div class="row pb-2">
-    <div class="col-sm-5 pb-2">
-        <?php if (count(Blog::getData('images')) > 0) : ?>
+    <?php if ($hasImages) : ?>
+        <div class="col-sm-5 pb-2">
             <div id="carouselExampleIndicators" class="carousel slide carousel-fade border rounded-lg" data-ride="carousel">
                 <div class="carousel-inner">
                     <?php
@@ -116,9 +116,29 @@ Breadcrumbs::widget([
                     </a>
                 <?php endif; ?>
             </div>
-        <?php endif; ?>
+        </div>
+    <?php endif; ?>
+    <div class="<?= $hasImages ? 'col-sm-7' : 'col-sm-12' ?>">
+        <table class="table table-striped table-bordered table-hover table-sm">
+            <tbody>
+                <?php foreach (Blog::getData('product', '_fields') as $productTitle => $productField) : ?>
+                    <tr>
+                        <td>
+                            <strong> <?= HtmlPurifier::process($productTitle) ?> </strong>
+                        </td>
+                        <td>
+                            <?php
+                            echo HtmlPurifier::process(implode(' ,', $productField['values'])) . ' ' . HtmlPurifier::process($productField['unit']);
+                            ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
-    <div class="col-sm-7">
+</div>
+<div class="row pb-2">
+    <div class="col-sm-12">
         <div class="card-columns">
             <?php foreach (Blog::getData('packages') as $package) : ?>
                 <div class="card">
@@ -146,26 +166,6 @@ Breadcrumbs::widget([
                 </div>
             <?php endforeach; ?>
         </div>
-    </div>
-</div>
-<div class="row pb-2">
-    <div class="col-sm-12">
-        <table class="table table-striped table-bordered table-hover table-sm">
-            <tbody>
-                <?php foreach (Blog::getData('product', '_fields') as $productTitle => $productField) : ?>
-                    <tr>
-                        <td>
-                            <strong> <?= HtmlPurifier::process($productTitle) ?> </strong>
-                        </td>
-                        <td>
-                            <?php
-                            echo HtmlPurifier::process(implode(' ,', $productField['values'])) . ' ' . HtmlPurifier::process($productField['unit']);
-                            ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
     </div>
 </div>
 <div class="row pb-2">
