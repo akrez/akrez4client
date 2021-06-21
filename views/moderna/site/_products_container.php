@@ -16,7 +16,12 @@ $pagination = new Pagination([
 ]);
 
 $this->registerCss("
-
+.fs09 {
+    font-size: 0.9rem;
+}
+.h5, h5 {
+    font-size: 1.1rem;
+}
 .card {
     color: #000000;
 }
@@ -58,9 +63,9 @@ a.card {
 }
 @media (min-width: 1200px) {
     .card-columns {
-        -webkit-column-count: 3;
-        -moz-column-count: 3;
-        column-count: 3;
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
     }
 }
 ");
@@ -93,13 +98,13 @@ a.card {
                     echo Html::img(Blog::getImage('product', '400', $product['image']), ['class' => 'img-fluid rounded', 'alt' => $title]);
                 endif;
                 ?>
-                <div class="card-body">
+                <div class="card-body p-2">
                     <h5 class="card-title"><?= $title ?></h5>
-                    <p class="card-text">
+                    <p class="card-text fs09">
                         <?php
                         foreach ($product['_fields'] as $field) :
                             if ($field['in_summary'] !== "0") :
-                                echo ' <strong> ' . HtmlPurifier::process($field['field']) . ' : ' . '</strong> ';
+                                echo ' <strong> ' . HtmlPurifier::process($field['field']) . ': ' . '</strong> ';
                                 echo HtmlPurifier::process(implode(' ,', $field['values']) . ' ' . $field['unit']);
                                 echo '<br>';
                             endif;
@@ -110,10 +115,10 @@ a.card {
                     <?php
                     if (empty($product['price_min']) && empty($product['price_max'])) :
                     else :
-                        echo '<p class="text-left">';
+                        echo '<p class="text-left m-0">';
                         if (!empty($product['price_min']) && !empty($product['price_max'])) :
                             if ($product['price_min'] == $product['price_max']) :
-                                echo Yii::$app->formatter->asPrice($product['price_min']) . '</p>';
+                                echo Yii::$app->formatter->asPrice($product['price_min']);
                             else :
                                 echo ' از ' . Yii::$app->formatter->asPrice($product['price_min']) . '<br>' . ' تا ' . Yii::$app->formatter->asPrice($product['price_max']);
                             endif;
