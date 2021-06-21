@@ -11,6 +11,9 @@ $this->title = $secureTitle;
 $hasImages = (count(Blog::getData('images')) > 0);
 
 $this->registerCss("
+.h6, h6 {
+    font-size: .9rem;
+}
 .carousel-indicators li {
     color: gray;
 }
