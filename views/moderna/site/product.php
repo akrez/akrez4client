@@ -146,6 +146,7 @@ Breadcrumbs::widget([
             <?php foreach (Blog::getData('packages') as $package) : ?>
                 <div class="card">
                     <div class="card-body p-2">
+                        <h6 class="card-text"><?= HtmlPurifier::process($package['guaranty']) ?></h6>
                         <?php if ($package['des']) : ?>
                             <small class="mb-1 text-justify">
                                 <?= HtmlPurifier::process($package['des']) ?>
@@ -164,7 +165,6 @@ Breadcrumbs::widget([
                                 <?= HtmlPurifier::process(Yii::$app->formatter->asPrice($package['price'])) ?>
                             </small>
                         </div>
-                        <h6 class="card-text"><?= HtmlPurifier::process($package['guaranty']) ?></h6>
                     </div>
                 </div>
             <?php endforeach; ?>
