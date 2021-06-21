@@ -152,16 +152,14 @@ Breadcrumbs::widget([
                                 <?= HtmlPurifier::process($package['des']) ?>
                             </small>
                         <?php endif; ?>
-                        <?php if ($package['color']) : ?>
-                            <div class="card-text">
-                                <small class="mb-1 text-justify">
+                        <div class="card-text">
+                            <?php if ($package['color']) : ?>
+                                <small class="mb-1 float-right>
                                     <span class="border border-dark rounded" style="background-color: #<?= $package['color'] ?>">⠀⠀</span>
                                     <?= Blog::getConstant('color', $package['color']) ?>
                                 </small>
-                            </div>
-                        <?php endif; ?>
-                        <div class="card-text text-left">
-                            <small class="mb-1 text-justify">
+                            <?php endif; ?>
+                            <small class="mb-1 float-left">
                                 <?= HtmlPurifier::process(Yii::$app->formatter->asPrice($package['price'])) ?>
                             </small>
                         </div>
