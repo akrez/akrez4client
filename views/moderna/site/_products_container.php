@@ -19,8 +19,8 @@ $this->registerCss("
 .fs09 {
     font-size: 0.9rem;
 }
-.h5, h5 {
-    font-size: 1.1rem;
+.fs10 {
+    font-size: 1.0rem;
 }
 .card {
     color: #000000;
@@ -99,7 +99,7 @@ a.card {
                 endif;
                 ?>
                 <div class="card-body p-2">
-                    <h5 class="card-title"><?= $title ?></h5>
+                    <h5 class="card-title fs10"><?= $title ?></h5>
                     <p class="card-text fs09">
                         <?php
                         foreach ($product['_fields'] as $field) :
