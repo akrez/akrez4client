@@ -116,7 +116,11 @@ a.thumbnail {
 
     <div class="row mt-3">
         <div class="col-sm-12">
-            <?= LinkPager::widget(['pagination' => $pagination, 'hideOnSinglePage' => false]); ?>
+            <?= LinkPager::widget([
+                'pagination' => $pagination,
+                'hideOnSinglePage' => true,
+                'disableCurrentPageButton' => true,
+            ]); ?>
         </div>
     </div>
 
