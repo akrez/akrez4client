@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Code' => 'Code',
     'Signin' => 'Signin',
     'Signout' => 'Signout',
     'Signup' => 'Signup',

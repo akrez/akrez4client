@@ -73,7 +73,8 @@ a.thumbnail {
                     endif;
                     ?>
                     <div class="card-body p-2">
-                        <h5 class="card-title fs10"><?= $title ?></h5>
+                        <h5 class="card-title fs10 font-weight-bold"><?= $title ?></h5>
+                        <h6 class="card-title fs09"><strong><?= Yii::t('app', 'Code') ?>: </strong><?= HtmlPurifier::process($product['code'])  ?></h6>
                         <p class="card-text fs09">
                             <?php
                             foreach ($product['_fields'] as $field) :

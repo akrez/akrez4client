@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Code' => 'کد',
     'Signin' => 'ورود',
     'Signout' => 'خروج',
     'Signup' => 'ثبت‌نام',
