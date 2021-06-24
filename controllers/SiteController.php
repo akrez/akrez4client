@@ -128,7 +128,7 @@ class SiteController extends Controller
     public function actionPage($id)
     {
         Http::info();
-        if (!in_array($id, Blog::pages())) {
+        if (!in_array($id, Blog::hasPage())) {
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
         return $this->render('page', [
@@ -141,7 +141,7 @@ class SiteController extends Controller
     {
         Http::index(Yii::$app->request->get());
         $page = '';
-        $pages = Blog::pages();
+        $pages = Blog::hasPage();
         $hasPage = boolval(isset($pages['Index']) && $pages['Index']);
         return $this->render('index', [
             'page' => ($hasPage ? Http::page('Blog', 'Index', Blog::name()) : '')

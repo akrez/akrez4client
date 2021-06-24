@@ -27,6 +27,7 @@ class Blog extends Model
     public $twitter;
     public $language;
     public $has_page;
+    public $color;
     //
     public static $data = null;
 
@@ -133,7 +134,7 @@ class Blog extends Model
                 'name', 'title', 'slug', 'des', 'logo', 'language', 'created_at',
                 'email', 'phone', 'mobile', 'address',
                 'facebook', 'instagram', 'telegram', 'twitter',
-                'has_page',
+                'has_page', 'color',
             ], 'safe']
         ];
     }
@@ -148,9 +149,20 @@ class Blog extends Model
         return HtmlPurifier::process(Yii::$app->blog->{$attribute});
     }
 
-    public static function pages()
+    public static function hasPage()
     {
         return (array) Yii::$app->blog->has_page;
+    }
+
+    public static function color()
+    {
+        return (array) Yii::$app->blog->color;
+    }
+
+    public static function colorLabel($color)
+    {
+        $list = self::color();
+        return (isset($list[$color]) ? $list[$color] : '');
     }
 
     public static function url($action, $config = [], $scheme = false)

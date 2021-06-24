@@ -24,7 +24,7 @@ if (Blog::categories()) {
         'items' => $menuItems,
     ];
 }
-foreach (Blog::pages() as $pageKey => $pageStatus) {
+foreach (Blog::hasPage() as $pageKey => $pageStatus) {
     if (!$pageStatus || $pageKey == 'Index') {
         continue;
     }

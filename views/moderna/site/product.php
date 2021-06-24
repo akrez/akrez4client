@@ -155,8 +155,8 @@ Breadcrumbs::widget([
                         <?php if ($package['color']) : ?>
                             <div class="card-text">
                                 <small class="mb-1 text-justify">
-                                    <span class="border border-dark rounded" style="background-color: #<?= $package['color'] ?>">⠀⠀</span>
-                                    <?= Blog::getConstant('color', $package['color']) ?>
+                                    <span class="border border-dark rounded" style="background-color: <?= $package['color'] ?>">⠀⠀</span>
+                                    <?= Blog::colorLabel($package['color']) ?>
                                 </small>
                             </div>
                         <?php endif; ?>
