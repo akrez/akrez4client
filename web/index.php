@@ -45,6 +45,10 @@ $rules = [
     '/sitemap.xml' => 'site/sitemap',
     '/manifest.json' => 'site/manifest',
     '/gallery/<type:\w+>/<whq>/<name:[\w\.]+>' => 'site/gallery',
+    '/<id:(AboutUs|ContactUs)>' => 'site/page',
+
+    '/<action:[\w\-]+>/<id>/<product_title>/<product_code>' => 'site/<action>',
+    '/<action:[\w\-]+>/<id>/<product_title>' => 'site/<action>',
     '/<action:[\w\-]+>/<id>' => 'site/<action>',
     '/<action:[\w\-]+>' => 'site/<action>',
 ];

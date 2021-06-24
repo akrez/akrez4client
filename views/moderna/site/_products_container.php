@@ -66,7 +66,7 @@ a.thumbnail {
             foreach (Blog::getData('products') as $product) :
                 $title = HtmlPurifier::process($product['title']);
             ?>
-                <a class="thumbnail border pt-3 col-xs-12 col-sm-6 col-md-4 col-lg-3" href="<?= Blog::url('site/product', ['id' => $product['id']]) ?>">
+                <a class="thumbnail border pt-3 col-xs-12 col-sm-6 col-md-4 col-lg-3" href="<?= Blog::url('site/product', ['id' => $product['id'], 'product_title' => $product['title'], 'product_code' => $product['code']]) ?>">
                     <?php
                     if ($product['image']) :
                         echo Html::img(Blog::getImage('product', '400', $product['image']), ['class' => 'img-fluid rounded', 'alt' => $title]);
