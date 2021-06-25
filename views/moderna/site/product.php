@@ -91,7 +91,7 @@ Breadcrumbs::widget([
                     </div>
                 </div>
             </div>
-            <?php if (count(Blog::getData('images')) > 0) : ?>
+            <?php if (count(Blog::getData('images')) > 1) : ?>
                 <div class="row row-flex">
                     <?php
                     $i = 0;
