@@ -91,15 +91,17 @@ Breadcrumbs::widget([
                     </div>
                 </div>
             </div>
-            <div class="row row-flex">
-                <?php
-                $i = 0;
-                foreach (Blog::getData('images') as $imageKey => $image) :
-                    echo '<div class="col-sm-4 mt-1"> <img style="cursor: pointer;" onclick="$('."'#carouselExampleIndicators'".').carousel(' . $i . ')" src="' . Blog::getImage('product', '400', $image['name']) . '" class="rounded w-100" alt="' . $secureTitle . '"> </div>';
-                    $i++;
-                endforeach;
-                ?>
-            </div>
+            <?php if (count(Blog::getData('images')) > 0) : ?>
+                <div class="row row-flex">
+                    <?php
+                    $i = 0;
+                    foreach (Blog::getData('images') as $imageKey => $image) :
+                        echo '<div class="col-sm-4 mt-1"> <img style="cursor: pointer;" onclick="$(' . "'#carouselExampleIndicators'" . ').carousel(' . $i . ')" src="' . Blog::getImage('product', '400', $image['name']) . '" class="rounded w-100" alt="' . $secureTitle . '"> </div>';
+                        $i++;
+                    endforeach;
+                    ?>
+                </div>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
     <div class="<?= $hasImages ? 'col-sm-7' : 'col-sm-12' ?>">
