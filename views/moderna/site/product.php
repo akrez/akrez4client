@@ -14,35 +14,6 @@ $this->registerCss("
 .h6, h6 {
     font-size: .75rem;
 }
-.carousel-indicators li {
-    color: gray;
-}
-.carousel-control-next {
-    background-image: -webkit-linear-gradient(left,rgba(0,0,0,.2) 0,rgba(0,0,0,.0001) 100%);
-    background-image: -o-linear-gradient(left,rgba(0,0,0,.2) 0,rgba(0,0,0,.0001) 100%);
-    background-image: -webkit-gradient(linear,left top,right top,from(rgba(0,0,0,.2)),to(rgba(0,0,0,.0001)));
-    background-image: linear-gradient(to right,rgba(0,0,0,.2) 0,rgba(0,0,0,.0001) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
-    background-repeat: repeat-x;
-}
-.carousel-control-prev {
-    right: 0;
-    left: auto;
-    background-image: -webkit-linear-gradient(left,rgba(0,0,0,.0001) 0,rgba(0,0,0,.2) 100%);
-    background-image: -o-linear-gradient(left,rgba(0,0,0,.0001) 0,rgba(0,0,0,.2) 100%);
-    background-image: -webkit-gradient(linear,left top,right top,from(rgba(0,0,0,.0001)),to(rgba(0,0,0,.2)));
-    background-image: linear-gradient(to right,rgba(0,0,0,.0001) 0,rgba(0,0,0,.2) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
-    background-repeat: repeat-x;
-}
-.carousel-control-next:focus, .carousel-control-next:hover {
-    color: #fff;
-    text-decoration: none;
-    outline: 0;
-    filter: alpha(opacity=90);
-    opacity: .9;
-}
-
 @media (min-width: 576px) {
     .card-columns {
         -webkit-column-count: 1;
@@ -71,6 +42,13 @@ $this->registerCss("
         column-count: 4;
     }
 }
+.row-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.row-flex div[class*='col-'] {
+    height: 100%;
+}
 ");
 ?>
 <?=
@@ -98,26 +76,29 @@ Breadcrumbs::widget([
 <div class="row pb-2">
     <?php if ($hasImages) : ?>
         <div class="col-sm-5 pb-2">
-            <div id="carouselExampleIndicators" class="carousel slide carousel-fade border rounded-lg" data-ride="carousel">
-                <div class="carousel-inner">
-                    <?php
-                    $i = 0;
-                    foreach (Blog::getData('images') as $imageKey => $image) :
-                        echo '<div class="carousel-item ' . ($i == 0 ? 'active' : '') . '"> <img src="' . Blog::getImage('product', '400', $image['name']) . '" class="d-block w-100" alt="' . $secureTitle . '"> </div>';
-                        $i++;
-                    endforeach;
-                    ?>
+            <div class="row">
+                <div class="col-12">
+                    <div id="carouselExampleIndicators" class="carousel slide carousel-fade rounded-lg" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <?php
+                            $i = 0;
+                            foreach (Blog::getData('images') as $imageKey => $image) :
+                                echo '<div class="carousel-item ' . ($i == 0 ? 'active' : '') . '"> <img src="' . Blog::getImage('product', '400', $image['name']) . '" class="rounded d-block w-100" alt="' . $secureTitle . '"> </div>';
+                                $i++;
+                            endforeach;
+                            ?>
+                        </div>
+                    </div>
                 </div>
-                <?php if (count(Blog::getData('images')) > 1) : ?>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                <?php endif; ?>
+            </div>
+            <div class="row row-flex">
+                <?php
+                $i = 0;
+                foreach (Blog::getData('images') as $imageKey => $image) :
+                    echo '<div class="col-sm-4 mt-1"> <img style="cursor: pointer;" onclick="$('."'#carouselExampleIndicators'".').carousel(' . $i . ')" src="' . Blog::getImage('product', '400', $image['name']) . '" class="rounded w-100" alt="' . $secureTitle . '"> </div>';
+                    $i++;
+                endforeach;
+                ?>
             </div>
         </div>
     <?php endif; ?>
