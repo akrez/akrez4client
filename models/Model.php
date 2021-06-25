@@ -47,7 +47,7 @@ class Model extends BaseModel
             'field_id' => 'ویژگی‌',
             'taxonomy' => 'دسته‌بندی',
             'guaranty' => 'گارانتی',
-
+            
             'label_no' => 'جایگزین عبارت "خیر"',
             'password' => 'رمز عبور',
             'garanties' => 'گارانتی‌ها',
@@ -56,6 +56,7 @@ class Model extends BaseModel
             'price_min' => 'کمترین قیمت',
             'price_max' => 'بیشترین قیمت',
             'value_max' => 'بیشترین مقدار فیلتر',
+            'color_code' => 'رنگ',
             'in_summary' => 'نمایش در خلاصه',
             'updated_at' => 'تاریخ ویرایش',
             'created_at' => 'تاریخ ایجاد',

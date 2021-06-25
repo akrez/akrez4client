@@ -152,11 +152,11 @@ Breadcrumbs::widget([
                                 <?= HtmlPurifier::process($package['des']) ?>
                             </small>
                         <?php endif; ?>
-                        <?php if ($package['color']) : ?>
+                        <?php if ($package['color_code']) : ?>
                             <div class="card-text">
                                 <small class="mb-1 text-justify">
-                                    <span class="border border-dark rounded" style="background-color: <?= $package['color'] ?>">⠀⠀</span>
-                                    <?= Blog::colorLabel($package['color']) ?>
+                                    <span class="border border-dark rounded" style="background-color: <?= $package['color_code'] ?>">⠀⠀</span>
+                                    <?= Blog::colorLabel($package['color_code']) ?>
                                 </small>
                             </div>
                         <?php endif; ?>
