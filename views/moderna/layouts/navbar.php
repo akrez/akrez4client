@@ -25,10 +25,9 @@ if (Blog::categories()) {
     ];
 }
 foreach (Blog::hasPage() as $pageKey => $pageStatus) {
-    if (!$pageStatus || $pageKey == 'Index') {
-        continue;
+    if ($pageStatus && $pageKey != 'Index') {
+        $items[] = ['label' => Blog::getConstant('entity_page', 'Blog', $pageKey), 'url' => Blog::url('site/page', ['id' => $pageKey])];
     }
-    $items[] = ['label' => Blog::getConstant('entity_page', 'Blog', $pageKey), 'url' => Blog::url('site/page', ['id' => $pageKey])];
 }
 if ($items) {
     echo Nav::widget([
@@ -49,7 +48,7 @@ if ($items) {
 <?= Html::endForm(); ?>
 
 <?php
-/*
+
 $items = [];
 if (Yii::$app->user->isGuest) {
     $items[] = ['label' => Yii::t('app', 'Signup'), 'url' => Blog::url('site/signup')];
@@ -68,7 +67,7 @@ echo Nav::widget([
     'options' => ['class' => 'navbar-nav nav'],
     'items' => $items,
 ]);
-*/
+
 ?>
 
 <?php NavBar::end(); ?>
