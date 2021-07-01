@@ -3,24 +3,26 @@
 namespace app\models;
 
 use Yii;
-use yii\helpers\Html;
-use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "{{%Customer}}".
+ * This is the model class for table "{{%customer}}".
  *
  * @property int $id
- * @property int|null $created_at
  * @property int|null $updated_at
- * @property string $status
+ * @property int|null $created_at
+ * @property int $status
  * @property string|null $token
  * @property string|null $password_hash
+ * @property string|null $verify_token
+ * @property int|null $verify_at
  * @property string|null $reset_token
  * @property int|null $reset_at
- * @property string|null $email
+ * @property string|null $mobile
+ * @property string|null $name
+ * @property string|null $params
  * @property string $blog_name
  */
-class Customer extends ActiveRecord implements IdentityInterface
+class Customer extends \yii\db\ActiveRecord
 {
     public $password;
 
@@ -34,26 +36,41 @@ class Customer extends ActiveRecord implements IdentityInterface
 
         return [
             //
-            [0 => ['email', 'updated_at', 'created_at', 'status', 'token', 'blog_name',], 1 => 'safe',],
+            [['updated_at', 'created_at', 'status', 'verify_at', 'reset_at'], 'integer'],
+            [['status', 'blog_name'], 'required'],
+            [['params'], 'string'],
+            [['token'], 'string', 'max' => 32],
+            [['password_hash'], 'string', 'max' => 255],
+            [['verify_token', 'reset_token'], 'string', 'max' => 11],
+            [['mobile'], 'string', 'max' => 15],
+            [['name', 'blog_name'], 'string', 'max' => 60],
             //signup
-            [0 => ['email',], 1 => 'required', 'on' => 'signup',],
-            [0 => ['email',], 1 => 'email', 'on' => 'signup',],
+            [0 => ['mobile',], 1 => 'required', 'on' => 'signup',],
+            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'signup',],
             [0 => ['password',], 1 => 'required', 'on' => 'signup',],
             [0 => ['password',], 1 => 'minLenValidation', 'params' => ['min' => 6,], 'on' => 'signup',],
             //signin
-            [0 => ['email',], 1 => 'required', 'on' => 'signin',],
-            [0 => ['email',], 1 => 'email', 'on' => 'signin',],
+            [0 => ['mobile',], 1 => 'required', 'on' => 'signin',],
+            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'signin',],
             [0 => ['password',], 1 => 'required', 'on' => 'signin',],
             [0 => ['password',], 1 => 'minLenValidation', 'params' => ['min' => 6,], 'on' => 'signin',],
             //resetPasswordRequest
-            [0 => ['email',], 1 => 'required', 'on' => 'resetPasswordRequest',],
-            [0 => ['email',], 1 => 'email', 'on' => 'resetPasswordRequest',],
+            [0 => ['mobile',], 1 => 'required', 'on' => 'resetPasswordRequest',],
+            [0 => ['mobile',], 1 => 'resetPasswordRequestValidation', 'on' => 'resetPasswordRequest',],
+            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'resetPasswordRequest',],
             //resetPassword
-            [0 => ['email',], 1 => 'required', 'on' => 'resetPassword',],
-            [0 => ['email',], 1 => 'email', 'on' => 'resetPassword',],
+            [0 => ['mobile',], 1 => 'required', 'on' => 'resetPassword',],
+            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'resetPassword',],
             [0 => ['password',], 1 => 'required', 'on' => 'resetPassword',],
             [0 => ['password',], 1 => 'minLenValidation', 'params' => ['min' => 6,], 'on' => 'resetPassword',],
             [0 => ['reset_token',], 1 => 'required', 'on' => 'resetPassword',],
+            //verify
+            [0 => ['mobile',], 1 => 'required', 'on' => 'verify',],
+            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'verify',],
+            [0 => ['verify_token',], 1 => 'required', 'on' => 'verify',],
+            //verifyRequest
+            [0 => ['mobile',], 1 => 'required', 'on' => 'verifyRequest',],
+            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'verifyRequest',],
         ];
     }
 
@@ -61,16 +78,12 @@ class Customer extends ActiveRecord implements IdentityInterface
 
     public static function findIdentity($id)
     {
-        return static::find()
-        ->where(['id' => $id])
-        ->one();
+        return static::find()->where(['id' => $id])->one();
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::find()
-        ->where(['token' => $token])
-        ->one();
+        return static::find()->where(['token' => $token])->one();
     }
 
     public function getId()
@@ -123,21 +136,23 @@ class Customer extends ActiveRecord implements IdentityInterface
         return $value;
     }
 
-    public static function getCustomerByHttpDataForLogin($data)
+    public function attributeLabels()
     {
-        $customer = new Customer();
-        $customer->load($data, '_customer');
-        $customer = self::findIdentityByAccessToken($customer->token);
-        if (empty($customer)) {
-            $customer = new Customer();
-        }
-        $customer->load($data, '_customer');
-        $customer->save();
-        return $customer;
-    }
-
-    public function getCustomer()
-    {
-        return $this->_customer;
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'status' => Yii::t('app', 'Status'),
+            'token' => Yii::t('app', 'Token'),
+            'password_hash' => Yii::t('app', 'Password Hash'),
+            'verify_token' => Yii::t('app', 'Verify Token'),
+            'verify_at' => Yii::t('app', 'Verify At'),
+            'reset_token' => Yii::t('app', 'Reset Token'),
+            'reset_at' => Yii::t('app', 'Reset At'),
+            'mobile' => Yii::t('app', 'Mobile'),
+            'name' => Yii::t('app', 'Name'),
+            'params' => Yii::t('app', 'Params'),
+            'blog_name' => Yii::t('app', 'Blog Name'),
+        ];
     }
 }
