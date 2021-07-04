@@ -144,7 +144,7 @@ class Http extends Component
     public static function signin($user)
     {
         return self::postJson('signin', [
-            'email' => $user->email,
+            'mobile' => $user->mobile,
             'password' => $user->password,
         ]);
     }
@@ -152,7 +152,7 @@ class Http extends Component
     public static function signup($user)
     {
         return self::postJson('signup', [
-            'email' => $user->email,
+            'mobile' => $user->mobile,
             'password' => $user->password,
         ]);
     }
@@ -162,17 +162,32 @@ class Http extends Component
         return self::postJson('signout');
     }
 
+    public static function verifyRequest($user)
+    {
+        return self::postJson('verify-request', [
+            'mobile' => $user->mobile,
+        ]);
+    }
+
     public static function resetPasswordRequest($user)
     {
         return self::postJson('reset-password-request', [
-            'email' => $user->email,
+            'mobile' => $user->mobile,
+        ]);
+    }
+
+    public static function verify($user)
+    {
+        return self::postJson('verify', [
+            'mobile' => $user->mobile,
+            'verify_token' => $user->verify_token,
         ]);
     }
 
     public static function resetPassword($user)
     {
         return self::postJson('reset-password', [
-            'email' => $user->email,
+            'mobile' => $user->mobile,
             'password' => $user->password,
             'reset_token' => $user->reset_token,
         ]);
