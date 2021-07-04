@@ -2,7 +2,7 @@
 
 use app\models\Blog;
 
-$this->title = Yii::t('app', 'Signup');
+$this->title = Yii::t('app', 'Reset Password');
 
 ?>
 
@@ -15,7 +15,7 @@ $this->title = Yii::t('app', 'Signup');
             'model' => $model,
         ]) ?>
         <div class="form-group">
-            <a type="button" class="btn btn-secondary" href="<?= Blog::url('site/reset-password-request') ?>"><?= Yii::t('app', 'Reset Password Request') ?></a>
+            <a type="button" class="btn btn-secondary" href="<?= Blog::url('site/reset-password-request', [$model->formName() . '[mobile]' => $model->mobile]) ?>"><?= Yii::t('app', 'Reset Password Request') ?></a>
         </div>
     </div>
 </div>
