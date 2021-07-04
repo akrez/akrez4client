@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Blog;
+use app\models\Customer;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
 use yii\helpers\Html;
@@ -55,10 +56,10 @@ if (Yii::$app->user->isGuest) {
     $items[] = ['label' => Yii::t('app', 'Signin'), 'url' => Blog::url('site/signin')];
 } else {
     $items[] = [
-        'label' => strtoupper(Blog::print('email')),
+        'label' => Customer::print('mobile'),
         'items' => [
-            ['label' => Yii::t('app', 'Basket'), 'url' => Blog::url('site/basket')],
-            ['label' => Yii::t('app', 'Invoice'), 'url' => Blog::url('site/invoice')],
+            //['label' => Yii::t('app', 'Basket'), 'url' => Blog::url('site/basket')],
+            //['label' => Yii::t('app', 'Invoice'), 'url' => Blog::url('site/invoice')],
             ['label' => Yii::t('app', 'Signout'), 'url' => Blog::url('site/signout')],
         ],
     ];
