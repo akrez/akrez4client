@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\HtmlPurifier;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "{{%customer}}".
@@ -22,9 +24,10 @@ use Yii;
  * @property string|null $params
  * @property string $blog_name
  */
-class Customer extends \yii\db\ActiveRecord
+class Customer extends ActiveRecord implements IdentityInterface
 {
     public $password;
+    public $captcha;
 
     public static function tableName()
     {
@@ -33,7 +36,6 @@ class Customer extends \yii\db\ActiveRecord
 
     public function rules()
     {
-
         return [
             //
             [['updated_at', 'created_at', 'status', 'verify_at', 'reset_at'], 'integer'],
@@ -45,32 +47,35 @@ class Customer extends \yii\db\ActiveRecord
             [['mobile'], 'string', 'max' => 15],
             [['name', 'blog_name'], 'string', 'max' => 60],
             //signup
-            [0 => ['mobile',], 1 => 'required', 'on' => 'signup',],
-            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'signup',],
-            [0 => ['password',], 1 => 'required', 'on' => 'signup',],
-            [0 => ['password',], 1 => 'minLenValidation', 'params' => ['min' => 6,], 'on' => 'signup',],
+            [['mobile',], 'required', 'on' => 'signup',],
+            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'signup',],
+            [['password',], 'required', 'on' => 'signup',],
+            [['password',], 'string', 'min' => 6, 'strict' => false, 'on' => 'signup',],
+            [['captcha',], 'required', 'on' => 'signup',],
+            [['captcha',], 'captcha', 'on' => 'signup',],
             //signin
-            [0 => ['mobile',], 1 => 'required', 'on' => 'signin',],
-            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'signin',],
-            [0 => ['password',], 1 => 'required', 'on' => 'signin',],
-            [0 => ['password',], 1 => 'minLenValidation', 'params' => ['min' => 6,], 'on' => 'signin',],
+            [['mobile',], 'required', 'on' => 'signin',],
+            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'signin',],
+            [['password',], 'required', 'on' => 'signin',],
+            [['password',], 'string', 'min' => 6, 'strict' => false, 'on' => 'signin',],
+            [['captcha',], 'required', 'on' => 'signin',],
+            [['captcha',], 'captcha', 'on' => 'signin',],
             //resetPasswordRequest
-            [0 => ['mobile',], 1 => 'required', 'on' => 'resetPasswordRequest',],
-            [0 => ['mobile',], 1 => 'resetPasswordRequestValidation', 'on' => 'resetPasswordRequest',],
-            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'resetPasswordRequest',],
+            [['mobile',], 'required', 'on' => 'resetPasswordRequest',],
+            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'resetPasswordRequest',],
             //resetPassword
-            [0 => ['mobile',], 1 => 'required', 'on' => 'resetPassword',],
-            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'resetPassword',],
-            [0 => ['password',], 1 => 'required', 'on' => 'resetPassword',],
-            [0 => ['password',], 1 => 'minLenValidation', 'params' => ['min' => 6,], 'on' => 'resetPassword',],
-            [0 => ['reset_token',], 1 => 'required', 'on' => 'resetPassword',],
+            [['mobile',], 'required', 'on' => 'resetPassword',],
+            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'resetPassword',],
+            [['password',], 'required', 'on' => 'resetPassword',],
+            [['password',], 'string', 'min' => 6, 'strict' => false, 'on' => 'resetPassword',],
+            [['reset_token',], 'required', 'on' => 'resetPassword',],
             //verify
-            [0 => ['mobile',], 1 => 'required', 'on' => 'verify',],
-            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'verify',],
-            [0 => ['verify_token',], 1 => 'required', 'on' => 'verify',],
+            [['mobile',], 'required', 'on' => 'verify',],
+            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'verify',],
+            [['verify_token',], 'required', 'on' => 'verify',],
             //verifyRequest
-            [0 => ['mobile',], 1 => 'required', 'on' => 'verifyRequest',],
-            [0 => ['mobile',], 1 => 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'verifyRequest',],
+            [['mobile',], 'required', 'on' => 'verifyRequest',],
+            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'verifyRequest',],
         ];
     }
 
@@ -103,20 +108,9 @@ class Customer extends \yii\db\ActiveRecord
 
     /////
 
-    public function minLenValidation($attribute, $params, $validator)
+    public static function getNewSignupModel()
     {
-        $min = $params['min'];
-        if (strlen($this->$attribute) < $min) {
-            $this->addError($attribute, Yii::t('yii', '{attribute} must be no less than {min}.', ['min' => $min, 'attribute' => $this->getAttributeLabel($attribute)]));
-        }
-    }
-
-    public function maxLenValidation($attribute, $params, $validator)
-    {
-        $max = $params['max'];
-        if ($max < strlen($this->$attribute)) {
-            $this->addError($attribute, Yii::t('yii', '{attribute} must be no greater than {max}.', ['max' => $max, 'attribute' => $this->getAttributeLabel($attribute)]));
-        }
+        return new Customer(['scenario' => 'signup']);
     }
 
     public static function getIdentityToken()
@@ -153,6 +147,18 @@ class Customer extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'params' => Yii::t('app', 'Params'),
             'blog_name' => Yii::t('app', 'Blog Name'),
+            //
+            'password' => Yii::t('app', 'Password'),
+            'captcha' => Yii::t('app', 'Captcha'),
         ];
+    }
+
+    public static function print($attribute)
+    {
+        $user = Yii::$app->user->getIdentity();
+        if ($user) {
+            return HtmlPurifier::process($user->{$attribute});
+        }
+        return null;
     }
 }
