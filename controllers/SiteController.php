@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\Http;
 use app\models\Blog;
+use app\models\Customer;
 use SimpleXMLElement;
 use Yii;
 use yii\helpers\Url;
@@ -23,8 +24,22 @@ class SiteController extends Controller
                 'class' => 'yii\filters\AccessControl',
                 'rules' => [
                     [
-                        'actions' => ['error', 'index', 'category', 'product', 'page', 'sitemap', 'robots', 'manifest'],
+                        'actions' => ['signin', 'signup', 'reset-password-request', 'reset-password', 'verify', 'verify-request'],
                         'allow' => true,
+                        'verbs' => ['POST', 'GET'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['signout'],
+                        'allow' => true,
+                        'verbs' => ['POST', 'GET'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['error', 'index', 'category', 'product', 'page', 'sitemap', 'robots', 'manifest', 'captcha'],
+                        'allow' => true,
+                        'verbs' => ['POST', 'GET'],
+                        'roles' => ['?', '@'],
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {
@@ -55,6 +70,9 @@ class SiteController extends Controller
                         }
                     }
                 }
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
             ],
         ];
     }
@@ -163,6 +181,162 @@ class SiteController extends Controller
         $hasPage = boolval(Blog::getData('category', 'has_page', 'Index'));
         return $this->render('category', [
             'page' => ($hasPage ? Http::page('Category', 'Index', $id) : ''),
+        ]);
+    }
+
+    public function actionSignup()
+    {
+        $signup = Customer::getNewSignupModel();
+        if ($signup->load(Yii::$app->request->post())) {
+            $data = Http::signup($signup);
+            if ($signup->load($data, 'customer')) {
+                if ($data['errors']) {
+                    $signup->addErrors($data['errors']);
+                } else {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'alertSignupSuccessfull'));
+                    return $this->redirect(Blog::url('site/verify-request', [
+                        $signup->formName() . '[mobile]' => $signup->mobile,
+                    ]));
+                }
+            }
+        } else {
+            $data = Http::info();
+        }
+        return $this->render('signup', [
+            'model' => $signup,
+        ]);
+    }
+
+    public function actionVerifyRequest()
+    {
+        $verifyRequest = new Customer(['scenario' => 'verifyRequest']);
+        if (
+            $verifyRequest->load(Yii::$app->request->post()) ||
+            $verifyRequest->load(Yii::$app->request->get())
+        ) {
+            $data = Http::verifyRequest($verifyRequest);
+            if ($verifyRequest->load($data, 'customer')) {
+                if ($data['errors']) {
+                    $verifyRequest->addErrors($data['errors']);
+                } else {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'alertVerifyRequestSuccessfull'));
+                    return $this->redirect(Blog::url('site/verify', [
+                        $verifyRequest->formName() . '[mobile]' => $verifyRequest->mobile,
+                    ]));
+                }
+            }
+        } else {
+            $data = Http::info();
+        }
+        return $this->render('verify-request', [
+            'model' => $verifyRequest,
+        ]);
+    }
+
+    public function actionVerify()
+    {
+        $verify = new Customer(['scenario' => 'verify']);
+        $verify->load(Yii::$app->request->get());
+        if ($verify->load(Yii::$app->request->post())) {
+            $data = Http::verify($verify);
+            if ($verify->load($data, 'customer')) {
+                if ($data['errors']) {
+                    $verify->addErrors($data['errors']);
+                } else {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'alertVerifySuccessfull'));
+                    return $this->redirect(Blog::url('site/index'));
+                }
+            }
+        } else {
+            $data = Http::info();
+        }
+        return $this->render('verify', [
+            'model' => $verify,
+        ]);
+    }
+
+    public function actionSignin()
+    {
+        $signin = new Customer(['scenario' => 'signin']);
+        if ($signin->load(Yii::$app->request->post())) {
+            $data = Http::signin($signin);
+            if ($signin->load($data, 'customer')) {
+                if ($data['errors']) {
+                    $signin->addErrors($data['errors']);
+                } else {
+                    $user = Customer::findOne($data['customer']['id']);
+                    if (empty($user)) {
+                        $user = new Customer();
+                    }
+                    $user->load($data, 'customer');
+                    $user->id = $data['customer']['id'];
+                    $user->blog_name = Blog::name();
+                    if ($user->save()) {
+                        Yii::$app->user->login($user);
+                        return $this->redirect(Blog::url('site/index'));
+                    }
+                    v($user->errors);
+                }
+            }
+        } else {
+            $data = Http::info();
+        }
+        return $this->render('signin', [
+            'model' => $signin,
+        ]);
+    }
+
+    public function actionSignout()
+    {
+        Http::signout();
+        Yii::$app->user->logout();
+        return $this->redirect(Blog::url('site/index'));
+    }
+    public function actionResetPasswordRequest()
+    {
+        $resetPasswordRequest = new Customer(['scenario' => 'resetPasswordRequest']);
+        if (
+            $resetPasswordRequest->load(Yii::$app->request->post()) ||
+            $resetPasswordRequest->load(Yii::$app->request->get())
+        ) {
+            $data = Http::resetPasswordRequest($resetPasswordRequest);
+            if ($resetPasswordRequest->load($data, 'customer')) {
+                if ($data['errors']) {
+                    $resetPasswordRequest->addErrors($data['errors']);
+                } else {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'alertResetPasswordRequestSuccessfull'));
+                    return $this->redirect(Blog::url('site/reset-password', [
+                        $resetPasswordRequest->formName() . '[mobile]' => $resetPasswordRequest->mobile,
+                    ]));
+                }
+            }
+        } else {
+            $data = Http::info();
+        }
+        return $this->render('reset-password-request', [
+            'model' => $resetPasswordRequest,
+        ]);
+    }
+
+    public function actionResetPassword()
+    {
+        $resetPassword = new Customer(['scenario' => 'resetPassword']);
+        $resetPassword->load(Yii::$app->request->get());
+        if ($resetPassword->load(Yii::$app->request->post())) {
+            $data = Http::resetPassword($resetPassword);
+            if ($resetPassword->load($data, 'customer')) {
+                if ($data['errors']) {
+                    $resetPassword->addErrors($data['errors']);
+                } else {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'alertResetPasswordSuccessfull'));
+                    return $this->redirect(Blog::url('site/index'));
+                }
+            }
+        } else {
+            $data = Http::info();
+        }
+        return $this->render('reset-password', [
+            'model' => $resetPassword,
         ]);
     }
 }
