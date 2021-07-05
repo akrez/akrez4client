@@ -2,9 +2,8 @@
 
 return [
     'Code' => 'کد کالا',
-    'Signin' => 'ورود',
+    'Login' => 'ثبت‌نام/ورود',
     'Signout' => 'خروج',
-    'Signup' => 'ثبت‌نام',
     'Title' => 'عنوان',
     'Price' => 'قیمت',
     'Search' => 'جستجو',
@@ -33,7 +32,6 @@ return [
     'alertAddSuccessfull' => 'اطلاعات با موفقیت ایجاد شد.',
     'alertUpdateSuccessfull' => 'اطلاعات با موفقیت ویرایش شد.',
     'alertGalleryUploadSuccessfull' => 'عکس با موفقیت بارگذاری شد.',
-    'alertSignupSuccessfull' => 'ثبت نام با موفقیت انجام شد، لطفا وارد شوید.',
     'alertResetPasswordRequestSuccessfull' => 'کد بازیابی رمز عبور برای شما ارسال شد.',
     'alertResetPasswordSuccessfull' => 'بازیابی رمز عبور با موفقیت انجام شد، لطفا وارد شوید.',
     'alertVerifyRequestSuccessfull' => 'کد فعال‌سازی برای شما ارسال شد.',
