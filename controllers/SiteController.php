@@ -261,9 +261,7 @@ class SiteController extends Controller
         if ($signin->load(Yii::$app->request->post())) {
             $data = Http::signin($signin);
             if ($signin->load($data, 'customer')) {
-                if ($data['errors']) {
-                    $signin->addErrors($data['errors']);
-                } else {
+                if ($signin->token) {
                     $user = Customer::findOne($data['customer']['id']);
                     if (empty($user)) {
                         $user = new Customer();
@@ -273,9 +271,18 @@ class SiteController extends Controller
                     $user->blog_name = Blog::name();
                     if ($user->save()) {
                         Yii::$app->user->login($user);
-                        return $this->redirect(Blog::url('site/index'));
                     }
-                    v($user->errors);
+                }
+                //
+                if ($data['action'] == 'index') {
+                    return $this->redirect(Blog::url('site/' . $data['action']));
+                } elseif ($data['action'] == 'verify-request') {
+                    return $this->redirect(Blog::url('site/verify-request', [
+                        $signin->formName() . '[mobile]' => $signin->mobile,
+                    ]));
+                }
+                if ($data['errors']) {
+                    $signin->addErrors($data['errors']);
                 }
             }
         } else {
