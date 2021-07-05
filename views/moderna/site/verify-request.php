@@ -1,5 +1,7 @@
 <?php
 
+
+
 $this->title = Yii::t('app', 'Verify Request');
 
 ?>
