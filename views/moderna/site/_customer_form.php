@@ -8,11 +8,11 @@ if (!isset($scenario)) {
 }
 
 $visibleInputs = [
-    'mobile' => in_array($scenario, ['signup', 'verifyRequest', 'verify', 'signin', 'resetPasswordRequest', 'resetPassword']),
+    'mobile' => in_array($scenario, ['login', 'verifyRequest', 'verify', 'resetPasswordRequest', 'resetPassword']),
     'verify_token' => in_array($scenario, ['verify']),
     'reset_token' => in_array($scenario, ['resetPassword']),
-    'password' => in_array($scenario, ['signup', 'signin', 'resetPassword']),
-    'captcha' => in_array($scenario, ['signup', 'signin']),
+    'password' => in_array($scenario, ['login', 'resetPassword']),
+    'captcha' => in_array($scenario, ['login']),
 ];
 
 if ($scenario == 'verifyRequest') {
