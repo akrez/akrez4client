@@ -2,30 +2,29 @@
 
 use yii\captcha\Captcha;
 use yii\bootstrap4\ActiveForm;
-use yii\bootstrap4\Html;
 
-$show = [
-    'mobile' => in_array($model->scenario, ['signup', 'verifyRequest', 'verify', 'signin', 'resetPasswordRequest', 'resetPassword']),
-    'verify_token' => in_array($model->scenario, ['verify']),
-    'reset_token' => in_array($model->scenario, ['resetPassword']),
-    'password' => in_array($model->scenario, ['signup', 'signin', 'resetPassword']),
-    'captcha' => in_array($model->scenario, ['signup', 'signin']),
+if (!isset($scenario)) {
+    $scenario = $model->scenario;
+}
+
+$visibleInputs = [
+    'mobile' => in_array($scenario, ['signup', 'verifyRequest', 'verify', 'signin', 'resetPasswordRequest', 'resetPassword']),
+    'verify_token' => in_array($scenario, ['verify']),
+    'reset_token' => in_array($scenario, ['resetPassword']),
+    'password' => in_array($scenario, ['signup', 'signin', 'resetPassword']),
+    'captcha' => in_array($scenario, ['signup', 'signin']),
 ];
 
-$mobile = Html::encode(Yii::$app->request->get('mobile'));
-$verifyToken = Html::encode(Yii::$app->request->get('verify_token'));
-$resetToken = Html::encode(Yii::$app->request->get('reset_token'));
-
-if ($model->scenario == 'verifyRequest') {
-    $buttonContent = Yii::t('app', 'Verify Request');
-} elseif ($model->scenario == 'resetRequest') {
-    $buttonContent = Yii::t('app', 'Reset Request');
-} elseif ($model->scenario == 'resetPasswordRequest') {
-    $buttonContent = Yii::t('app', 'Reset Password Request');
-} elseif ($model->scenario == 'resetPassword') {
-    $buttonContent = Yii::t('app', 'Reset Password');
+if ($scenario == 'verifyRequest') {
+    $buttonTitle = Yii::t('app', 'Verify Request');
+} elseif ($scenario == 'resetRequest') {
+    $buttonTitle = Yii::t('app', 'Reset Request');
+} elseif ($scenario == 'resetPasswordRequest') {
+    $buttonTitle = Yii::t('app', 'Reset Password Request');
+} elseif ($scenario == 'resetPassword') {
+    $buttonTitle = Yii::t('app', 'Reset Password');
 } else {
-    $buttonContent = Yii::t('app', ucfirst($model->scenario));
+    $buttonTitle = Yii::t('app', ucfirst($scenario));
 }
 
 $this->registerCss("
@@ -43,19 +42,19 @@ $form = ActiveForm::begin([
         ],
     ]
 ]);
-if ($show['mobile']) {
-    echo $form->field($model, 'mobile')->textInput($mobile ? ['readonly' => true] : [])->hint(Yii::t('app', 'for example: 09123456789'));
+if ($visibleInputs['mobile']) {
+    echo $form->field($model, 'mobile')->textInput()->hint(Yii::t('app', 'for example: 09123456789'));
 }
-if ($show['verify_token']) {
-    echo $form->field($model, 'verify_token')->textInput($verifyToken ? ['readonly' => true] : []);
+if ($visibleInputs['verify_token']) {
+    echo $form->field($model, 'verify_token')->textInput();
 }
-if ($show['reset_token']) {
-    echo $form->field($model, 'reset_token')->textInput($resetToken ? ['readonly' => true] : []);
+if ($visibleInputs['reset_token']) {
+    echo $form->field($model, 'reset_token')->textInput();
 }
-if ($show['password']) {
+if ($visibleInputs['password']) {
     echo $form->field($model, 'password')->passwordInput();
 }
-if ($show['captcha']) {
+if ($visibleInputs['captcha']) {
     echo $form->field($model, 'captcha', ['template' => '{input}{error}{hint}'])->widget(Captcha::class, [
         'template' => '<div class="input-group"><div class="input-group-prepend"><div class="input-group-text p-0">{image}</div></div>{input}</div>',
         'options' => ['class' => 'form-control form-control-lg',],
@@ -64,6 +63,6 @@ if ($show['captcha']) {
 }
 ?>
 <div class="form-group">
-    <button type="submit" class="btn btn-primary btn-block"> <?= $buttonContent ?> </button>
+    <button type="submit" class="btn btn-primary btn-block"> <?= $buttonTitle ?> </button>
 </div>
 <?php ActiveForm::end(); ?>
