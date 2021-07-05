@@ -24,7 +24,7 @@ class SiteController extends Controller
                 'class' => 'yii\filters\AccessControl',
                 'rules' => [
                     [
-                        'actions' => ['signin', 'signup', 'reset-password-request', 'reset-password', 'verify', 'verify-request'],
+                        'actions' => ['login', 'reset-password-request', 'reset-password', 'verify', 'verify-request'],
                         'allow' => true,
                         'verbs' => ['POST', 'GET'],
                         'roles' => ['?'],
@@ -45,7 +45,7 @@ class SiteController extends Controller
                 'denyCallback' => function ($rule, $action) {
                     if (Yii::$app->user->isGuest) {
                         Yii::$app->user->setReturnUrl(Url::current());
-                        return Yii::$app->controller->redirect(Blog::url('/site/signin'));
+                        return Yii::$app->controller->redirect(Blog::url('/site/login'));
                     }
                     throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
                 }
@@ -184,29 +184,6 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionSignup()
-    {
-        $signup = Customer::getNewSignupModel();
-        if ($signup->load(Yii::$app->request->post())) {
-            $data = Http::signup($signup);
-            if ($signup->load($data, 'customer')) {
-                if ($data['errors']) {
-                    $signup->addErrors($data['errors']);
-                } else {
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'alertSignupSuccessfull'));
-                    return $this->redirect(Blog::url('site/verify-request', [
-                        $signup->formName() . '[mobile]' => $signup->mobile,
-                    ]));
-                }
-            }
-        } else {
-            $data = Http::info();
-        }
-        return $this->render('signup', [
-            'model' => $signup,
-        ]);
-    }
-
     public function actionVerifyRequest()
     {
         $verifyRequest = new Customer(['scenario' => 'verifyRequest']);
@@ -255,13 +232,13 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionSignin()
+    public function actionLogin()
     {
-        $signin = new Customer(['scenario' => 'signin']);
-        if ($signin->load(Yii::$app->request->post())) {
-            $data = Http::signin($signin);
-            if ($signin->load($data, 'customer')) {
-                if ($signin->token) {
+        $login = new Customer(['scenario' => 'login']);
+        if ($login->load(Yii::$app->request->post())) {
+            $data = Http::login($login);
+            if ($login->load($data, 'customer')) {
+                if ($login->token) {
                     $user = Customer::findOne($data['customer']['id']);
                     if (empty($user)) {
                         $user = new Customer();
@@ -278,18 +255,18 @@ class SiteController extends Controller
                     return $this->redirect(Blog::url('site/' . $data['action']));
                 } elseif ($data['action'] == 'verify-request') {
                     return $this->redirect(Blog::url('site/verify-request', [
-                        $signin->formName() . '[mobile]' => $signin->mobile,
+                        $login->formName() . '[mobile]' => $login->mobile,
                     ]));
                 }
                 if ($data['errors']) {
-                    $signin->addErrors($data['errors']);
+                    $login->addErrors($data['errors']);
                 }
             }
         } else {
             $data = Http::info();
         }
-        return $this->render('signin', [
-            'model' => $signin,
+        return $this->render('login', [
+            'model' => $login,
         ]);
     }
 
