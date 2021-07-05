@@ -143,7 +143,7 @@ class Http extends Component
 
     public static function signin($user)
     {
-        return self::postJson('signin', [
+        return self::postJson('login', [
             'mobile' => $user->mobile,
             'password' => $user->password,
         ]);
@@ -159,7 +159,7 @@ class Http extends Component
 
     public static function signout()
     {
-        return self::postJson('signout');
+        return self::postJson('signout', [], [], false);
     }
 
     public static function verifyRequest($user)
