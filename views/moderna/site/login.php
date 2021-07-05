@@ -2,7 +2,7 @@
 
 use app\models\Blog;
 
-$this->title = Yii::t('app', 'Signup');
+$this->title = Yii::t('app', 'Login');
 
 ?>
 
