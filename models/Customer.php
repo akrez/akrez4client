@@ -46,20 +46,13 @@ class Customer extends ActiveRecord implements IdentityInterface
             [['verify_token', 'reset_token'], 'string', 'max' => 11],
             [['mobile'], 'string', 'max' => 15],
             [['name', 'blog_name'], 'string', 'max' => 60],
-            //signup
-            [['mobile',], 'required', 'on' => 'signup',],
-            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'signup',],
-            [['password',], 'required', 'on' => 'signup',],
-            [['password',], 'string', 'min' => 6, 'strict' => false, 'on' => 'signup',],
-            [['captcha',], 'required', 'on' => 'signup',],
-            [['captcha',], 'captcha', 'on' => 'signup',],
-            //signin
-            [['mobile',], 'required', 'on' => 'signin',],
-            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'signin',],
-            [['password',], 'required', 'on' => 'signin',],
-            [['password',], 'string', 'min' => 6, 'strict' => false, 'on' => 'signin',],
-            [['captcha',], 'required', 'on' => 'signin',],
-            [['captcha',], 'captcha', 'on' => 'signin',],
+            //login
+            [['mobile',], 'required', 'on' => 'login',],
+            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'login',],
+            [['password',], 'required', 'on' => 'login',],
+            [['password',], 'string', 'min' => 6, 'strict' => false, 'on' => 'login',],
+            [['captcha',], 'required', 'on' => 'login',],
+            [['captcha',], 'captcha', 'on' => 'login',],
             //resetPasswordRequest
             [['mobile',], 'required', 'on' => 'resetPasswordRequest',],
             [['mobile',], 'match', 'pattern' => '/^09[0-9]{9}$/', 'on' => 'resetPasswordRequest',],
@@ -108,9 +101,9 @@ class Customer extends ActiveRecord implements IdentityInterface
 
     /////
 
-    public static function getNewSignupModel()
+    public static function getNewLoginModel()
     {
-        return new Customer(['scenario' => 'signup']);
+        return new Customer(['scenario' => 'login']);
     }
 
     public static function getIdentityToken()
