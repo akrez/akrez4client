@@ -2,9 +2,8 @@
 
 return [
     'Code' => 'Code',
-    'Signin' => 'Signin',
+    'Login' => 'Login',
     'Signout' => 'Signout',
-    'Signup' => 'Signup',
     'Title' => 'Title',
     'Price' => 'Price',
     'Search' => 'Search',
