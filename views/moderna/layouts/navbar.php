@@ -95,8 +95,10 @@ if (Yii::$app->user->isGuest) {
             'class' => 'modal-dialog modal-dialog-centered',
         ],
     ]);
-    echo $this->render('/site/_customer_form', [
+    echo $this->render('/site/customer', [
         'model' => new Customer(['scenario' => 'login']),
+        'showHeader' => false,
+        'colClass' => 'col-sm-12',
     ]);
     Modal::end();
 } else {

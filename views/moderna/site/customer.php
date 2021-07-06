@@ -4,6 +4,18 @@ use app\models\Blog;
 use yii\captcha\Captcha;
 use yii\bootstrap4\ActiveForm;
 
+if (!isset($colClass)) {
+    $colClass = 'col-sm-4';
+}
+
+if (!isset($activeFormId)) {
+    $activeFormId = null;
+}
+
+if (!isset($showHeader)) {
+    $showHeader = true;
+}
+
 if (!isset($scenario)) {
     $scenario = $model->scenario;
 }
@@ -40,13 +52,13 @@ $this->registerCss("
 ?>
 
 <div class="row">
-    <div class="col-sm-4">
-    </div>
-    <div class="col-sm-4">
-        <h3 style="margin-bottom: 20px;"><?= $this->title ?></h3>
+    <div class="<?= $colClass ?>">
+        <?php if ($showHeader) { ?>
+            <h3 class="mb-3"><?= $this->title ?></h3>
+        <?php } ?>
         <?php
         $form = ActiveForm::begin([
-            'id' => 'login-form',
+            'id' => $activeFormId,
             'action' => $formAction,
             'fieldConfig' => [
                 'template' => '<div class="input-group"><div class="input-group-prepend">{label}</div>{input}</div>{error}{hint}',

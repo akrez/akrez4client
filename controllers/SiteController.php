@@ -265,7 +265,7 @@ class SiteController extends Controller
         } else {
             $data = Http::info();
         }
-        return $this->render('login', [
+        return $this->render('customer', [
             'model' => $login,
         ]);
     }
