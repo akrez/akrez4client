@@ -205,7 +205,7 @@ class SiteController extends Controller
         } else {
             $data = Http::info();
         }
-        return $this->render('verify-request', [
+        return $this->render('customer', [
             'model' => $verifyRequest,
         ]);
     }
@@ -227,7 +227,7 @@ class SiteController extends Controller
         } else {
             $data = Http::info();
         }
-        return $this->render('verify', [
+        return $this->render('customer', [
             'model' => $verify,
         ]);
     }
@@ -276,6 +276,7 @@ class SiteController extends Controller
         Yii::$app->user->logout();
         return $this->redirect(Blog::url('site/index'));
     }
+
     public function actionResetPasswordRequest()
     {
         $resetPasswordRequest = new Customer(['scenario' => 'resetPasswordRequest']);
@@ -297,7 +298,7 @@ class SiteController extends Controller
         } else {
             $data = Http::info();
         }
-        return $this->render('reset-password-request', [
+        return $this->render('customer', [
             'model' => $resetPasswordRequest,
         ]);
     }
@@ -319,7 +320,7 @@ class SiteController extends Controller
         } else {
             $data = Http::info();
         }
-        return $this->render('reset-password', [
+        return $this->render('customer', [
             'model' => $resetPassword,
         ]);
     }

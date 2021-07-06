@@ -5,7 +5,7 @@ use yii\captcha\Captcha;
 use yii\bootstrap4\ActiveForm;
 
 if (!isset($colClass)) {
-    $colClass = 'col-sm-4';
+    $colClass = 'col-sm-6 offset-sm-3';
 }
 
 if (!isset($activeFormId)) {
@@ -54,7 +54,7 @@ $this->registerCss("
 <div class="row">
     <div class="<?= $colClass ?>">
         <?php if ($showHeader) { ?>
-            <h3 class="mb-3"><?= $this->title ?></h3>
+            <h3 class="text-center mb-3"><?= $this->title ?></h3>
         <?php } ?>
         <?php
         $form = ActiveForm::begin([
@@ -91,10 +91,21 @@ $this->registerCss("
             <button type="submit" class="btn btn-primary btn-block"> <?= $this->title ?> </button>
         </div>
         <?php ActiveForm::end(); ?>
-        <?php if ($scenario == 'login') { ?>
+        <?php
+        if (in_array($scenario, ['login', 'resetPassword'])) {
+        ?>
             <div class="form-group">
-                <a type="button" class="btn btn-secondary" href="<?= Blog::url('site/reset-password-request') ?>"><?= Yii::t('app', 'Reset Password Request') ?></a>
+                <a type="button" class="btn btn-secondary" href="<?= Blog::url('site/reset-password-request', [$model->formName() . '[mobile]' => $model->mobile]) ?>"><?= Yii::t('app', 'Reset Password Request') ?></a>
             </div>
-        <?php } ?>
+        <?php
+        }
+        if (in_array($scenario, ['login', 'verify'])) {
+        ?>
+            <div class="form-group">
+                <a type="button" class="btn btn-secondary" href="<?= Blog::url('site/verify-request', [$model->formName() . '[mobile]' => $model->mobile]) ?>"><?= Yii::t('app', 'Verify Request') ?></a>
+            </div>
+        <?php
+        }
+        ?>
     </div>
 </div>
