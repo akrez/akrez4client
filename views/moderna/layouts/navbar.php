@@ -53,17 +53,26 @@ $form = Html::beginForm(Blog::firstPageUrl(), 'GET', ['class' => 'form-inline na
 
 <?php
 $items = [];
-if (Blog::print('instagram')) {
-    $items[] = [
-        'label' => '<div class="btn btn-danger btn-social" style="background-color: #ac2bac;"> ' . '<i class="fab fa-instagram"></i> ' . Blog::print('instagram') . '</div>',
-        'url' => "https://www.instagram.com/" . Blog::print('instagram'),
-        'encode' => false,
-    ];
+if (Blog::print('telegram')) {
+    $items[] = Html::a('', Blog::getShareLink('telegram', Blog::print('telegram')), [
+        'class' => 'fab fa-2x fa-telegram nav-link ' . (Blog::isRtl() ? 'pl-2' : 'pr-2'),
+        'style' => 'color: #4c75a3;',
+    ]);
 }
-$items[] = $form;
+if (Blog::print('instagram')) {
+    $items[] = Html::a('', Blog::getShareLink('instagram', Blog::print('instagram')), [
+        'class' => 'fab fa-2x fa-instagram nav-link ' . (Blog::isRtl() ? 'pl-2' : 'pr-2'),
+        'style' => 'color: #ac2bac;',
+    ]);
+}
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav nav ' . (Blog::isRtl() ? 'mr-auto' : 'ml-auto')],
-    'items' => $items,
+    'items' => ['<li class="nav-item">' . implode('', $items) . '</li>'],
+]);
+
+echo Nav::widget([
+    'options' => ['class' => 'navbar-nav nav'],
+    'items' => [$form],
 ]);
 
 $items = [];

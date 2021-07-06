@@ -32,22 +32,22 @@ $this->registerCss("
                 <?php
                 $parts = [];
                 if ($info = Blog::print('email')) {
-                    $parts[] = '<div><i class="fa  fa-envelope text-warning"></i><a href="mailto:' . $info . '">' . $info . '</a></div>';
+                    $parts[] = '<div><i class="fa fa-envelope text-warning"></i><a dir="ltr" href="' . Blog::getShareLink('email', $info) . '">' . $info . '</a></div>';
                 }
                 if ($info = Blog::print('phone')) {
-                    $parts[] = '<div><i class="fa fa-phone text-info"></i><a dir="ltr" href="tel:' . $info . '">' . $info . '</a></div>';
+                    $parts[] = '<div><i class="fa fa-phone text-info"></i><a dir="ltr" href="' . Blog::getShareLink('phone', $info) . '">' . $info . '</a></div>';
                 }
                 if ($info = Blog::print('twitter')) {
-                    $parts[] = '<div><i class="fab fa-twitter text-primary"></i><a dir="ltr" href="https://twitter.com/' . $info . '">' . $info . '</a></div>';
+                    $parts[] = '<div><i class="fab fa-twitter text-primary"></i><a dir="ltr" href="' . Blog::getShareLink('twitter', $info) . '">' . $info . '</a></div>';
                 }
                 if ($info = Blog::print('telegram')) {
-                    $parts[] = '<div><i class="fab fa-telegram text-info"></i><a dir="ltr" href="https://telegram.me/' . $info . '">' . $info . '</a></div>';
+                    $parts[] = '<div><i class="fab fa-telegram text-info"></i><a dir="ltr" href="' . Blog::getShareLink('telegram', $info) . '">' . $info . '</a></div>';
                 }
                 if ($info = Blog::print('facebook')) {
-                    $parts[] = '<div><i class="fab fa-facebook text-primary"></i><a dir="ltr" href="https://www.facebook.com/' . $info . '">' . $info . '</a></div>';
+                    $parts[] = '<div><i class="fab fa-facebook text-primary"></i><a dir="ltr" href="' . Blog::getShareLink('facebook', $info) . '">' . $info . '</a></div>';
                 }
                 if ($info = Blog::print('instagram')) {
-                    $parts[] = '<div><i class="fab fa-instagram text-danger"></i><a dir="ltr" href="https://www.instagram.com/' . $info . '">' . $info . '</a></div>';
+                    $parts[] = '<div><i class="fab fa-instagram text-danger"></i><a dir="ltr" href="' . Blog::getShareLink('instagram', $info) . '">' . $info . '</a></div>';
                 }
                 echo implode('', $parts);
                 ?>

@@ -286,4 +286,22 @@ class Blog extends Model
         }
         return $arr;
     }
+
+    public static function getShareLink($social, $username)
+    {
+        if ($social == 'email') {
+            return "mailto:" . $username;
+        } elseif ($social == 'phone') {
+            return "tel:" . $username;
+        } elseif ($social == 'twitter') {
+            return "https://twitter.com/" . $username;
+        } elseif ($social == 'telegram') {
+            return "https://telegram.me/" . $username;
+        } elseif ($social == 'facebook') {
+            return "https://www.facebook.com/" . $username;
+        } elseif ($social == 'instagram') {
+            return "https://www.instagram.com/" . $username;
+        }
+        return null;
+    }
 }
