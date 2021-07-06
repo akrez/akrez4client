@@ -16,5 +16,6 @@ class ModernaAsset extends AssetBundle
         'app\assets\cdn\Bootstrap4Asset',
         'app\assets\cdn\FontSahelAsset',
         'app\assets\cdn\FontawesomeAsset',
+        'app\assets\cdn\BootstrapSocialAsset',
     ];
 }

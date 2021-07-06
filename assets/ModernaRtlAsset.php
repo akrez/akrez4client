@@ -16,5 +16,6 @@ class ModernaRtlAsset extends AssetBundle
         'app\assets\cdn\Bootstrap4RtlAsset',
         'app\assets\cdn\FontSahelFdAsset',
         'app\assets\cdn\FontawesomeAsset',
+        'app\assets\cdn\BootstrapSocialRtlAsset',
     ];
 }
