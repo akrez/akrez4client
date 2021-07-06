@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Blog;
 use yii\captcha\Captcha;
 use yii\bootstrap4\ActiveForm;
 
@@ -17,14 +18,19 @@ $visibleInputs = [
 
 if ($scenario == 'verifyRequest') {
     $buttonTitle = Yii::t('app', 'Verify Request');
-} elseif ($scenario == 'resetRequest') {
-    $buttonTitle = Yii::t('app', 'Reset Request');
+    $formAction = Blog::url('site/verify-request');
+} elseif ($scenario == 'verify') {
+    $buttonTitle = Yii::t('app', 'Verify');
+    $formAction = Blog::url('site/verify');
 } elseif ($scenario == 'resetPasswordRequest') {
     $buttonTitle = Yii::t('app', 'Reset Password Request');
+    $formAction = Blog::url('site/reset-password-request');
 } elseif ($scenario == 'resetPassword') {
     $buttonTitle = Yii::t('app', 'Reset Password');
+    $formAction = Blog::url('site/reset-password');
 } else {
     $buttonTitle = Yii::t('app', ucfirst($scenario));
+    $formAction = Blog::url('site/login');
 }
 
 $this->registerCss("
@@ -35,6 +41,7 @@ $this->registerCss("
 
 $form = ActiveForm::begin([
     'id' => 'login-form',
+    'action' => $formAction,
     'fieldConfig' => [
         'template' => '<div class="input-group"><div class="input-group-prepend">{label}</div>{input}</div>{error}{hint}',
         'labelOptions' => [

@@ -252,7 +252,7 @@ class SiteController extends Controller
                 }
                 //
                 if ($data['action'] == 'index') {
-                    return $this->redirect(Blog::url('site/' . $data['action']));
+                    return $this->goBack();
                 } elseif ($data['action'] == 'verify-request') {
                     return $this->redirect(Blog::url('site/verify-request', [
                         $login->formName() . '[mobile]' => $login->mobile,
