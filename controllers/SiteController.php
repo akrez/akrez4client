@@ -238,16 +238,12 @@ class SiteController extends Controller
         if ($login->load(Yii::$app->request->post())) {
             $data = Http::login($login);
             if ($login->load($data, 'customer')) {
-                if ($login->token) {
-                    $user = Customer::findOne($data['customer']['id']);
-                    if (empty($user)) {
-                        $user = new Customer();
-                    }
-                    $user->load($data, 'customer');
-                    $user->id = $data['customer']['id'];
-                    $user->blog_name = Blog::name();
-                    if ($user->save()) {
+                if ($data['customer']['token']) {
+                    $user = Customer::login($data, $data['customer']['id'], $data['customer']['token']);
+                    if (!$user->hasErrors()) {
                         Yii::$app->user->login($user);
+                        Yii::$app->session->setFlash('success', Yii::t('app', 'alertLoginSuccessfull'));
+                        return $this->goBack();
                     }
                 }
                 //

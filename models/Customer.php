@@ -123,6 +123,20 @@ class Customer extends ActiveRecord implements IdentityInterface
         return $value;
     }
 
+    public static function login($data, $id, $token)
+    {
+        $user = Customer::findOne($id);
+        if (empty($user)) {
+            $user = new Customer();
+        }
+        $user->load($data, 'customer');
+        $user->id = $id;
+        $user->token = $token;
+        $user->blog_name = Blog::name();
+        $user->save();
+        return $user;
+    }
+
     public function attributeLabels()
     {
         return [

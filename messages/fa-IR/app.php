@@ -36,6 +36,7 @@ return [
     'alertResetPasswordSuccessfull' => 'بازیابی رمز عبور با موفقیت انجام شد، لطفا وارد شوید.',
     'alertVerifyRequestSuccessfull' => 'کد فعال‌سازی برای شما ارسال شد.',
     'alertVerifySuccessfull' => 'فعال‌سازی با موفقیت انجام شد.',
+    'alertLoginSuccessfull' => 'با موفقیت وارد شدید، خوش آمدید!',
     //
     'for example: 09123456789' => 'برای مثال: 09123456789', 
     'if the captcha is illegible, click on it.' => 'در صورت ناخوانا بودن کپچا، روی آن کلیک کنید.',
