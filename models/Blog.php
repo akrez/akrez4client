@@ -23,6 +23,8 @@ class Blog extends Model
     public $mobile;
     public $instagram;
     public $telegram;
+    public $telegram_user;
+    public $whatsapp;
     public $address;
     public $twitter;
     public $language;
@@ -133,7 +135,7 @@ class Blog extends Model
             [[
                 'name', 'title', 'slug', 'des', 'logo', 'language', 'created_at',
                 'email', 'phone', 'mobile', 'address',
-                'facebook', 'instagram', 'telegram', 'twitter',
+                'facebook', 'instagram', 'telegram', 'twitter', 'telegram_user', 'whatsapp',
                 'has_page', 'color',
             ], 'safe']
         ];
@@ -301,6 +303,10 @@ class Blog extends Model
             return "https://www.facebook.com/" . $username;
         } elseif ($social == 'instagram') {
             return "https://www.instagram.com/" . $username;
+        } elseif ($social == 'telegram_user') {
+            return "https://telegram.me/" . $username;
+        } elseif ($social == 'whatsapp') {
+            return "https://wa.me/message/" . $username;
         }
         return null;
     }

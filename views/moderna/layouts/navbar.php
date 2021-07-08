@@ -56,13 +56,25 @@ $items = [];
 if (Blog::print('telegram')) {
     $items[] = Html::a('', Blog::getShareLink('telegram', Blog::print('telegram')), [
         'class' => 'fab fa-2x fa-telegram nav-link ' . (Blog::isRtl() ? 'pl-2' : 'pr-2'),
-        'style' => 'color: #4c75a3;',
+        'style' => 'color: #2c9ed4;',
     ]);
 }
 if (Blog::print('instagram')) {
     $items[] = Html::a('', Blog::getShareLink('instagram', Blog::print('instagram')), [
         'class' => 'fab fa-2x fa-instagram nav-link ' . (Blog::isRtl() ? 'pl-2' : 'pr-2'),
-        'style' => 'color: #ac2bac;',
+        'style' => 'color: #b900b8;',
+    ]);
+}
+if (Blog::print('whatsapp')) {
+    $items[] = Html::a('', Blog::getShareLink('whatsapp', Blog::print('whatsapp')), [
+        'class' => 'fab fa-2x fa-whatsapp nav-link ' . (Blog::isRtl() ? 'pl-2' : 'pr-2'),
+        'style' => 'color: #39d855;',
+    ]);
+}
+if (Blog::print('telegram_user')) {
+    $items[] = Html::a('', Blog::getShareLink('telegram_user', Blog::print('telegram_user')), [
+        'class' => 'fab fa-2x fa-telegram nav-link ' . (Blog::isRtl() ? 'pl-2' : 'pr-2'),
+        'style' => 'color: #4c75a3;',
     ]);
 }
 echo Nav::widget([

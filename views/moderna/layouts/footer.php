@@ -49,6 +49,12 @@ $this->registerCss("
                 if ($info = Blog::print('instagram')) {
                     $parts[] = '<div><i class="fab fa-instagram text-danger"></i><a dir="ltr" href="' . Blog::getShareLink('instagram', $info) . '">' . $info . '</a></div>';
                 }
+                if ($info = Blog::print('telegram_user')) {
+                    $parts[] = '<div><i class="fab fa-telegram text-info"></i><a dir="ltr" href="' . Blog::getShareLink('telegram_user', $info) . '">' . $info . '</a></div>';
+                }
+                if ($info = Blog::print('whatsapp')) {
+                    $parts[] = '<div><i class="fab fa-whatsapp text-success"></i><a dir="ltr" href="' . Blog::getShareLink('whatsapp', $info) . '">' . $info . '</a></div>';
+                }
                 echo implode('', $parts);
                 ?>
             </div>
