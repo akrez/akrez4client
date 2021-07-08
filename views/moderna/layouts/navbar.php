@@ -89,19 +89,11 @@ echo Nav::widget([
 
 $items = [];
 if (Yii::$app->user->isGuest) {
-    $items[] = [
-        'label' => '<div class="btn btn-info btn-social"> ' . Yii::t('app', 'Login') . '<span class="far fa-user fa-lg" aria-hidden="true"></span></div>',
-        'encode' => false,
-        'options' => [
-            'onclick' => "$('#_login_form').modal('show');",
-        ],
-        'linkOptions' => [
-            'class' => 'nav-item pl-0',
-        ],
-    ];
+    $modalId = '_login_form';
+    $items[] = '<li class="nav-item pl-0"><button type="button" class="btn btn-info btn-social" data-toggle="modal" data-target="#' . $modalId . '"><span class="far fa-user fa-lg" aria-hidden="true"></span>' . Yii::t('app', 'Login') . '</button></li>';
     Modal::begin([
         'title' => Yii::t('app', 'Login'),
-        'id' => '_login_form',
+        'id' => $modalId,
         'closeButton' => ['style' => "line-height: 1.25em;"],
         'dialogOptions' => [
             'class' => 'modal-dialog modal-dialog-centered',
