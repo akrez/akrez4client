@@ -28,6 +28,9 @@ $this->registerCss("
 }
 .thumbnail {
     color: #000000;
+    display: flex; 
+    flex-direction:column;
+    justify-content: space-between;
 }
 a.thumbnail {
     text-decoration: none;
@@ -66,7 +69,7 @@ a.thumbnail {
             foreach (Blog::getData('products') as $product) :
                 $title = HtmlPurifier::process($product['title']);
             ?>
-                <a class="thumbnail border pt-3 pb-3 col-xs-12 col-sm-6 col-md-4 col-lg-3" href="<?= Blog::url('site/product', ['id' => $product['id'], 'product_title' => $product['title'], 'product_code' => $product['code']]) ?>">
+                <a class="thumbnail border pt-3 pb-3 col-sm-6 col-md-4 col-lg-3" href="<?= Blog::url('site/product', ['id' => $product['id'], 'product_title' => $product['title'], 'product_code' => $product['code']]) ?>">
                     <?php
                     if ($product['image']) :
                         echo Html::img(Blog::getImage('product', '400', $product['image']), ['class' => 'img-fluid rounded', 'alt' => $title]);
@@ -88,30 +91,28 @@ a.thumbnail {
                             endforeach;
                             ?>
                         </p>
-
-                        <?php
-                        if (empty($product['price_min']) && empty($product['price_max'])) :
-                        else :
-                            echo '<p class="text-left m-0">';
-                            if (!empty($product['price_min']) && !empty($product['price_max'])) :
-                                if ($product['price_min'] == $product['price_max']) :
-                                    echo Yii::$app->formatter->asPrice($product['price_min']);
-                                else :
-                                    echo ' از ' . Yii::$app->formatter->asPrice($product['price_min']) . '<br>' . ' تا ' . Yii::$app->formatter->asPrice($product['price_max']);
-                                endif;
-                            else :
-                                if (!empty($product['price_min'])) :
-                                    echo ' از ' . Yii::$app->formatter->asPrice($product['price_min']);
-                                endif;
-                                if (!empty($product['price_max'])) :
-                                    echo ' تا ' . Yii::$app->formatter->asPrice($product['price_max']);
-                                endif;
-                            endif;
-                            echo '</p>';
-                        endif;
-
-                        ?>
                     </div>
+                    <?php
+                    if (empty($product['price_min']) && empty($product['price_max'])) :
+                    else :
+                        echo '<p class="text-left m-0">';
+                        if (!empty($product['price_min']) && !empty($product['price_max'])) :
+                            if ($product['price_min'] == $product['price_max']) :
+                                echo Yii::$app->formatter->asPrice($product['price_min']);
+                            else :
+                                echo ' از ' . Yii::$app->formatter->asPrice($product['price_min']) . '<br>' . ' تا ' . Yii::$app->formatter->asPrice($product['price_max']);
+                            endif;
+                        else :
+                            if (!empty($product['price_min'])) :
+                                echo ' از ' . Yii::$app->formatter->asPrice($product['price_min']);
+                            endif;
+                            if (!empty($product['price_max'])) :
+                                echo ' تا ' . Yii::$app->formatter->asPrice($product['price_max']);
+                            endif;
+                        endif;
+                        echo '</p>';
+                    endif;
+                    ?>
                 </a>
             <?php endforeach ?>
         </div>
