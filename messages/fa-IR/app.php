@@ -38,6 +38,9 @@ return [
     'alertVerifySuccessfull' => 'فعال‌سازی با موفقیت انجام شد.',
     'alertLoginSuccessfull' => 'با موفقیت وارد شدید، خوش آمدید!',
     //
-    'for example: 09123456789' => 'برای مثال: 09123456789', 
+    'for example: 09123456789' => 'برای مثال: 09123456789',
     'if the captcha is illegible, click on it.' => 'در صورت ناخوانا بودن کپچا، روی آن کلیک کنید.',
+    //
+    'Add to basket' => 'افزودن به سبد خرید',
+    'successfully added to cart' => 'محصول با موفقیت به سبد خرید اضافه شد'
 ];
