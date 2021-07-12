@@ -197,9 +197,13 @@ class Http extends Component
         ]);
     }
 
-    public static function basketAdd($id, $cnt)
+    public static function basketAdd($package_id, $cnt, $add)
     {
-        return self::postJson('basket-add', ['cnt' => $cnt], ['package_id' => $id,]);
+        return self::postJson('basket-add', [
+            'package_id' => $package_id,
+            'cnt' => $cnt,
+            'add' => $add,
+        ]);
     }
 
     public static function invoiceAdd($invoice)
