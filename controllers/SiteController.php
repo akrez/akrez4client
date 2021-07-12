@@ -30,7 +30,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['signout'],
+                        'actions' => ['signout', 'basket-add'],
                         'allow' => true,
                         'verbs' => ['POST', 'GET'],
                         'roles' => ['@'],
@@ -158,7 +158,6 @@ class SiteController extends Controller
     public function actionIndex()
     {
         Http::index(Yii::$app->request->get());
-        $page = '';
         $pages = Blog::hasPage();
         $hasPage = boolval(isset($pages['Index']) && $pages['Index']);
         return $this->render('index', [
@@ -182,6 +181,26 @@ class SiteController extends Controller
         return $this->render('category', [
             'page' => ($hasPage ? Http::page('Category', 'Index', $id) : ''),
         ]);
+    }
+
+    public function actionBasketAdd($package_id, $cnt = 1, $add = true, $product_id = null)
+    {
+        $data = Http::basketAdd($package_id, $cnt, $add);
+        if (empty($data['errors'])) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'successfully added to cart'));
+            return $this->redirect(Blog::url('site/basket'));
+        }
+        $errors = [];
+        foreach ($data['errors'] as $dataErrors) {
+            foreach ($dataErrors as $error) {
+                $errors[] = $error;
+            }
+        }
+        Yii::$app->session->setFlash('error', $errors);
+        if ($product_id) {
+            return $this->redirect(Blog::url('site/product', ['id' => $product_id]));
+        }
+        return $this->redirect(Blog::url('site/index'));
     }
 
     public function actionVerifyRequest()
