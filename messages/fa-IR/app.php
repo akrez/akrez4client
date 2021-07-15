@@ -42,5 +42,9 @@ return [
     'if the captcha is illegible, click on it.' => 'در صورت ناخوانا بودن کپچا، روی آن کلیک کنید.',
     //
     'Add to basket' => 'افزودن به سبد خرید',
-    'successfully added to cart' => 'محصول با موفقیت به سبد خرید اضافه شد'
+    'Update basket' => 'ویرایش سبد خرید',
+    'successfully added to cart' => 'محصول با موفقیت به سبد خرید اضافه شد',
+    'successfully removed from cart' => 'محصول با موفقیت از سبد خرید حذف شد',
+    'successfully cart edited' => 'سبد خرید با موفقیت ویرایش  شد',
+    'price has changed from {price_old} to {price_new}' => 'قیمت  از {price_old} به {price_new} تغییر کرده است',
 ];
