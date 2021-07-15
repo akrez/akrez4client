@@ -12,16 +12,6 @@ $this->title = $secureTitle;
 
 $hasImages = (count(Blog::getData('images')) > 0);
 
-$this->registerJs('
-function changePackageCnt(sender, cnt) {
-    var input = $(sender).closest(".card-body").find("input").first();
-    var newValue = (parseInt(input.val()) || 0) + cnt;
-    if (newValue < 1) {
-        newValue = 1;
-    }
-    input.val(newValue);
-}
-', View::POS_HEAD);
 $this->registerCss("
 .h6, h6 {
     font-size: .75rem;
@@ -140,10 +130,6 @@ Breadcrumbs::widget([
         <div class="card-columns">
             <?php foreach (Blog::getData('packages') as $package) : ?>
                 <div class="card">
-                    <?php
-                    echo Html::beginForm(Blog::url('site/basket-add'), 'get');
-                    echo Html::hiddenInput('package_id', $package['id']);
-                    ?>
                     <div class="card-body p-2">
                         <h6 class="card-text"><?= Yii::t('app', 'Guaranty') ?> <?= HtmlPurifier::process($package['guaranty']) ?></h6>
                         <?php if ($package['des']) : ?>
@@ -165,28 +151,13 @@ Breadcrumbs::widget([
                             </small>
                         </div>
                     </div>
-                    <div class="card-body pr-2 pl-2 pt-0 pb-0">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                                <div class="btn btn-danger" onclick="changePackageCnt(this, -1)">
-                                    <i class="fa fa-minus" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                            <input name="cnt" type="text" value="1" class="form-control text-center">
-                            <div class="input-group-append">
-                                <div class="btn btn-success" onclick="changePackageCnt(this, +1)">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card-body p-2">
+                        <?php
+                        if ($package['stock'] > 0) {
+                            echo $this->render('_basket_cnt', ['package' => $package]);
+                        }
+                        ?>
                     </div>
-                    <div class="card-body pr-2 pl-2 pt-1 pb-2">
-                        <button class="btn btn-sm btn-primary btn-social btn-block text-center">
-                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                            <?= Yii::t('app', 'Add to basket') ?>
-                        </button>
-                    </div>
-                    <?= Html::endForm() ?>
                 </div>
             <?php endforeach; ?>
         </div>
