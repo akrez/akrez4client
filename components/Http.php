@@ -190,9 +190,9 @@ class Http extends Component
         return self::postJson('basket');
     }
 
-    public static function basketRemove($id)
+    public static function basketDelete($id)
     {
-        return self::postJson('basket-remove', [], [
+        return self::postJson('basket-delete', [], [
             'package_id' => $id,
         ]);
     }
@@ -202,8 +202,7 @@ class Http extends Component
         return self::postJson('basket-add', [
             'package_id' => $package_id,
             'cnt' => $cnt,
-            'add' => $add,
-        ]);
+        ], ['add' => $add,]);
     }
 
     public static function invoiceAdd($invoice)
