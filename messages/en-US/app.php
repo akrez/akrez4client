@@ -7,9 +7,10 @@ return [
     'Title' => 'Title',
     'Price' => 'Price',
     'Search' => 'Search',
-    'Basket' => 'Basket',
+    'Cart' => 'Cart',
     'Invoice' => 'Invoice',
     'Guaranty' => 'Guaranty',
     'Categories' => 'Categories',
     'Reset Password Request' => 'Reset Password Request',
+    'Inventory left in stock is less than the specified amount' => 'Inventory left in stock is less than the specified amount',
 ];

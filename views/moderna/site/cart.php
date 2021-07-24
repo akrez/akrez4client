@@ -3,7 +3,7 @@
 use app\models\Blog;
 use yii\bootstrap4\Breadcrumbs;
 
-$this->title = Yii::t('app', 'Basket');
+$this->title = Yii::t('app', 'Cart');
 ?>
 
 <?=
@@ -26,8 +26,8 @@ Breadcrumbs::widget([
 
 <div class="row">
     <div class="col-sm-12">
-        <?php if (Blog::getData('baskets')) : ?>
-            <?= $this->render('_basket_table', ['editable' => true]) ?>
+        <?php if (Blog::getData('carts')) : ?>
+            <?= $this->render('_cart_table', ['editable' => true]) ?>
         <?php else : ?>
             <div class="alert alert-warning" role="alert">
                 <?= Yii::t('yii', 'No results found.'); ?>

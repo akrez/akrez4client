@@ -26,16 +26,16 @@ if (!isset($add)) {
 }
 $add = boolval($add);
 //
-if (!isset($basket)) {
-    $basket = [];
+if (!isset($cart)) {
+    $cart = [];
 }
-$basket = $basket + [
+$cart = $cart + [
     'cnt' => 1
 ];
 ?>
 <?php
 if ($package['stock'] > 0) {
-    echo Html::beginForm(Blog::url('site/basket-add', [
+    echo Html::beginForm(Blog::url('site/cart-add', [
         'add' => $add,
         'package_id' => $package['id'],
         'product_id' => $productId,
@@ -48,7 +48,7 @@ if ($package['stock'] > 0) {
                     <i class="fa fa-plus" aria-hidden="true"></i>
                 </div>
             </div>
-            <input name="cnt" type="text" value="<?= $basket['cnt'] ?>" data-max="<?= $package['stock'] ?>" class="form-control text-center">
+            <input name="cnt" type="text" value="<?= $cart['cnt'] ?>" data-max="<?= $package['stock'] ?>" class="form-control text-center">
             <div class="input-group-append">
                 <div class="btn btn-danger" onclick="changePackageCnt(this, -1)">
                     <i class="fa fa-minus" aria-hidden="true"></i>
@@ -59,7 +59,7 @@ if ($package['stock'] > 0) {
     <div class="p-0 pt-1">
         <button class="btn btn-sm btn-social btn-block text-center <?= $add ? 'btn-success' : 'btn-primary' ?>">
             <i class="fa <?= $add ? 'fa-cart-plus' : 'fa-shopping-cart' ?>" aria-hidden="true"></i>
-            <?= $add ? Yii::t('app', 'Add to basket') : Yii::t('app', 'Update basket') ?>
+            <?= $add ? Yii::t('app', 'Add to cart') : Yii::t('app', 'Update cart') ?>
         </button>
     </div>
 <?php

@@ -7,7 +7,7 @@ return [
     'Title' => 'عنوان',
     'Price' => 'قیمت',
     'Search' => 'جستجو',
-    'Basket' => 'سبد خرید من',
+    'Cart' => 'سبد خرید من',
     'Invoice' => 'فاکتورهای من',
     'Guaranty' => 'گارانتی',
     'Categories' => 'دسته‌بندی‌ها',
@@ -41,10 +41,11 @@ return [
     'for example: 09123456789' => 'برای مثال: 09123456789',
     'if the captcha is illegible, click on it.' => 'در صورت ناخوانا بودن کپچا، روی آن کلیک کنید.',
     //
-    'Add to basket' => 'افزودن به سبد خرید',
-    'Update basket' => 'ویرایش سبد خرید',
+    'Add to cart' => 'افزودن به سبد خرید',
+    'Update cart' => 'ویرایش سبد خرید',
     'successfully added to cart' => 'محصول با موفقیت به سبد خرید اضافه شد',
     'successfully removed from cart' => 'محصول با موفقیت از سبد خرید حذف شد',
     'successfully cart edited' => 'سبد خرید با موفقیت ویرایش  شد',
     'price has changed from {price_old} to {price_new}' => 'قیمت  از {price_old} به {price_new} تغییر کرده است',
+    'Inventory left in stock is less than the specified amount' => 'موجودی باقی مانده در انبار، کمتر از مقدار تعیین شده است',
 ];

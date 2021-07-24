@@ -30,7 +30,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['signout', 'basket', 'basket-add', 'basket-delete'],
+                        'actions' => ['signout', 'cart', 'cart-add', 'cart-delete'],
                         'allow' => true,
                         'verbs' => ['POST', 'GET'],
                         'roles' => ['@'],
@@ -183,19 +183,19 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionBasketAdd($package_id, $cnt = 1, $add = true, $product_id = null)
+    public function actionCartAdd($package_id, $cnt = 1, $add = true, $product_id = null)
     {
-        $data = Http::basketAdd($package_id, $cnt, $add);
-        if (empty($data['basket']['errors'])) {
+        $data = Http::cartAdd($package_id, $cnt, $add);
+        if (empty($data['cart']['errors'])) {
             if ($add) {
                 Yii::$app->session->setFlash('success', Yii::t('app', 'successfully added to cart'));
             } else {
                 Yii::$app->session->setFlash('success', Yii::t('app', 'successfully cart edited'));
             }
-            return $this->redirect(Blog::url('site/basket'));
+            return $this->redirect(Blog::url('site/cart'));
         }
         $errors = [];
-        foreach ($data['basket']['errors'] as $dataErrors) {
+        foreach ($data['cart']['errors'] as $dataErrors) {
             foreach ($dataErrors as $error) {
                 $errors[] = $error;
             }
@@ -204,22 +204,22 @@ class SiteController extends Controller
         if ($product_id) {
             return $this->redirect(Blog::url('site/product', ['id' => $product_id]));
         }
-        return $this->redirect(Blog::url('site/basket'));
+        return $this->redirect(Blog::url('site/cart'));
     }
 
-    public function actionBasketDelete($id)
+    public function actionCartDelete($id)
     {
-        $data = Http::basketDelete($id);
+        $data = Http::cartDelete($id);
         if (isset($data['status']) && $data['status']) {
             Yii::$app->session->setFlash('success', Yii::t('app', 'successfully removed from cart'));
         }
-        return $this->redirect(Blog::url('site/basket'));
+        return $this->redirect(Blog::url('site/cart'));
     }
 
-    public function actionBasket()
+    public function actionCart()
     {
-        Http::basket();
-        return $this->render('basket');
+        Http::cart();
+        return $this->render('cart');
     }
 
     public function actionVerifyRequest()

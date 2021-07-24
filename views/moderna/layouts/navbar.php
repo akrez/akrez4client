@@ -109,7 +109,7 @@ if (Yii::$app->user->isGuest) {
     $items[] = [
         'label' => Customer::print('mobile'),
         'items' => [
-            ['label' => Yii::t('app', 'Basket'), 'url' => Blog::url('site/basket')],
+            ['label' => Yii::t('app', 'Cart'), 'url' => Blog::url('site/cart')],
             //['label' => Yii::t('app', 'Invoice'), 'url' => Blog::url('site/invoice')],
             ['label' => Yii::t('app', 'Signout'), 'url' => Blog::url('site/signout')],
         ],

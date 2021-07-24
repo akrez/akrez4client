@@ -185,24 +185,25 @@ class Http extends Component
         ]);
     }
 
-    public static function basket()
+    public static function cart()
     {
-        return self::postJson('basket');
+        return self::postJson('cart');
     }
 
-    public static function basketDelete($id)
+    public static function cartDelete($id)
     {
-        return self::postJson('basket-delete', [], [
+        return self::postJson('cart-delete', [], [
             'package_id' => $id,
         ]);
     }
 
-    public static function basketAdd($package_id, $cnt, $add)
+    public static function cartAdd($package_id, $cnt, $add)
     {
-        return self::postJson('basket-add', [
+        return self::postJson('cart-add', [], [
             'package_id' => $package_id,
             'cnt' => $cnt,
-        ], ['add' => $add,]);
+            'add' => $add,
+        ]);
     }
 
     public static function invoiceAdd($invoice)
