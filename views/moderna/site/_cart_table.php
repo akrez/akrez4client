@@ -56,7 +56,7 @@ foreach ((array)Blog::getData('carts') as $cart) {
             </div>
         </div>
         <?php if ($package['price'] != $cart['price_initial']) : ?>
-            <div class="row p-2 no-gutters card-footer text-primary">
+            <div class="row p-2 no-gutters card-body text-primary border-top">
                 <?= Yii::t('app', 'price has changed from {price_old} to {price_new}', [
                     'price_old' => Yii::$app->formatter->asPrice($cart['price_initial']),
                     'price_new' => Yii::$app->formatter->asPrice($package['price']),
