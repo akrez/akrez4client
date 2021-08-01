@@ -206,17 +206,19 @@ class Http extends Component
         ]);
     }
 
-    public static function invoiceAdd($invoice)
+    public static function buy($invoice)
     {
-        return self::postJson('invoice-add', [
-            'Invoice' => [
-                'name' => $invoice->name,
-                'phone' => $invoice->phone,
-                'mobile' => $invoice->mobile,
-                'province' => $invoice->province,
-                'address' => $invoice->address,
-                'des' => $invoice->des,
-            ]
+        return self::postJson('buy', [
+            'name' => $invoice->name,
+            'phone' => $invoice->phone,
+            'mobile' => $invoice->mobile,
+            'province' => $invoice->province,
+            'address' => $invoice->address,
+            'des' => $invoice->des,
+            'postal_code' => $invoice->postal_code,
+            'lat' => $invoice->lat,
+            'lng' => $invoice->lng,
+
         ]);
     }
 
