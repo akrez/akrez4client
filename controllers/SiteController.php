@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\Http;
 use app\models\Blog;
 use app\models\Customer;
+use app\models\Invoice;
 use SimpleXMLElement;
 use Yii;
 use yii\helpers\Url;
@@ -218,8 +219,22 @@ class SiteController extends Controller
 
     public function actionCart()
     {
-        Http::cart();
-        return $this->render('cart');
+        $invoice = new Invoice();
+        if ($invoice->load(Yii::$app->request->post())) {
+            $data = Http::buy($invoice);
+            if ($invoice->load($data)) {
+                if ($data['errors']) {
+                    $invoice->addErrors($data['errors']);
+                } else {
+                    v('Hooo Hoooo');
+                }
+            }
+        } else {
+            Http::cart();
+        }
+        return $this->render('cart', [
+            'model' => $invoice,
+        ]);
     }
 
     public function actionVerifyRequest()
