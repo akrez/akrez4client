@@ -3,7 +3,7 @@
 namespace app\models;
 
 /**
- * This is the model class for table "invoice".
+ * This is the model class for table "order".
  *
  * @property int $id
  * @property int|null $updated_at
@@ -16,7 +16,7 @@ namespace app\models;
  * @property string $blog_name
  * @property int $customer_id
  */
-class Invoice extends Model
+class Order extends Model
 {
     public $name;
     public $mobile;
@@ -35,10 +35,10 @@ class Invoice extends Model
         return [
             [['name', 'mobile', 'phone', 'postal_code', 'province', 'address', 'lat', 'lng',], 'required'],
             [['name'], 'string', 'max' => 60],
-            [['mobile',], 'match', 'pattern' => '/^(0[1-9]{2})[2-9][0-9]{7}+$/'],
-            [['phone',], 'match', 'pattern' => '/^[2-9][0-9]{7}+$/'],
+            [['mobile',], 'match', 'pattern' => '/^09[0-9]{9,15}$/'],
+            [['phone',], 'match', 'pattern' => "/^0[0-9]{8,23}$/"],
             [['des'], 'string'],
-            [['postal_code',], 'match', 'pattern' => "/^(\d{5}-?\d{5})$/"],
+            [['postal_code',], 'match', 'pattern' => "/^(\d{10})$/"],
             [['province'], 'string'],
             [['address'], 'string'],
             [['lat',], 'match', 'pattern' => "/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/"],
