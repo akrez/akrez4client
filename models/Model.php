@@ -61,6 +61,7 @@ class Model extends BaseModel
             'updated_at' => 'تاریخ ویرایش',
             'created_at' => 'تاریخ ایجاد',
             'product_id' => 'محصول',
+            'postal_code' => 'کد پستی',
             'category_id' => 'دسته‌بندی',
             'reset_token' => 'کد بازیابی رمز عبور',
 

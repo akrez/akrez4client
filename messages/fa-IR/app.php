@@ -8,7 +8,7 @@ return [
     'Price' => 'قیمت',
     'Search' => 'جستجو',
     'Cart' => 'سبد خرید من',
-    'Invoice' => 'فاکتورهای من',
+    'Orders' => 'فاکتورهای من',
     'Guaranty' => 'گارانتی',
     'Categories' => 'دسته‌بندی‌ها',
     'Reset Password Request' => 'درخواست بازیابی رمز عبور',
@@ -48,4 +48,5 @@ return [
     'successfully cart edited' => 'سبد خرید با موفقیت ویرایش  شد',
     'price has changed from {price_old} to {price_new}' => 'قیمت  از {price_old} به {price_new} تغییر کرده است',
     'Inventory left in stock is less than the specified amount' => 'موجودی باقی مانده در انبار، کمتر از مقدار تعیین شده است',
+    'Order' => 'ثبت سفارش',
 ];

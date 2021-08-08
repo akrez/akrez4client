@@ -74,7 +74,11 @@ class Blog extends Model
     public static function getConstant(...$levels)
     {
         $language = Yii::$app->language;
+        return self::getApiConstant($language, $levels);
+    }
 
+    public static function getApiConstant($language, $levels)
+    {
         if (isset(self::$constant['constant'][$language])) {
             $value = self::$constant['constant'][$language];
         } else {

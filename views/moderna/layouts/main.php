@@ -29,6 +29,11 @@ $this->registerMetaTag([
     'name' => 'description',
     'content' => (Blog::print('des') ? Blog::print('des') : Blog::normalizeArray([Blog::print('title'), $blogSlug, Blog::print('name')], false, ' - ')),
 ]);
+$this->registerCss('
+.form-control::placeholder {
+    opacity: 0.55;
+}
+');
 ?>
 <?php $this->beginPage() ?>
 <?php if (YII_ENV != 'dev') Spaceless::begin(); ?>

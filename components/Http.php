@@ -206,38 +206,18 @@ class Http extends Component
         ]);
     }
 
-    public static function buy($invoice)
+    public static function order($order)
     {
-        return self::postJson('buy', [
-            'name' => $invoice->name,
-            'phone' => $invoice->phone,
-            'mobile' => $invoice->mobile,
-            'province' => $invoice->province,
-            'address' => $invoice->address,
-            'des' => $invoice->des,
-            'postal_code' => $invoice->postal_code,
-            'lat' => $invoice->lat,
-            'lng' => $invoice->lng,
-
-        ]);
-    }
-
-    public static function invoice($params)
-    {
-        return self::postJson('invoice', $params);
-    }
-
-    public static function invoiceRemove($id)
-    {
-        return self::postJson('invoice-remove', [], [
-            'id' => $id,
-        ]);
-    }
-
-    public static function invoiceView($id)
-    {
-        return self::postJson('invoice-view', [], [
-            'id' => $id,
+        return self::postJson('order', [
+            'name' => $order->name,
+            'phone' => $order->phone,
+            'mobile' => $order->mobile,
+            'province' => $order->province,
+            'address' => $order->address,
+            'des' => $order->des,
+            'postal_code' => $order->postal_code,
+            'lat' => $order->lat,
+            'lng' => $order->lng,
         ]);
     }
 }

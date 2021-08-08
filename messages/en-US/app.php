@@ -8,7 +8,7 @@ return [
     'Price' => 'Price',
     'Search' => 'Search',
     'Cart' => 'Cart',
-    'Invoice' => 'Invoice',
+    'Order' => 'Order',
     'Guaranty' => 'Guaranty',
     'Categories' => 'Categories',
     'Reset Password Request' => 'Reset Password Request',

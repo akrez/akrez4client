@@ -4,6 +4,7 @@ use app\models\Blog;
 use yii\bootstrap4\Breadcrumbs;
 
 $this->title = Yii::t('app', 'Cart');
+$hasCarts = boolval(Blog::getData('carts'));
 ?>
 
 <?=
@@ -24,14 +25,23 @@ Breadcrumbs::widget([
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-12">
-        <?php if (Blog::getData('carts')) : ?>
+<?php if ($hasCarts) : ?>
+    <div class="row">
+        <div class="col-sm-12">
             <?= $this->render('_cart_table', ['editable' => true]) ?>
-        <?php else : ?>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm-12">
+            <?= $this->render('_order', ['model' => $model]) ?>
+        </div>
+    </div>
+<?php else : ?>
+    <div class="row">
+        <div class="col-sm-12">
             <div class="alert alert-warning" role="alert">
                 <?= Yii::t('yii', 'No results found.'); ?>
             </div>
-        <?php endif; ?>
+        </div>
     </div>
-</div>
+<?php endif; ?>
