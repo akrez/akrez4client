@@ -5,7 +5,7 @@ namespace app\controllers;
 use app\components\Http;
 use app\models\Blog;
 use app\models\Customer;
-use app\models\Order;
+use app\models\Invoice;
 use SimpleXMLElement;
 use Yii;
 use yii\helpers\Url;
@@ -31,7 +31,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['signout', 'cart', 'cart-add', 'cart-delete', 'orders'],
+                        'actions' => ['signout', 'cart', 'cart-add', 'cart-delete', 'invoices'],
                         'allow' => true,
                         'verbs' => ['POST', 'GET'],
                         'roles' => ['@'],
@@ -217,20 +217,20 @@ class SiteController extends Controller
         return $this->redirect(Blog::url('site/cart'));
     }
 
-    public function actionOrders()
+    public function actionInvoices()
     {
-        Http::orders(Yii::$app->request->get());
-        return $this->render('orders');
+        Http::invoices(Yii::$app->request->get());
+        return $this->render('invoices');
     }
 
     public function actionCart()
     {
-        $order = new Order();
-        if ($order->load(Yii::$app->request->post())) {
-            $data = Http::orderSubmit($order);
-            if ($order->load($data, 'order')) {
-                if ($data['order']['errors']) {
-                    $order->addErrors($data['order']['errors']);
+        $invoice = new Invoice();
+        if ($invoice->load(Yii::$app->request->post())) {
+            $data = Http::invoiceSubmit($invoice);
+            if ($invoice->load($data, 'invoice')) {
+                if ($data['invoice']['errors']) {
+                    $invoice->addErrors($data['invoice']['errors']);
                 } else {
                     v('Hooo Hoooo');
                 }
@@ -238,7 +238,7 @@ class SiteController extends Controller
         }
         Http::cart();
         return $this->render('cart', [
-            'model' => $order,
+            'model' => $invoice,
         ]);
     }
 

@@ -33,7 +33,7 @@ Breadcrumbs::widget([
     </div>
     <div class="row mt-3">
         <div class="col-sm-12">
-            <?= $this->render('_order', ['model' => $model]) ?>
+            <?= $this->render('_invoice', ['model' => $model]) ?>
         </div>
     </div>
 <?php else : ?>
