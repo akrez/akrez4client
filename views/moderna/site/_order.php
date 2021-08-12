@@ -100,7 +100,7 @@ $(document).on("click", ".found-location", function() {
             <div class="col-sm-5">
                 <div class="row">
                     <div class="col-sm-12">
-                        <?= $form->field($model, 'province')->dropdownList(Blog::getApiConstant(Blog::print('language'), ['province'])); ?>
+                        <?= $form->field($model, 'city')->dropdownList((array)Blog::getApiConstant(Blog::print('language'), ['city'])); ?>
                     </div>
                     <div class="col-sm-12">
                         <?= $form->field($model, 'postal_code')->textInput(['placeholder' => '1234512345']); ?>

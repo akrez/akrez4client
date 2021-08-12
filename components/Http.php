@@ -206,13 +206,18 @@ class Http extends Component
         ]);
     }
 
-    public static function order($order)
+    public static function orders($params)
     {
-        return self::postJson('order', [
+        return self::postJson('orders', $params);
+    }
+
+    public static function orderSubmit($order)
+    {
+        return self::postJson('order-submit', [
             'name' => $order->name,
             'phone' => $order->phone,
             'mobile' => $order->mobile,
-            'province' => $order->province,
+            'city' => $order->city,
             'address' => $order->address,
             'des' => $order->des,
             'postal_code' => $order->postal_code,

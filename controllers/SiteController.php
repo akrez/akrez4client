@@ -31,7 +31,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['signout', 'cart', 'cart-add', 'cart-delete'],
+                        'actions' => ['signout', 'cart', 'cart-add', 'cart-delete', 'orders'],
                         'allow' => true,
                         'verbs' => ['POST', 'GET'],
                         'roles' => ['@'],
@@ -217,11 +217,17 @@ class SiteController extends Controller
         return $this->redirect(Blog::url('site/cart'));
     }
 
+    public function actionOrders()
+    {
+        Http::orders(Yii::$app->request->get());
+        return $this->render('orders');
+    }
+
     public function actionCart()
     {
         $order = new Order();
         if ($order->load(Yii::$app->request->post())) {
-            $data = Http::order($order);
+            $data = Http::orderSubmit($order);
             if ($order->load($data, 'order')) {
                 if ($data['order']['errors']) {
                     $order->addErrors($data['order']['errors']);
