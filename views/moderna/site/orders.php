@@ -7,8 +7,8 @@ use yii\data\ArrayDataProvider;
 use yii\data\Pagination;
 use yii\grid\GridView;
 
-$this->title = Yii::t('app', 'Orders');
-$hasOrders = boolval(Blog::getData('orders'));
+$this->title = Yii::t('app', 'Invoices');
+$hasInvoices = boolval(Blog::getData('invoices'));
 
 $this->registerCss("
 .table-vertical-align-middle td,
@@ -36,7 +36,7 @@ Breadcrumbs::widget([
     </div>
 </div>
 
-<?php if ($hasOrders) :
+<?php if ($hasInvoices) :
     $pagination = new Pagination([
         'pageSizeParam' => 'page_size',
         'pageSize' => Blog::getData('pagination', 'page_size'),
@@ -48,7 +48,7 @@ Breadcrumbs::widget([
         <div class="col-sm-12">
             <?php
             $dataProvider = new ArrayDataProvider([
-                'allModels' => Blog::getData('orders'),
+                'allModels' => Blog::getData('invoices'),
                 'modelClass' => 'app\models\Model',
                 'sort' => false,
                 'pagination' => false,
@@ -84,9 +84,9 @@ Breadcrumbs::widget([
                             'label' => '',
                             'format' => 'raw',
                             'value' => function ($model, $key, $index, $grid) {
-                                return '<a class="btn btn-primary btn-block btn-social" href="' . Blog::url('site/order-view', ['id' => $model['id']]) . '" >' .
+                                return '<a class="btn btn-primary btn-block btn-social" href="' . Blog::url('site/invoice-view', ['id' => $model['id']]) . '" >' .
                                     '<i class="far fa-eye"></i></i>' .
-                                    Yii::t('app', 'View order') .
+                                    Yii::t('app', 'View invoice') .
                                     '</a>';
                             },
                         ],

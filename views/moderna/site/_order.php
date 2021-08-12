@@ -31,10 +31,10 @@ var marker = L.marker([0.00, 0.00]).addTo(map);
 function centerLeafletMapOnMarker(latLng) {
     marker.setLatLng(latLng);
     if (latLng.lat > 0) {
-        $("#order-lat").val(latLng.lat);
+        $("#invoice-lat").val(latLng.lat);
     }
     if (latLng.lng > 0) {
-        $("#order-lng").val(latLng.lng);
+        $("#invoice-lng").val(latLng.lng);
     }
 }
 
@@ -119,8 +119,8 @@ $(document).on("click", ".found-location", function() {
                     </div>
                 </div>
                 <?php
-                echo Html::activeHiddenInput($model, 'lat', ['id' => 'order-lat']);
-                echo Html::activeHiddenInput($model, 'lng', ['id' => 'order-lng']);
+                echo Html::activeHiddenInput($model, 'lat', ['id' => 'invoice-lat']);
+                echo Html::activeHiddenInput($model, 'lng', ['id' => 'invoice-lng']);
                 ?>
             </div>
         </div>
@@ -140,7 +140,7 @@ $(document).on("click", ".found-location", function() {
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary"> <?= Yii::t('app', 'Order') ?> </button>
+                    <button type="submit" class="btn btn-primary"> <?= Yii::t('app', 'Invoice') ?> </button>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
 namespace app\models;
 
 /**
- * This is the model class for table "order".
+ * This is the model class for table "invoice".
  *
  * @property int $id
  * @property int|null $updated_at
@@ -18,7 +18,7 @@ namespace app\models;
  * @property string $blog_name
  * @property int $customer_id
  */
-class Order extends Model
+class Invoice extends Model
 {
     public $name;
     public $mobile;
