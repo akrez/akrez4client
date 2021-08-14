@@ -28,12 +28,31 @@ Breadcrumbs::widget([
 <?php if ($hasCarts) : ?>
     <div class="row">
         <div class="col-sm-12">
-            <?= $this->render('_cart_table', ['editable' => true]) ?>
+            <?php
+            foreach ((array)Blog::getData('carts') as $cart) {
+                $package = Blog::getData('packages', $cart['package_id']);
+                $product = Blog::getData('products', $package['product_id']);
+                //
+                $errors = [];
+                foreach ($cart['errors'] as $cartErrors) {
+                    foreach ($cartErrors as $cartError) {
+                        $errors[] = $cartError;
+                    }
+                }
+                echo $this->render('_cart_form', [
+                    'editable' => true,
+                    'errors' => $errors,
+                    'cart' => $cart,
+                    'package' => $package,
+                    'product' => $product,
+                ]);
+            }
+            ?>
         </div>
     </div>
     <div class="row mt-3">
         <div class="col-sm-12">
-            <?= $this->render('_invoice', ['model' => $model]) ?>
+            <?= $this->render('_invoice_form', ['model' => $model]) ?>
         </div>
     </div>
 <?php else : ?>
