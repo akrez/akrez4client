@@ -1,12 +1,18 @@
 <?php
 
 use app\models\Blog;
+use app\models\Invoice;
 use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
+use yii\helpers\HtmlPurifier;
 
 $this->title = Yii::t('app', 'View invoice');
+
+$invoice = new Invoice();
+$invoice->setScenario('view');
+$invoice->load(Blog::getData('invoice'), '');
 
 $this->registerCss("
 .table-vertical-align-middle td,
@@ -35,7 +41,6 @@ Breadcrumbs::widget([
         <h1><?= $this->title ?></h1>
     </div>
 </div>
-
 
 <div class="row">
     <div class="col-sm-12">
@@ -90,5 +95,54 @@ Breadcrumbs::widget([
             ]);
             ?>
         </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 pb20">
+        <table class="table table-bordered table-sm table-hover">
+            <tbody>
+                <tr>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('id') ?></td>
+                    <td><?= $invoice->id ?></td>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('created_at') ?></td>
+                    <td><?= Yii::$app->formatter->asDatetimefa($invoice->created_at) ?></td>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('updated_at') ?></td>
+                    <td><?= Yii::$app->formatter->asDatetimefa($invoice->updated_at) ?></td>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('price') ?></td>
+                    <td><?= Yii::$app->formatter->asPrice($invoice->price) ?></td>
+                </tr>
+                <tr>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('name') ?></td>
+                    <td><?= HtmlPurifier::process($invoice->name) ?></td>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('phone') ?></td>
+                    <td><?= HtmlPurifier::process($invoice->phone) ?></td>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('mobile') ?></td>
+                    <td><?= HtmlPurifier::process($invoice->mobile) ?></td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('city') ?></td>
+                    <td></td>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('postal_code') ?></td>
+                    <td><?= HtmlPurifier::process($invoice->postal_code) ?></td>
+                    <td class="table-active" colspan="4" rowspan="4">
+                        MAP
+                    </td>
+                </tr>
+                <tr>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('address') ?></td>
+                    <td colspan="3"><?= HtmlPurifier::process($invoice->address) ?></td>
+                </tr>
+                <tr>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('des') ?></td>
+                    <td colspan="3"><?= HtmlPurifier::process($invoice->des) ?></td>
+                </tr>
+                <tr>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('price') ?></td>
+                    <td colspan="3"><?= Yii::$app->formatter->asPrice($invoice->price) ?></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
