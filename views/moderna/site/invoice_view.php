@@ -1,0 +1,94 @@
+<?php
+
+use app\models\Blog;
+use yii\bootstrap4\Breadcrumbs;
+use yii\bootstrap4\Html;
+use yii\data\ArrayDataProvider;
+use yii\grid\GridView;
+
+$this->title = Yii::t('app', 'View invoice');
+
+$this->registerCss("
+.table-vertical-align-middle td,
+.table-vertical-align-middle thead th {
+    vertical-align: middle;
+    text-align: center;
+}
+");
+?>
+
+<?=
+Breadcrumbs::widget([
+    'homeLink' => [
+        'label' => Yii::t('yii', 'Home'),
+        'url' => Blog::firstPageUrl(),
+    ],
+    'links' => [
+        ['label' => Yii::t('app', 'Invoices'), 'url' => Blog::url('site/invoices')],
+        ['label' => $this->title],
+    ],
+]);
+?>
+
+<div class="row">
+    <div class="col-sm-12 pb-2">
+        <h1><?= $this->title ?></h1>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <?php
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => Blog::getData('invoiceItems'),
+            'modelClass' => 'app\models\Model',
+            'sort' => false,
+            'pagination' => false,
+        ]);
+        ?>
+        <div class="table-responsive">
+            <?=
+            GridView::widget([
+                'dataProvider' => $dataProvider,
+                'headerRowOptions' => [
+                    'class' => 'thead-dark',
+                ],
+                'tableOptions' => [
+                    'class' => 'table table-striped table-bordered table-sm table-hover table-vertical-align-middle',
+                ],
+                'columns' => [
+                    'code',
+                    [
+                        'attribute' => 'image',
+                        'format' => 'raw',
+                        'value' => function ($model, $key, $index, $grid) {
+                            if ($model['image']) {
+                                return Html::img(Blog::getImage('product', '400', $model['image']), [
+                                    "style" => "max-height: 51px;",
+                                ]);
+                            }
+                            return '';
+                        },
+                    ],
+                    'title',
+                    [
+                        'attribute' => 'image',
+                        'format' => 'raw',
+                        'value' => function ($model, $key, $index, $grid) {
+                            if ($model['color_code']) {
+                                return '<span class="border border-dark rounded" style="background-color:' . $model['color_code'] . '">⠀⠀</span> ' . Blog::colorLabel($model['color_code']);
+                            }
+                            return '';
+                        },
+                    ],
+                    'guaranty',
+                    'des',
+                    'price:price',
+                    'cnt',
+                ],
+            ]);
+            ?>
+        </div>
+    </div>
+</div>
