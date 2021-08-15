@@ -211,6 +211,13 @@ class Http extends Component
         return self::postJson('invoices', $params);
     }
 
+    public static function invoiceView($id)
+    {
+        return self::postJson('invoice-view', [], [
+            'invoice_id' => $id,
+        ]);
+    }
+
     public static function invoiceSubmit($invoice)
     {
         return self::postJson('invoice-submit', [

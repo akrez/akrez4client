@@ -31,7 +31,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['signout', 'cart', 'cart-add', 'cart-delete', 'invoices'],
+                        'actions' => ['signout', 'cart', 'cart-add', 'cart-delete', 'invoices', 'invoice-view'],
                         'allow' => true,
                         'verbs' => ['POST', 'GET'],
                         'roles' => ['@'],
@@ -221,6 +221,12 @@ class SiteController extends Controller
     {
         Http::invoices(Yii::$app->request->get());
         return $this->render('invoices');
+    }
+
+    public function actionInvoiceView($id)
+    {
+        Http::invoiceView($id);
+        return $this->render('invoice_view');
     }
 
     public function actionCart()

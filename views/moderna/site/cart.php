@@ -40,7 +40,6 @@ Breadcrumbs::widget([
                     }
                 }
                 echo $this->render('_cart_form', [
-                    'editable' => true,
                     'errors' => $errors,
                     'cart' => $cart,
                     'package' => $package,
