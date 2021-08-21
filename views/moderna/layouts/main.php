@@ -25,6 +25,12 @@ $this->registerMetaTag([
 ]);
 $blogSlug = Blog::print('slug');
 $this->title = Blog::normalizeArrayUnorder([$this->title, Blog::print('title'), $blogSlug], false, ' | ');
+if (Blog::print('google_site_verification')) {
+    $this->registerMetaTag([
+        'name' => 'google-site-verification',
+        'content' => Blog::print('google_site_verification'),
+    ], 'google-site-verification');
+}
 $this->registerMetaTag([
     'name' => 'description',
     'content' => (Blog::print('des') ? Blog::print('des') : Blog::normalizeArray([Blog::print('title'), $blogSlug, Blog::print('name')], false, ' - ')),

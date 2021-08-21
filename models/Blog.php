@@ -27,6 +27,7 @@ class Blog extends Model
     public $whatsapp;
     public $address;
     public $twitter;
+    public $google_site_verification;
     public $language;
     public $has_page;
     public $color;
@@ -140,7 +141,7 @@ class Blog extends Model
                 'name', 'title', 'slug', 'des', 'logo', 'language', 'created_at',
                 'email', 'phone', 'mobile', 'address',
                 'facebook', 'instagram', 'telegram', 'twitter', 'telegram_user', 'whatsapp',
-                'has_page', 'color',
+                'has_page', 'color', 'google_site_verification',
             ], 'safe']
         ];
     }
