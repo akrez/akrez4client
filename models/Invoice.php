@@ -20,6 +20,9 @@ namespace app\models;
  */
 class Invoice extends Model
 {
+    public $id;
+    public $updated_at;
+    public $created_at;
     public $name;
     public $mobile;
     public $phone;
@@ -29,6 +32,10 @@ class Invoice extends Model
     public $lat;
     public $lng;
     public $des;
+    //
+    public $status;
+    public $customer_id;
+    public $blog_name;
     //
     public $price;
     public $carts_count;
@@ -46,6 +53,8 @@ class Invoice extends Model
             [['address'], 'string'],
             [['lat',], 'match', 'pattern' => "/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/"],
             [['lng',], 'match', 'pattern' => "/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/"],
+            //
+            [['id', 'updated_at', 'created_at', 'name', 'mobile', 'phone', 'postal_code', 'city', 'address', 'lat', 'lng', 'des', 'status', 'customer_id', 'blog_name', 'price', 'carts_count',], 'safe', 'on' => 'view',],
         ];
     }
 }
