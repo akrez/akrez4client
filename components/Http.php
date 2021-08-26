@@ -230,6 +230,7 @@ class Http extends Component
             'postal_code' => $invoice->postal_code,
             'lat' => $invoice->lat,
             'lng' => $invoice->lng,
+            'receipt_file' => $invoice->receipt_file,
         ]);
     }
 }
