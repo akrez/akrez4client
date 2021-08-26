@@ -238,7 +238,9 @@ class SiteController extends Controller
                 if ($data['invoice']['errors']) {
                     $invoice->addErrors($data['invoice']['errors']);
                 } else {
-                    v('Hooo Hoooo');
+                    return $this->redirect(Blog::url('site/invoice-view', [
+                        'id' => $data['invoice']['id'],
+                    ]));
                 }
             }
         }

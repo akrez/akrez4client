@@ -24,9 +24,9 @@ var messages = ' . json_encode([
 $("#invoice-receipt-handler").change(function(e) {
     var img = e.target.files[0];
     new Compressor(img, {
-        quality: 1,
-        maxWidth: 1600,
-        maxHeight: 1600,
+        quality: 0.99,
+        maxWidth: 999,
+        maxHeight: 999,
         success(result) {
             var reader = new FileReader();
             reader.readAsDataURL(result);

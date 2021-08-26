@@ -32,6 +32,7 @@ class Invoice extends Model
     public $lat;
     public $lng;
     public $des;
+    public $receipt;
     public $receipt_file;
     //
     public $status;

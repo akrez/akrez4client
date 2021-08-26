@@ -140,7 +140,7 @@ Breadcrumbs::widget([
                     <td><?= HtmlPurifier::process($invoice->phone) ?></td>
                     <td class="table-active"><?= $invoice->getAttributeLabel('mobile') ?></td>
                     <td><?= HtmlPurifier::process($invoice->mobile) ?></td>
-                    <td colspan="4" rowspan="5" style="height: inherit;position: relative;">
+                    <td colspan="4" rowspan="6" style="height: inherit;position: relative;">
                         <div id="map" style="position: absolute;top: 0;bottom: 0;right: 0;left: 0;"></div>
                     </td>
                 </tr>
@@ -161,6 +161,18 @@ Breadcrumbs::widget([
                 <tr>
                     <td class="table-active"><?= $invoice->getAttributeLabel('price') ?></td>
                     <td colspan="3"><?= Yii::$app->formatter->asPrice($invoice->price) ?></td>
+                </tr>
+                <tr>
+                    <td class="table-active"><?= $invoice->getAttributeLabel('receipt') ?></td>
+                    <td colspan="3" class="text-center">
+                        <?php
+                        $src = Blog::getImage('receipt', '_', $invoice->receipt);
+                        $img = Html::img($src, [
+                            "style" => "max-height: 75px;",
+                        ]);
+                        echo Html::a($img, $src, ['target' => '_blank']);
+                        ?>
+                    </td>
                 </tr>
             </tbody>
         </table>
