@@ -23,7 +23,7 @@ $config = [
     'id' => 'basic',
     'name' => APP_NAME,
     'basePath' => BASE_PATH,
-    'language' => 'en-US',
+    'language' => 'fa-IR',
     'controllerNamespace' => 'app\controllers',
     'bootstrap' => [
         'log',
