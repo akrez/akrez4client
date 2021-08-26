@@ -75,6 +75,7 @@ class Model extends BaseModel
             'carts_count' => 'تعداد اقلام',
             'verify_token' => 'کد فعال‌سازی',
             'captcha' => 'کد تأیید',
+            'receipt_file' => 'رسید پرداخت',
 
             'receive_from' => 'تحویل از',
             'receive_until' => 'تحویل تا',
