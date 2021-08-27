@@ -103,7 +103,7 @@ Breadcrumbs::widget([
                     ],
                     'title',
                     [
-                        'attribute' => 'image',
+                        'attribute' => 'color',
                         'format' => 'raw',
                         'value' => function ($model, $key, $index, $grid) {
                             if ($model['color_code']) {
