@@ -44,6 +44,7 @@ class Model extends BaseModel
             'address' => 'آدرس',
             'package' => 'شرایط فروش',
             'user_id' => 'کاربر',
+            'blog_id' => 'کاربر',
             'content' => 'متن',
             'special' => 'ویژه',
             'options' => 'گزینه‌ها',
@@ -56,12 +57,14 @@ class Model extends BaseModel
             'password' => 'رمز عبور',
             'entity_id' => 'شناسه',
             'garanties' => 'گارانتی‌ها',
+            'identity' => 'شناسه',
             'label_yes' => 'جایگزین عبارت "بله"',
             'parent_id' => 'مرتبط با',
             'price_min' => 'کمترین قیمت',
             'price_max' => 'بیشترین قیمت',
             'value_max' => 'بیشترین مقدار فیلتر',
             'blog_name' => 'نام کاربری',
+            'verify_at' => 'تاریخ ارسال کد فعال‌سازی',
             'color_code' => 'رنگ',
             'in_summary' => 'نمایش در خلاصه',
             'updated_at' => 'تاریخ ویرایش',
@@ -74,11 +77,14 @@ class Model extends BaseModel
             'reset_token' => 'کد بازیابی رمز عبور',
             'carts_count' => 'تعداد اقلام',
             'verify_token' => 'کد فعال‌سازی',
+            'identity_type' => 'نوع شناسه',
             'captcha' => 'کد تأیید',
             'receipt' => 'رسید پرداخت',
             'receipt_file' => 'رسید پرداخت',
 
             'receive_from' => 'تحویل از',
+            'telegram_bot_token' => 'Telegram Bot Token',
+
             'receive_until' => 'تحویل تا',
         ];
     }
