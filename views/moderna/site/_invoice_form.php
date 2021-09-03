@@ -163,7 +163,7 @@ $(document).on("click", ".found-location", function() {
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
-                            <label class="btn btn-info mt-3" for="invoice-receipt-handler"><?= Yii::t('app', 'upload payment receipt image') ?></label>
+                            <label class="btn btn-info mt-3 mb-3" for="invoice-receipt-handler"><?= Yii::t('app', 'upload payment receipt image') ?></label>
                             <?php
                             echo $form->field($model, 'receipt_file', ['options' => ['class' => 'd-none']])->hiddenInput();
                             ?>

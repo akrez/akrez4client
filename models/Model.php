@@ -72,6 +72,7 @@ class Model extends BaseModel
             'product_id' => 'محصول',
             'package_id' => 'شرایط فروش',
             'cache_stock' => 'موجودی انبار',
+            'max_per_cart' => 'حداکثر مقدار مجاز در سبد خرید',
             'postal_code' => 'کد پستی',
             'category_id' => 'دسته‌بندی',
             'reset_token' => 'کد بازیابی رمز عبور',

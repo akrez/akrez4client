@@ -30,17 +30,16 @@ $this->registerCss("
         </div>
         <div class="col-sm-3 p-2 my-auto">
             <h6 class="text-center">
-                <?= HtmlPurifier::process(Yii::$app->formatter->asPrice($package['price'])) ?>
+                <span class="font-weight-bold"><?= $cart['cnt'] ?> ✖ </span><?= HtmlPurifier::process(Yii::$app->formatter->asPrice($package['price'])) ?>
             </h6>
             <?php
-            if ($package['stock'] > 0) {
-                echo $this->render('_cart_cnt', [
-                    'package' => $package,
-                    'cart' => $cart,
-                    'add' => false,
-                ]);
-            }
+            echo $this->render('_cart_cnt', [
+                'package' => $package,
+                'cart' => $cart,
+                'add' => false,
+            ]);
             ?>
+            <small><?= Yii::t('app', 'Max per cart') . ' : ' . $package['max_in_cart'] ?></small>
         </div>
         <div class="col-sm-1 p-2 my-auto text-center">
             <a class="text-danger" href="<?= Blog::url('site/cart-delete', ['id' => $package['id']]) ?>" data-confirm="<?= Yii::t('yii', 'Are you sure you want to delete this item?') ?>">
@@ -54,11 +53,6 @@ $this->registerCss("
                 'price_old' => Yii::$app->formatter->asPrice($cart['price_initial']),
                 'price_new' => Yii::$app->formatter->asPrice($package['price']),
             ]); ?>
-        </div>
-    <?php endif; ?>
-    <?php if ($package['stock'] < $cart['cnt']) : ?>
-        <div class="row p-2 no-gutters card-footer text-primary">
-            <?= Yii::t('app', 'Inventory left in stock is less than the specified amount'); ?>
         </div>
     <?php endif; ?>
     <?php if ($errors) : ?>

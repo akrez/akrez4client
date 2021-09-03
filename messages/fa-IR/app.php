@@ -39,6 +39,8 @@ return [
     'alertLoginSuccessfull' => 'با موفقیت وارد شدید، خوش آمدید!',
     'upload payment receipt image' => 'عکس رسید پرداخت را بارگذاری کنید',
     //
+    'Max per cart' => 'حداکثر مقدار مجاز در سبد خرید',
+    //
     'for example: 09123456789' => 'برای مثال: 09123456789',
     'if the captcha is illegible, click on it.' => 'در صورت ناخوانا بودن کپچا، روی آن کلیک کنید.',
     //

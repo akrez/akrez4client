@@ -153,12 +153,10 @@ Breadcrumbs::widget([
                     </div>
                     <div class="card-body p-2">
                         <?php
-                        if ($package['stock'] > 0) {
-                            echo $this->render('_cart_cnt', [
-                                'package' => $package,
-                                'productId' => Blog::getData('product', 'id'),
-                            ]);
-                        }
+                        echo $this->render('_cart_cnt', [
+                            'package' => $package,
+                            'productId' => Blog::getData('product', 'id'),
+                        ]);
                         ?>
                     </div>
                 </div>
