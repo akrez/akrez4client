@@ -34,7 +34,7 @@ $cart = $cart + [
 ];
 ?>
 <?php
-if ($package['stock'] > 0) {
+if ($package['max_in_cart'] > 0) {
     echo Html::beginForm(Blog::url('site/cart-add', [
         'add' => $add,
         'package_id' => $package['id'],
@@ -48,7 +48,7 @@ if ($package['stock'] > 0) {
                     <i class="fa fa-plus" aria-hidden="true"></i>
                 </div>
             </div>
-            <input name="cnt" type="text" value="<?= $cart['cnt'] ?>" data-max="<?= $package['stock'] ?>" class="form-control text-center">
+            <input name="cnt" type="text" value="<?= $cart['cnt'] ?>" data-max="<?= $package['max_in_cart'] ?>" class="form-control text-center">
             <div class="input-group-append">
                 <div class="btn btn-danger" onclick="changePackageCnt(this, -1)">
                     <i class="fa fa-minus" aria-hidden="true"></i>
