@@ -51,7 +51,10 @@ Breadcrumbs::widget([
     </div>
     <div class="row mt-3">
         <div class="col-sm-12">
-            <?= $this->render('_invoice_form', ['model' => $model]) ?>
+            <?= $this->render('_invoice_form', [
+                'model' => $model,
+                'price' => Blog::getData('price'),
+            ]) ?>
         </div>
     </div>
 <?php else : ?>

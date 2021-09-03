@@ -28,6 +28,7 @@ return [
     'Captcha' => 'کپچا',
     //
     'Add' => 'افزودن',
+    'Total Price' => 'قیمت نهایی',
     //
     'alertRemoveSuccessfull' => 'اطلاعات با موفقیت حذف شد.',
     'alertRemoveUnSuccessfull' => 'حذف اطلاعات با خطا مواجه شد.',
