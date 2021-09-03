@@ -27,6 +27,8 @@ return [
     'Password' => 'رمز عبور',
     'Captcha' => 'کپچا',
     //
+    'Add' => 'افزودن',
+    //
     'alertRemoveSuccessfull' => 'اطلاعات با موفقیت حذف شد.',
     'alertRemoveUnSuccessfull' => 'حذف اطلاعات با خطا مواجه شد.',
     'alertAddSuccessfull' => 'اطلاعات با موفقیت ایجاد شد.',
