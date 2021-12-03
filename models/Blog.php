@@ -31,7 +31,7 @@ class Blog extends Model
     public $language;
     public $has_page;
     public $color;
-    public $blog_account;
+    public $financial_account;
     //
     public static $data = null;
 
@@ -142,7 +142,7 @@ class Blog extends Model
                 'name', 'title', 'slug', 'des', 'logo', 'language', 'created_at',
                 'email', 'phone', 'mobile', 'address',
                 'facebook', 'instagram', 'telegram', 'twitter', 'telegram_user', 'whatsapp',
-                'has_page', 'color', 'google_site_verification', 'blog_account',
+                'has_page', 'color', 'google_site_verification', 'financial_account',
             ], 'safe']
         ];
     }
@@ -152,9 +152,9 @@ class Blog extends Model
         return self::print('name');
     }
 
-    public static function getBlogAccount()
+    public static function getFinancialAccount()
     {
-        return (array) Yii::$app->blog->blog_account;
+        return (array) Yii::$app->blog->financial_account;
     }
 
     public static function print($attribute)

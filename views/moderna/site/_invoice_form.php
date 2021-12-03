@@ -155,9 +155,9 @@ $(document).on("click", ".found-location", function() {
                     <div class="row">
                         <div class="col-sm-8">
                             <ul class="mb-0 pr-3">
-                                <?php foreach (Blog::getBlogAccount() as $account) : ?>
+                                <?php foreach (Blog::getFinancialAccount() as $account) : ?>
                                     <li>
-                                        <?= Blog::getConstant('blog_account_identity_type', $account['identity_type']) ?> <?= HtmlPurifier::process($account['name']) ?>
+                                        <?= Blog::getConstant('financial_account_identity_type', $account['identity_type']) ?> <?= HtmlPurifier::process($account['name']) ?>
                                         <br />
                                         <span class="text-monospace"><?= HtmlPurifier::process($account['identity']) ?></span>
                                     </li>
