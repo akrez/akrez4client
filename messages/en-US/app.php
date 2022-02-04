@@ -8,6 +8,7 @@ return [
     'Price' => 'Price',
     'Search' => 'Search',
     'Cart' => 'Cart',
+    'Deliveries' => 'My Delivery Addresses',
     'Invoice' => 'Invoice',
     'Guaranty' => 'Guaranty',
     'Categories' => 'Categories',

@@ -111,6 +111,7 @@ if (Yii::$app->user->isGuest) {
         'items' => [
             ['label' => Yii::t('app', 'Cart'), 'url' => Blog::url('site/cart')],
             ['label' => Yii::t('app', 'Invoices'), 'url' => Blog::url('site/invoices')],
+            ['label' => Yii::t('app', 'Deliveries'), 'url' => Blog::url('site/deliveries')],
             ['label' => Yii::t('app', 'Signout'), 'url' => Blog::url('site/signout')],
         ],
     ];

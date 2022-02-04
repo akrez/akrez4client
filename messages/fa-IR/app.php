@@ -8,6 +8,9 @@ return [
     'Price' => 'قیمت',
     'Search' => 'جستجو',
     'Cart' => 'سبد خرید من',
+    'Deliveries' => 'آدرس‌های من',
+    'Edit delivery' => 'ویرایش آدرس',
+    'Add delivery' => 'ثبت آدرس جدید',
     'Invoices' => 'سفارش‌های من',
     'Guaranty' => 'گارانتی',
     'Categories' => 'دسته‌بندی‌ها',
@@ -28,6 +31,8 @@ return [
     'Captcha' => 'کپچا',
     //
     'Add' => 'افزودن',
+    'Edit' => 'ویرایش',
+    'Delete' => 'حذف',
     'Total Price' => 'قیمت نهایی',
     //
     'alertRemoveSuccessfull' => 'اطلاعات با موفقیت حذف شد.',
@@ -43,6 +48,8 @@ return [
     'upload payment receipt image' => 'عکس رسید پرداخت را بارگذاری کنید',
     //
     'Max per cart' => 'حداکثر مقدار مجاز در سبد خرید',
+    //
+    'successfully removed' => 'با موفقیت حذف شد',
     //
     'for example: 09123456789' => 'برای مثال: 09123456789',
     'if the captcha is illegible, click on it.' => 'در صورت ناخوانا بودن کپچا، روی آن کلیک کنید.',

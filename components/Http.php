@@ -206,6 +206,57 @@ class Http extends Component
         ]);
     }
 
+    public static function deliveryDelete($id)
+    {
+        return self::postJson('delivery-delete', [], [
+            'delivery_id' => $id,
+        ]);
+    }
+
+    public static function deliveryAdd($invoice)
+    {
+        return self::postJson('delivery-add', [
+            'name' => $invoice->name,
+            'phone' => $invoice->phone,
+            'mobile' => $invoice->mobile,
+            'city' => $invoice->city,
+            'address' => $invoice->address,
+            'des' => $invoice->des,
+            'postal_code' => $invoice->postal_code,
+            'lat' => $invoice->lat,
+            'lng' => $invoice->lng,
+        ]);
+    }
+
+    public static function deliveryEdit($id, $invoice)
+    {
+        return self::postJson('delivery-edit', [
+            'name' => $invoice->name,
+            'phone' => $invoice->phone,
+            'mobile' => $invoice->mobile,
+            'city' => $invoice->city,
+            'address' => $invoice->address,
+            'des' => $invoice->des,
+            'postal_code' => $invoice->postal_code,
+            'lat' => $invoice->lat,
+            'lng' => $invoice->lng,
+        ], [
+            'delivery_id' => $id,
+        ]);
+    }
+
+    public static function deliveryView($id)
+    {
+        return self::postJson('delivery-view', [], [
+            'delivery_id' => $id,
+        ]);
+    }
+
+    public static function deliveries($params)
+    {
+        return self::postJson('deliveries', $params);
+    }
+
     public static function invoices($params)
     {
         return self::postJson('invoices', $params);

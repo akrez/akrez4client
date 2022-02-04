@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\Http;
 use app\models\Blog;
 use app\models\Customer;
+use app\models\Delivery;
 use app\models\Invoice;
 use SimpleXMLElement;
 use Yii;
@@ -31,7 +32,12 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['signout', 'cart', 'cart-add', 'cart-delete', 'invoices', 'invoice-view'],
+                        'actions' => [
+                            'signout',
+                            'cart', 'cart-add', 'cart-delete',
+                            'invoices', 'invoice-view',
+                            'deliveries', 'delivery-edit', 'delivery-delete', 'delivery-add',
+                        ],
                         'allow' => true,
                         'verbs' => ['POST', 'GET'],
                         'roles' => ['@'],
@@ -215,6 +221,62 @@ class SiteController extends Controller
             Yii::$app->session->setFlash('success', Yii::t('app', 'successfully removed from cart'));
         }
         return $this->redirect(Blog::url('site/cart'));
+    }
+
+    public function actionDeliveryAdd()
+    {
+        $delivery = new Delivery();
+        if ($delivery->load(Yii::$app->request->post())) {
+            $data = Http::deliveryAdd($delivery);
+            if ($delivery->load($data, 'delivery')) {
+                if ($data['delivery']['errors']) {
+                    $delivery->addErrors($data['delivery']['errors']);
+                } else {
+                    return $this->redirect(Blog::url('site/deliveries'));
+                }
+            }
+        } else {
+            $data = Http::info();
+        }
+        return $this->render('delivery_add', [
+            'model' => $delivery,
+        ]);
+    }
+
+    public function actionDeliveryDelete($id)
+    {
+        $data = Http::deliveryDelete($id);
+        if (isset($data['status']) && $data['status']) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'successfully removed'));
+        }
+        return $this->redirect(Blog::url('site/deliveries'));
+    }
+
+    public function actionDeliveryEdit($id)
+    {
+        $delivery = new Delivery();
+        if ($delivery->load(Yii::$app->request->post())) {
+            $data = Http::deliveryEdit($id, $delivery);
+            if ($delivery->load($data, 'delivery')) {
+                if ($data['delivery']['errors']) {
+                    $delivery->addErrors($data['delivery']['errors']);
+                } else {
+                    return $this->redirect(Blog::url('site/deliveries'));
+                }
+            }
+        } else {
+            $data = Http::deliveryView($id);
+            $delivery->load($data, 'delivery');
+        }
+        return $this->render('delivery_edit', [
+            'model' => $delivery,
+        ]);
+    }
+
+    public function actionDeliveries()
+    {
+        Http::deliveries(Yii::$app->request->get());
+        return $this->render('deliveries');
     }
 
     public function actionInvoices()
