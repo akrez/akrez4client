@@ -267,6 +267,7 @@ class SiteController extends Controller
         } else {
             $data = Http::deliveryView($id);
             $delivery->load($data, 'delivery');
+            @$delivery->id = $data['delivery']['id'];
         }
         return $this->render('delivery_edit', [
             'model' => $delivery,

@@ -30,6 +30,17 @@ Breadcrumbs::widget([
     </div>
 </div>
 
+<div class="row mb-2">
+    <div class="col-sm-12">
+
+        <a class="btn btn-success btn-social" href="<?= Blog::url('site/delivery-add') ?>">
+            <i class="fa fa-plus"></i></i>
+            <?= Yii::t('app', 'Add delivery') ?>
+        </a>
+
+    </div>
+</div>
+
 <?php if ($hasDeliveries) :
     $pagination = new Pagination([
         'pageSizeParam' => 'page_size',
@@ -40,69 +51,11 @@ Breadcrumbs::widget([
 ?>
     <div class="row">
         <div class="col-sm-12">
-
-            <a class="btn btn-success btn-social" href="<?= Blog::url('site/delivery-add') ?>">
-                <i class="fa fa-plus"></i></i>
-                <?= Yii::t('app', 'Add delivery') ?>
-            </a>
-
-            <?php
-            $sampleModel = new app\models\Model();
-            $dataProvider = new ArrayDataProvider([
-                'allModels' => Blog::getData('deliveries'),
-                'modelClass' => 'app\models\Model',
-                'sort' => false,
-                'pagination' => false,
-            ]);
-            ?>
-
             <div class="table-responsive">
-                <?=
-                GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'headerRowOptions' => [
-                        'class' => 'thead-dark',
-                    ],
-                    'tableOptions' => [
-                        'class' => 'table table-striped table-bordered table-hover table-sm table-vertical-align-middle',
-                    ],
-                    'columns' => [
-                        'name',
-                        [
-                            'attribute' => 'phone',
-                            'format' => 'raw',
-                            'value' => function ($model, $key, $index, $grid) {
-                                return $model['phone'] . "<br>" . $model['mobile'];
-                            },
-                        ],
-                        [
-                            'attribute' => 'city',
-                            'format' => 'raw',
-                            'value' => function ($model, $key, $index, $grid) use ($sampleModel) {
-                                return Blog::getApiConstant(Blog::print('language'), ['city', $model['city']]) . " | " . $model['address'] .
-                                    "<br>" .
-                                    $sampleModel->getAttributeLabel('postal_code') . " | " . $model['postal_code'] .
-                                    "<br>" .
-                                    "<small>" . $model['des'] . "</small>";
-                            },
-                        ],
-                        [
-                            'label' => '',
-                            'format' => 'raw',
-                            'value' => function ($model, $key, $index, $grid) {
-                                return '<a class="btn btn-primary btn-block btn-social btn-sm" href="' . Blog::url('site/delivery-edit', ['id' => $model['id']]) . '" >' .
-                                    '<i class="far fa-eye"></i></i>' .
-                                    Yii::t('app', 'Edit') .
-                                    '</a>' .
-                                    '<a class="btn btn-danger btn-block btn-social btn-sm" href="' . Blog::url('site/delivery-delete', ['id' => $model['id']]) . '" data-confirm="' . Yii::t('yii', 'Are you sure you want to delete this item?') . '">' .
-                                    '<i class="fas fa-trash fa-2x"></i>' .
-                                    Yii::t('app', 'Delete') .
-                                    '</a>';
-                            },
-                        ],
-                    ],
-                ]);
-                ?>
+                <?= $this->render('_delivery_table', [
+                    'allModels' => Blog::getData('deliveries'),
+                    'isEditMode' => true,
+                ]) ?>
             </div>
         </div>
     </div>

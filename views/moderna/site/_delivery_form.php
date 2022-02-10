@@ -26,11 +26,11 @@ $this->registerJs('
 var latLng = ' . json_encode($latLng) . ';
 var map = L.map("map", {
     center: latLng,
-    zoom: 13
+    zoom: 14
 });
 var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 var osmLayer = new L.TileLayer(osmUrl, {
-    maxZoom: 19
+    maxZoom: 14
 });
 map.addLayer(osmLayer);
 
@@ -45,7 +45,7 @@ function centerLeafletMapOnMarker(latLng) {
 function getCurrentLocation() {
     map.locate({
         setView: true,
-        maxZoom: 13
+        maxZoom: 14
     });
 }
 
@@ -144,7 +144,9 @@ $(document).on("click", ".found-location", function() {
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary"> <?= Yii::t('app', 'Edit delivery') ?> </button>
+                    <button type="submit" class="btn <?= $model['id'] ? 'btn-primary' : 'btn-success' ?>">
+                        <?= $model['id'] ? Yii::t('app', 'Edit delivery') : Yii::t('app', 'Add delivery') ?>
+                    </button>
                 </div>
             </div>
         </div>

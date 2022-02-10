@@ -41,11 +41,9 @@ $this->registerCss("
             ?>
             <small><?= Yii::t('app', 'Max per cart') . ' : ' . $package['max_in_cart'] ?></small>
         </div>
-        <div class="col-sm-1 p-2 my-auto text-center">
-            <a class="text-danger" href="<?= Blog::url('site/cart-delete', ['id' => $package['id']]) ?>" data-confirm="<?= Yii::t('yii', 'Are you sure you want to delete this item?') ?>">
-                <i class="fas fa-trash fa-2x"></i>
-            </a>
-        </div>
+        <a class="col-sm-1 p-2 border-right text-center text-danger" href="<?= Blog::url('site/cart-delete', ['id' => $package['id']]) ?>" data-confirm="<?= Yii::t('yii', 'Are you sure you want to delete this item?') ?>">
+            <i class="fas fa-trash fa-2x"></i>
+        </a>
     </div>
     <?php if ($package['price'] != $cart['price_initial']) : ?>
         <div class="row p-2 no-gutters card-body text-primary border-top">
