@@ -1,7 +1,6 @@
 <?php
 
 use app\assets\cdn\CompressorJsAsset;
-use app\assets\cdn\LeafletAsset;
 use app\models\Blog;
 use yii\web\View;
 use yii\helpers\Url;
@@ -9,13 +8,7 @@ use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 use yii\helpers\HtmlPurifier;
 
-LeafletAsset::register($this);
 CompressorJsAsset::register($this);
-
-$latLng = [
-    'lat' => ($model->lat ? doubleval($model->lat) : null),
-    'lng' => ($model->lng ? doubleval($model->lng) : null),
-];
 
 $this->registerJs('
 var messages = ' . json_encode([
@@ -42,57 +35,6 @@ $("#invoice-receipt-handler").change(function(e) {
 
     });
 });
-
-var latLng = ' . json_encode($latLng) . ';
-var map = L.map("map", {
-    center: [0.00, 0.00],
-    zoom: 13
-});
-var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-var osmLayer = new L.TileLayer(osmUrl, {
-    maxZoom: 19
-});
-map.addLayer(osmLayer);
-
-var marker = L.marker([0.00, 0.00]).addTo(map);
-
-function centerLeafletMapOnMarker(latLng) {
-    marker.setLatLng(latLng);
-    $("#invoice-lat").val(latLng.lat);
-    $("#invoice-lng").val(latLng.lng);
-}
-
-function getCurrentLocation() {
-    map.locate({
-        setView: true,
-        maxZoom: 14
-    });
-}
-
-if (latLng.lat > 0 && latLng.lng > 0) {
-    map.setView(latLng);
-    map.setZoom(19);
-    centerLeafletMapOnMarker(latLng);
-} else {
-    getCurrentLocation();
-}
-
-map.on("move", function() {
-    centerLeafletMapOnMarker(map.getCenter());
-});
-map.on("dragend", function() {
-    centerLeafletMapOnMarker(map.getCenter());
-});
-
-map.on("locationfound", function(e) {
-    centerLeafletMapOnMarker(e.latlng);
-});
-
-$(document).on("click", ".found-location", function() {
-    getCurrentLocation();
-});
-
-
 ', View::POS_READY);
 ?>
 <div class="row">
@@ -107,47 +49,13 @@ $(document).on("click", ".found-location", function() {
                 ],
             ]
         ]);
-        ?>
-        <div class="row">
-            <div class="col-sm-4">
-                <?= $form->field($model, 'name')->textInput(); ?>
-            </div>
-            <div class="col-sm-4">
-                <?= $form->field($model, 'mobile')->textInput(['placeholder' => '09101234567']); ?>
-            </div>
-            <div class="col-sm-4">
-                <?= $form->field($model, 'phone')->textInput(['placeholder' => '02199876543']); ?>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-5">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <?= $form->field($model, 'city')->dropdownList((array)Blog::getApiConstant(Blog::print('language'), ['city'])); ?>
-                    </div>
-                    <div class="col-sm-12">
-                        <?= $form->field($model, 'postal_code')->textInput(['placeholder' => '1234512345']); ?>
-                    </div>
-                    <div class="col-sm-12">
-                        <?= $form->field($model, 'address')->textarea(["rows" => "5"]); ?>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-7">
-                <div id="map" style="width:100%; height:254px;">
-                    <div class="btn-toolbar" style="left: 0;bottom: 0;position: absolute;margin: 10px;z-index: 9999;">
-                        <div class="btn-group mr-2">
-                            <button type="button" class="btn btn-light found-location"><i class="fas fa-map-marker-alt"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <?php
-                echo $form->field($model, 'lat', ['options' => ['class' => 'd-none']])->hiddenInput(['id' => 'invoice-lat']);
-                echo $form->field($model, 'lng', ['options' => ['class' => 'd-none']])->hiddenInput(['id' => 'invoice-lng']);
-                ?>
-            </div>
-        </div>
+        echo $this->render('_delivery_table', [
+            'allModels' => Blog::getData('deliveries'),
+            'isSelectMode' => true,
+        ]);
+
+        ?>
 
         <div class="row">
             <div class="col-sm-12">
@@ -163,7 +71,7 @@ $(document).on("click", ".found-location", function() {
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
-                            <h6 class="font-weight-bolder mt-2 mb-2"><?= Yii::t('app', 'Total Price') . ': ' . Yii::$app->formatter->asPrice($price) ?></h6>
+                            <h6 class="font-weight-bolder mt-2 mb-2"><?= Yii::t('app', 'Total Price') . ': ' . Yii::$app->formatter->asPrice(Blog::getData('price')) ?></h6>
                             <label class="btn btn-info mt-3 mb-3" for="invoice-receipt-handler"><?= Yii::t('app', 'upload payment receipt image') ?></label>
                             <?php
                             echo $form->field($model, 'receipt_file', ['options' => ['class' => 'd-none']])->hiddenInput();
