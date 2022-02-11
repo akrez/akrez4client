@@ -14,4 +14,7 @@ return [
     'Categories' => 'Categories',
     'Reset Password Request' => 'Reset Password Request',
     'Inventory left in stock is less than the specified amount' => 'Inventory left in stock is less than the specified amount',
+
+    
+    'receipt_file' => 'receipt',
 ];

@@ -206,6 +206,22 @@ class Http extends Component
         ]);
     }
 
+    public static function paymentAdd($receipt_file, $invoice_id = null)
+    {
+        return self::postJson('payment-add', [
+            'receipt_file' => $receipt_file,
+        ], [
+            'invoice_id' => $invoice_id,
+        ]);
+    }
+
+    public static function paymentDelete($payment_id)
+    {
+        return self::postJson('payment-delete', [], [
+            'payment_id' => $payment_id,
+        ]);
+    }
+
     public static function deliveryDelete($id)
     {
         return self::postJson('delivery-delete', [], [

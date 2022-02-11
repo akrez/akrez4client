@@ -26,6 +26,8 @@ if (!isset($add)) {
 }
 $add = boolval($add);
 //
+$renderCart = (isset($renderCart) && $renderCart ? 'true' : '');
+//
 if (!isset($cart)) {
     $cart = [];
 }
@@ -39,7 +41,8 @@ if ($package['max_in_cart'] > 0) {
         'add' => $add,
         'package_id' => $package['id'],
         'product_id' => $productId,
-    ]), 'get');
+        'render_cart' => $renderCart,
+    ]), 'get', ['data-pjax' => '1',]);
 ?>
     <div class="p-0">
         <div class="input-group input-group-sm">

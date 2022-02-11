@@ -19,6 +19,7 @@ $dataProvider = new ArrayDataProvider([
 ]);
 
 echo GridView::widget([
+    'layout' => "{items}\n{pager}",
     'dataProvider' => $dataProvider,
     'headerRowOptions' => [
         'class' => 'thead-dark',

@@ -35,6 +35,8 @@ return [
     'Delete' => 'حذف',
     'Total Price' => 'قیمت نهایی',
     //
+    'receipt_file' => 'رسید پرداخت',
+    //
     'alertRemoveSuccessfull' => 'اطلاعات با موفقیت حذف شد.',
     'alertRemoveUnSuccessfull' => 'حذف اطلاعات با خطا مواجه شد.',
     'alertAddSuccessfull' => 'اطلاعات با موفقیت ایجاد شد.',

@@ -37,6 +37,7 @@ class SiteController extends Controller
                             'cart', 'cart-add', 'cart-delete',
                             'invoices', 'invoice-view',
                             'deliveries', 'delivery-edit', 'delivery-delete', 'delivery-add',
+                            'payment-add', 'payment-delete', 'payments',
                         ],
                         'allow' => true,
                         'verbs' => ['POST', 'GET'],
@@ -190,9 +191,20 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionCartAdd($package_id, $cnt = 1, $add = true, $product_id = null)
+    public function actionCartAdd($package_id, $cnt = 1, $add = true, $product_id = null, $render_cart = null)
     {
         $data = Http::cartAdd($package_id, $cnt, $add);
+
+        if (Yii::$app->request->isAjax) {
+            if ($render_cart) {
+                return $this->cart();
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'cart' => $data['cart'],
+            ];
+        }
+
         if (empty($data['cart']['errors'])) {
             if ($add) {
                 Yii::$app->session->setFlash('success', Yii::t('app', 'successfully added to cart'));
@@ -214,12 +226,67 @@ class SiteController extends Controller
         return $this->redirect(Blog::url('site/cart'));
     }
 
-    public function actionCartDelete($id)
+    public function actionCartDelete($id, $render_cart = null)
     {
         $data = Http::cartDelete($id);
+        if (Yii::$app->request->isAjax) {
+            if ($render_cart) {
+                return $this->cart();
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'status' => $data['status'],
+            ];
+        }
         if (isset($data['status']) && $data['status']) {
             Yii::$app->session->setFlash('success', Yii::t('app', 'successfully removed from cart'));
         }
+        return $this->redirect(Blog::url('site/cart'));
+    }
+
+    public function actionPaymentAdd($invoice_id = null, $render_cart = null)
+    {
+        $receiptFile = Yii::$app->request->post('receipt_file');
+
+        $data = Http::paymentAdd($receiptFile, $invoice_id);
+
+        if (Yii::$app->request->isAjax) {
+            if ($render_cart) {
+                return $this->cart();
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'payment' => $data['payment'],
+            ];
+        }
+
+        $errors = [];
+        foreach ($data['payment']['errors'] as $dataErrors) {
+            foreach ($dataErrors as $error) {
+                $errors[] = $error;
+            }
+        }
+        if ($errors) {
+            Yii::$app->session->setFlash('error', $errors);
+        }
+
+        return $this->redirect(Blog::url('site/cart'));
+    }
+
+    public function actionPaymentDelete($payment_id = null, $render_cart = null)
+    {
+        $data = Http::paymentDelete($payment_id);
+
+        if (Yii::$app->request->isAjax) {
+            if ($render_cart) {
+                return $this->cart();
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'status' => $data['status'],
+            ];
+        }
+
         return $this->redirect(Blog::url('site/cart'));
     }
 
@@ -267,7 +334,9 @@ class SiteController extends Controller
         } else {
             $data = Http::deliveryView($id);
             $delivery->load($data, 'delivery');
-            @$delivery->id = $data['delivery']['id'];
+            if (isset($data['delivery']['id'])) {
+                $delivery->id = $data['delivery']['id'];
+            }
         }
         return $this->render('delivery_edit', [
             'model' => $delivery,
@@ -292,10 +361,10 @@ class SiteController extends Controller
         return $this->render('invoice_view');
     }
 
-    public function actionCart()
+    private function cart($post = [])
     {
         $invoice = new Invoice();
-        if ($invoice->load(Yii::$app->request->post())) {
+        if ($invoice->load($post)) {
             $data = Http::invoiceSubmit($invoice);
             if ($invoice->load($data, 'invoice')) {
                 if ($data['invoice']['errors']) {
@@ -311,6 +380,11 @@ class SiteController extends Controller
         return $this->render('cart', [
             'model' => $invoice,
         ]);
+    }
+
+    public function actionCart()
+    {
+        return $this->cart(Yii::$app->request->post());
     }
 
     public function actionVerifyRequest()
