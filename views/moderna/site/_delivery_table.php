@@ -30,7 +30,7 @@ echo GridView::widget([
     'columns' => [
         [
             'class' => 'yii\grid\RadioButtonColumn',
-            'name' => 'delivery_id',
+            'name' => 'Invoice[parent_delivery_id]',
             'radioOptions' => function ($model) use ($selectedDeliveryId) {
                 return [
                     'value' => (isset($model['id']) ? $model['id'] : null),

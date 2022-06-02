@@ -1,13 +1,16 @@
 <?php
 
 use app\models\Blog;
+use app\models\Model;
 use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\LinkPager;
 use yii\data\ArrayDataProvider;
 use yii\data\Pagination;
 use yii\grid\GridView;
+use yii\helpers\HtmlPurifier;
 
 $this->title = Yii::t('app', 'Invoices');
+$sampleModel = new Model();
 $hasInvoices = boolval(Blog::getData('invoices'));
 
 $this->registerCss("
@@ -66,25 +69,51 @@ Breadcrumbs::widget([
                         'class' => 'table table-striped table-bordered table-hover table-sm table-vertical-align-middle',
                     ],
                     'columns' => [
-                        'id',
-                        'price:price',
-                        'carts_count',
-                        'updated_at:datetimefa',
-                        'name',
-                        'phone',
-                        'mobile',
                         [
-                            'attribute' => 'city',
-                            'format' => 'raw',
+                            'attribute' => 'invoice.id',
+                            'label' => $sampleModel->getAttributeLabel('id'),
+                        ],
+                        [
+                            'attribute' => 'invoice.status',
+                            'label' => $sampleModel->getAttributeLabel('status'),
                             'value' => function ($model, $key, $index, $grid) {
-                                return Blog::getApiConstant(Blog::print('language'), ['city', $model['city']]);
+                                if (isset($model['invoice']['status'])) {
+                                    return Blog::getConstant('invoice_valid_statuses', $model['invoice']['status']);
+                                }
+                                return '';
                             },
+                        ],
+                        [
+                            'attribute' => 'invoice.updated_at',
+                            'format' => 'datetimefa',
+                            'label' => $sampleModel->getAttributeLabel('updated_at'),
+                        ],
+                        [
+                            'format' => 'raw',
+                            'label' => $sampleModel->getAttributeLabel('address'),
+                            'value' => function ($model, $key, $index, $grid) use ($sampleModel) {
+                                foreach ($model['deliveries'] as $delivery) {
+                                    if ($delivery['id'] == $model['invoice']['delivery_id']) {
+                                        return Blog::getConstant('city', $delivery['city']) . " | " . HtmlPurifier::process($delivery['address']);
+                                    }
+                                }
+                            },
+
+                        ],
+                        [
+                            'attribute' => 'invoice.price',
+                            'format' => 'price',
+                            'label' => $sampleModel->getAttributeLabel('price'),
+                        ],
+                        [
+                            'attribute' => 'invoice.carts_count',
+                            'label' => $sampleModel->getAttributeLabel('carts_count'),
                         ],
                         [
                             'label' => '',
                             'format' => 'raw',
                             'value' => function ($model, $key, $index, $grid) {
-                                return '<a class="btn btn-primary btn-block btn-social" href="' . Blog::url('site/invoice-view', ['id' => $model['id']]) . '" >' .
+                                return '<a class="btn btn-primary btn-block btn-social" href="' . Blog::url('site/invoice-view', ['id' => $model['invoice']['id']]) . '" >' .
                                     '<i class="far fa-eye"></i></i>' .
                                     Yii::t('app', 'View invoice') .
                                     '</a>';

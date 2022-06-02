@@ -206,10 +206,10 @@ class Http extends Component
         ]);
     }
 
-    public static function paymentAdd($receipt_file, $invoice_id = null)
+    public static function paymentAdd($payment_name_file, $invoice_id = null)
     {
         return self::postJson('payment-add', [
-            'receipt_file' => $receipt_file,
+            'payment_name_file' => $payment_name_file,
         ], [
             'invoice_id' => $invoice_id,
         ]);
@@ -285,19 +285,18 @@ class Http extends Component
         ]);
     }
 
+    public static function invoiceMessageCreate($id, $params)
+    {
+        return self::postJson('invoice-message-create', $params, [
+            'invoice_id' => $id,
+        ]);
+    }
+
     public static function invoiceSubmit($invoice)
     {
         return self::postJson('invoice-submit', [
-            'name' => $invoice->name,
-            'phone' => $invoice->phone,
-            'mobile' => $invoice->mobile,
-            'city' => $invoice->city,
-            'address' => $invoice->address,
             'des' => $invoice->des,
-            'postal_code' => $invoice->postal_code,
-            'lat' => $invoice->lat,
-            'lng' => $invoice->lng,
-            'receipt_file' => $invoice->receipt_file,
+            'parent_delivery_id' => $invoice->parent_delivery_id,
         ]);
     }
 }

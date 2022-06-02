@@ -47,14 +47,14 @@ a.thumbnail {
 $this->registerJs('
 var constants = ' . json_encode([
     'messages' => [
-        'compressor_error' => Yii::t('yii', 'The file "{file}" is not an image.', ['file' => Yii::t('app', 'receipt_file')]),
+        'compressor_error' => Yii::t('yii', 'The file "{file}" is not an image.', ['file' => Yii::t('app', 'payment_name_file')]),
     ],
     'urls' => [
         'payment_add' => Blog::url('payment-add', ['render_cart' => 'true',]),
     ]
 ]) . ';
 
-$(document).on("change", "#invoice-receipt-handler", function(e) {
+$(document).on("change", "#invoice-payment_name-handler", function(e) {
     var img = e.target.files[0];
     new Compressor(img, {
         quality: 0.99,
@@ -68,7 +68,7 @@ $(document).on("change", "#invoice-receipt-handler", function(e) {
                     type: "POST",
                     url: constants.urls.payment_add,
                     data: {
-                        receipt_file: reader.result
+                        payment_name_file: reader.result
                     },
                     complete: function(jqXHR, textStatus) {
                         $(".ajax-splash-show").css("display","none");
@@ -193,16 +193,16 @@ $(document).on("pjax:complete", function(xhr, textStatus, options) {
                     <?php endforeach; ?>
                 </ul>
                 <h6 class="font-weight-bolder mt-2 mb-2"><?= Yii::t('app', 'Total Price') . ': ' . Yii::$app->formatter->asPrice(Blog::getData('price')) ?></h6>
-                <label class="btn btn-info mb-1" for="invoice-receipt-handler"><?= Yii::t('app', 'upload payment receipt image') ?></label>
-                <input type="file" id="invoice-receipt-handler" class="d-none" />
+                <label class="btn btn-info mb-1" for="invoice-payment_name-handler"><?= Yii::t('app', 'upload payment image') ?></label>
+                <input type="file" id="invoice-payment_name-handler" class="d-none" />
             </div>
             <?php
             foreach (Blog::getData('payments') as $payment) :
             ?>
                 <div class="thumbnail mb-1 col-sm-6 col-md-4">
-                    <a style="position: relative" data-pjax="0" target="_blank" href="<?= Blog::getImage('receipt', '_', $payment['receipt']) ?>">
+                    <a style="position: relative" data-pjax="0" target="_blank" href="<?= Blog::getImage('payment', '_', $payment['payment_name']) ?>">
                         <?php
-                        echo Html::img(Blog::getImage('receipt', '400', $payment['receipt']), ['class' => 'img-fluid rounded',]);
+                        echo Html::img(Blog::getImage('payment', '400', $payment['payment_name']), ['class' => 'img-fluid rounded',]);
                         ?>
                     </a>
                     <a style="position: absolute; right: 25px; top: 10px" class="btn btn-danger btn-sm" data-pjax="true" href="<?= Blog::url('payment-delete', ['payment_id' => $payment['id'], 'render_cart' => 'true',]) ?>" data-confirm="<?= Yii::t('yii', 'Are you sure you want to delete this item?') ?>">

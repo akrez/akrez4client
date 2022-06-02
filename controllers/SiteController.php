@@ -7,6 +7,7 @@ use app\models\Blog;
 use app\models\Customer;
 use app\models\Delivery;
 use app\models\Invoice;
+use app\models\InvoiceMessage;
 use SimpleXMLElement;
 use Yii;
 use yii\helpers\Url;
@@ -246,9 +247,9 @@ class SiteController extends Controller
 
     public function actionPaymentAdd($invoice_id = null, $render_cart = null)
     {
-        $receiptFile = Yii::$app->request->post('receipt_file');
+        $paymentNameFile = Yii::$app->request->post('payment_name_file');
 
-        $data = Http::paymentAdd($receiptFile, $invoice_id);
+        $data = Http::paymentAdd($paymentNameFile, $invoice_id);
 
         if (Yii::$app->request->isAjax) {
             if ($render_cart) {
@@ -357,8 +358,26 @@ class SiteController extends Controller
 
     public function actionInvoiceView($id)
     {
-        Http::invoiceView($id);
-        return $this->render('invoice_view');
+        $data = Http::invoiceView($id);
+        $invoiceMessage = new InvoiceMessage();
+
+        $post = Yii::$app->request->post();
+        $state = Yii::$app->request->get('state', '');
+        $invoiceMessage = new InvoiceMessage();
+
+        if ($state) {
+            if ($state == 'newMessage' and $invoiceMessage->load($post)) {
+                Http::invoiceMessageCreate($id, [
+                    'message' => $invoiceMessage->message,
+                ]);
+            }
+
+            return $this->redirect(Blog::url('site/invoice-view', ['id' => $id]));
+        }
+
+        return $this->render('invoice_view', $data + [
+            'invoiceMessageModel' => $invoiceMessage,
+        ]);
     }
 
     private function cart($post = [])

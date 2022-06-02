@@ -26,7 +26,9 @@ Breadcrumbs::widget([
 </div>
 
 <?php if ($hasCarts) : ?>
-    <?= $this->render('_carts') ?>
+    <?= $this->render('_carts', [
+        'model' => $model,
+    ]) ?>
 <?php else : ?>
     <div class="row">
         <div class="col-sm-12">

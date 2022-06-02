@@ -151,6 +151,6 @@ $(document).on("click", ".found-location", function() {
             </div>
         </div>
         <?php ActiveForm::end(); ?>
-        <input type="file" id="invoice-receipt-handler" class="d-none" />
+        <input type="file" id="invoice-payment_name-handler" class="d-none" />
     </div>
 </div>

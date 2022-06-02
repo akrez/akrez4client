@@ -3,178 +3,297 @@
 use app\assets\cdn\LeafletAsset;
 use app\models\Blog;
 use app\models\Invoice;
+use app\models\Model;
+use yii\bootstrap4\ActiveField;
+use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html as HelpersHtml;
 use yii\helpers\HtmlPurifier;
+
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\InvoiceSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+const IS_CUSTOMER = true;
+
+function getAttributeLabelOfDelivery($attribute)
+{
+    $model = Model::instance();
+    return $model->getAttributeLabel($attribute);
+}
+
+function getInvoiceValidStatuses()
+{
+    return Blog::getConstant('invoice_valid_statuses');
+}
 
 $this->title = Yii::t('app', 'View invoice');
 
-$invoice = new Invoice();
-$invoice->setScenario('view');
-$invoice->load(Blog::getData('invoice'), '');
+$deliveries = ArrayHelper::index($deliveries, 'id');
+$delivery = $deliveries[$invoice['delivery_id']];
 
 LeafletAsset::register($this);
 
 $this->registerCss("
-.table-vertical-align-middle td,
-.table-vertical-align-middle thead th {
-    vertical-align: middle;
-    text-align: center;
-}
 ");
-
-$this->registerJs('
-var latLng = ' . json_encode([$invoice->lat,  $invoice->lng,]) . ';
-var map = L.map("map", {
-    center: latLng,
-    zoom: 14
-});
-//map.dragging.disable();
-var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-var osmLayer = new L.TileLayer(osmUrl, {
-    maxZoom: 19
-});
-map.addLayer(osmLayer);
-
-var marker = L.marker(latLng).addTo(map);
-map.on("move", function() {
-    marker.setLatLng(latLng);
-});
-map.on("dragend", function() {
-    marker.setLatLng(latLng);
-});
-');
 ?>
 
-<?=
-Breadcrumbs::widget([
-    'homeLink' => [
-        'label' => Yii::t('yii', 'Home'),
-        'url' => Blog::firstPageUrl(),
-    ],
-    'links' => [
-        ['label' => Yii::t('app', 'Invoices'), 'url' => Blog::url('site/invoices')],
-        ['label' => $this->title],
-    ],
-]);
-?>
+<style>
+    .table td {
+        vertical-align: middle !important;
+        text-align: center;
+    }
 
-<div class="row">
-    <div class="col-sm-12 pb-2">
-        <h1><?= $this->title ?></h1>
-    </div>
-</div>
+    .table-vertical-align-middle td,
+    .table-vertical-align-middle thead th {
+        vertical-align: middle;
+        text-align: center;
+    }
 
-<div class="row">
+    .deprecated-card text-white {
+        opacity: .58;
+    }
+
+    .deprecated-card:hover {
+        opacity: 1;
+    }
+
+    .max-height-256 {
+        max-height: 256px;
+    }
+</style>
+
+<h1 class="mb-2"><?= Html::encode($this->title) ?></h1>
+
+<div class="row mb-2">
     <div class="col-sm-12">
-        <?php
-        $dataProvider = new ArrayDataProvider([
-            'allModels' => Blog::getData('invoiceItems'),
-            'modelClass' => 'app\models\Model',
-            'sort' => false,
-            'pagination' => false,
-        ]);
-        ?>
-        <div class="table-responsive">
-            <?=
-            GridView::widget([
-                'dataProvider' => $dataProvider,
-                'headerRowOptions' => [
-                    'class' => 'thead-dark',
-                ],
-                'tableOptions' => [
-                    'class' => 'table table-striped table-bordered table-sm table-hover table-vertical-align-middle',
-                ],
-                'columns' => [
-                    'code',
-                    [
-                        'attribute' => 'image',
-                        'format' => 'raw',
-                        'value' => function ($model, $key, $index, $grid) {
-                            if ($model['image']) {
-                                return Html::img(Blog::getImage('product', '400', $model['image']), [
-                                    "style" => "max-height: 51px;",
-                                ]);
-                            }
-                            return '';
-                        },
-                    ],
-                    'title',
-                    [
-                        'attribute' => 'color',
-                        'format' => 'raw',
-                        'value' => function ($model, $key, $index, $grid) {
-                            if ($model['color_code']) {
-                                return '<span class="border border-dark rounded" style="background-color:' . $model['color_code'] . '">⠀⠀</span> ' . Blog::colorLabel($model['color_code']);
-                            }
-                            return '';
-                        },
-                    ],
-                    'guaranty',
-                    'des',
-                    'price:price',
-                    'cnt',
-                ],
-            ]);
-            ?>
+        <div class="btn-group btn-group-md d-flex" role="group">
+            <?php
+            foreach (getInvoiceValidStatuses() as $validStatusKey => $validStatus) {
+                $validStatusBtnClass = 'btn-light';
+                if ($validStatusKey < $invoice['status']) {
+                    $validStatusBtnClass = 'btn-success';
+                } elseif ($invoice['status'] == $validStatusKey) {
+                    $validStatusBtnClass = 'btn-info';
+                }
+                echo '<div href="" class="btn ' . $validStatusBtnClass . ' w-100">' . $validStatus . '</div>';
+            } ?>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-12 pb20">
-        <table class="table table-bordered table-sm table-hover">
-            <tbody>
-                <tr>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('name') ?></td>
-                    <td colspan="3"><?= HtmlPurifier::process($invoice->name) ?></td>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('updated_at') ?></td>
-                    <td><?= Yii::$app->formatter->asDatetimefa($invoice->updated_at) ?></td>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('created_at') ?></td>
-                    <td><?= Yii::$app->formatter->asDatetimefa($invoice->created_at) ?></td>
-                </tr>
-                <tr>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('phone') ?></td>
-                    <td><?= HtmlPurifier::process($invoice->phone) ?></td>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('mobile') ?></td>
-                    <td><?= HtmlPurifier::process($invoice->mobile) ?></td>
-                    <td colspan="4" rowspan="6" style="height: inherit;position: relative;">
-                        <div id="map" style="position: absolute;top: 0;bottom: 0;right: 0;left: 0;"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('city') ?></td>
-                    <td><?= Blog::getConstant('city', $invoice->city) ?></td>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('postal_code') ?></td>
-                    <td><?= HtmlPurifier::process($invoice->postal_code) ?></td>
-                </tr>
-                <tr>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('address') ?></td>
-                    <td colspan="3"><?= HtmlPurifier::process($invoice->address) ?></td>
-                </tr>
-                <tr>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('des') ?></td>
-                    <td colspan="3"><?= HtmlPurifier::process($invoice->des) ?></td>
-                </tr>
-                <tr>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('price') ?></td>
-                    <td colspan="3"><?= Yii::$app->formatter->asPrice($invoice->price) ?></td>
-                </tr>
-                <tr>
-                    <td class="table-active"><?= $invoice->getAttributeLabel('receipt') ?></td>
-                    <td colspan="3" class="text-center">
-                        <?php
-                        $src = Blog::getImage('receipt', '_', $invoice->receipt);
-                        $img = Html::img($src, [
-                            "style" => "max-height: 75px;",
-                        ]);
-                        echo Html::a($img, $src, ['target' => '_blank']);
-                        ?>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<?= GridView::widget([
+    'dataProvider' => new ArrayDataProvider([
+        'allModels' => [$invoice],
+        'modelClass' => 'app\models\Model',
+        'sort' => false,
+        'pagination' => false,
+    ]),
+    'filterModel' => null,
+    'layout' => "{items}\n{pager}",
+    'columns' => [
+        [
+            'attribute' => 'id',
+        ],
+        [
+            'attribute' => 'status',
+            'value' => function ($model, $key, $index, $grid) {
+                if (isset($model['status'])) {
+                    return Blog::getConstant('invoice_valid_statuses', $model['status']);
+                }
+                return '';
+            },
+        ],
+        [
+            'attribute' => 'created_at',
+            'format' => 'datetimefa',
+        ],
+        [
+            'attribute' => 'price',
+            'format' => 'price',
+        ],
+        [
+            'attribute' => 'carts_count',
+        ],
+        [
+            'attribute' => 'des',
+        ],
+        [
+            'attribute' => 'mobile',
+            'value' => function ($model, $key, $index, $grid) use ($customer) {
+                if (isset($customer['mobile'])) {
+                    return $customer['mobile'];
+                }
+                return '';
+            },
+        ],
+    ],
+]); ?>
+
+<?= GridView::widget([
+    'dataProvider' => new ArrayDataProvider([
+        'allModels' => $invoiceItems,
+        'modelClass' => 'app\models\Model',
+        'sort' => false,
+        'pagination' => false,
+    ]),
+    'filterModel' => null,
+    'columns' => [
+        [
+            'attribute' => 'code',
+        ],
+        [
+            'attribute' => 'image',
+            'format' => 'raw',
+            'value' => function ($model, $key, $index, $grid) {
+                if ($model['image']) {
+                    return Html::img(Blog::getImage('product', '400', $model['image']), [
+                        "style" => "max-height: 51px;",
+                    ]);
+                }
+                return '';
+            },
+        ],
+        [
+            'attribute' => 'title',
+        ],
+        [
+            'attribute' => 'color_code',
+            'format' => 'raw',
+            'value' => function ($model, $key, $index, $grid) {
+                if ($model['color_code']) {
+                    return '<span class="border border-dark rounded" style="background-color:' . $model['color_code'] . '">⠀⠀</span> ' . Blog::colorLabel($model['color_code']);
+                }
+                return '';
+            },
+        ],
+        [
+            'attribute' => 'guaranty',
+        ],
+        [
+            'attribute' => 'des',
+        ],
+        [
+            'attribute' => 'price',
+            'format' => 'price',
+        ],
+        [
+            'attribute' => 'cnt',
+        ],
+    ],
+]); ?>
+
+<hr>
+
+<?php
+$form = ActiveForm::begin([
+    'options' => ['data-pjax' => true],
+    'action' => Blog::url('site/invoice-view', ['state' => 'newMessage', 'id' => $invoice['id']]),
+]);
+?>
+<div class="row mb-2">
+    <div class="col-sm-10">
+        <div class="input-group input-group-sm">
+            <?= Html::activeInput('text', $invoiceMessageModel, 'message', [
+                'class' => 'form-control',
+            ]) ?>
+            <div class="input-group-append">
+                <?= Html::submitButton(' <i class="fas fa-caret-left"></i> ', [
+                    'class' => 'btn btn-sm btn-success text-center',
+                    'style' => 'min-width: 2.5rem',
+                ]) ?>
+            </div>
+        </div>
     </div>
 </div>
+<?php ActiveForm::end(); ?>
+
+<?php
+$dataParts = [];
+foreach ([
+    'invoiceMessages' => $invoiceMessages,
+    'invoiceStatuses' => $invoiceStatuses,
+    'payments' => $payments,
+    'deliveries' => $deliveries,
+] as $dataKey => $dataArray) {
+    foreach ($dataArray as $dataValue) {
+        $dataParts[$dataValue['created_at']][$dataKey][$dataValue['id']] = $dataValue;
+    }
+}
+
+krsort($dataParts);
+
+foreach ($dataParts as $dataCreatedAt => $dataPart) {
+    $dataCreatedAtFa = Yii::$app->formatter->asDatetimefa($dataCreatedAt);
+    foreach ($dataPart as $dataPartName => $dataValues) {
+        foreach ($dataValues as $dataValue) {
+?>
+
+            <?php if ($dataPartName == 'deliveries') { ?>
+                <div class="card text-secondary bg-light mb-2 <?= ($dataValue['id'] == $invoice['delivery_id'] ? '' : 'deprecated-card') ?>">
+                    <div class="card-header">
+                        <i class="fas fa-map-pin"></i>
+                        <small><?= $dataCreatedAtFa ?></small>
+                    </div>
+                    <?php
+                    echo $this->render('_delivery_details', ['delivery' => $delivery]);
+                    ?>
+                </div>
+            <?php } ?>
+
+            <?php if ($dataPartName == 'payments') { ?>
+                <div class="card text-secondary bg-light mb-2">
+                    <div class="card-header">
+                        <i class="fas fa-list-alt"></i>
+                        <small><?= $dataCreatedAtFa ?></small>
+                    </div>
+                    <div class="card-body">
+                        <a href="<?= Blog::getImage('payment', '_', $dataValue['payment_name']) ?>" target="_blank">
+                            <img class="img img-responsive max-height-256" src="<?= Blog::getImage('payment', '256_256', $dataValue['payment_name']) ?>">
+                        </a>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <?php if ($dataPartName == 'invoiceStatuses') { ?>
+                <div class="card text-white bg-info mb-2">
+                    <div class="card-header">
+                        <i class="far fa-bell"></i>
+                        <small><?= $dataCreatedAtFa ?></small>
+                        <br>
+                        <?= $dataValue['message'] ?>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <?php if ($dataPartName == 'invoiceMessages') {
+                $isMineMessage = (IS_CUSTOMER == $dataValue['is_customer']);
+            ?>
+                <div class="row mb-2">
+                    <?php if (!$isMineMessage) { ?>
+                        <div class="col-sm-2">
+                        </div>
+                    <?php } ?>
+                    <div class="col-sm-10">
+                        <div class="card <?= (!$isMineMessage ? 'text-secondary bg-light' : 'text-white bg-success') ?>">
+                            <div class="card-header">
+                                <i class="fas fa-comment-alt"></i>
+                                <small><?= $dataCreatedAtFa ?></small>
+                            </div>
+                            <div class="card-header text-secondary bg-light">
+                                <?= HtmlPurifier::process($dataValue['message']) ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+
+<?php
+        }
+    }
+}
+?>

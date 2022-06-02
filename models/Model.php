@@ -80,8 +80,8 @@ class Model extends BaseModel
             'verify_token' => 'کد فعال‌سازی',
             'identity_type' => 'نوع شناسه',
             'captcha' => 'کد تأیید',
-            'receipt' => 'رسید پرداخت',
-            'receipt_file' => 'رسید پرداخت',
+            'payment_name' => 'رسید پرداخت',
+            'payment_name_file' => 'رسید پرداخت',
 
             'receive_from' => 'تحویل از',
             'telegram_bot_token' => 'Telegram Bot Token',
