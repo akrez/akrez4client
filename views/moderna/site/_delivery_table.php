@@ -1,6 +1,5 @@
 <?php
 
-use app\assets\cdn\ICheckAsset;
 use app\models\Blog;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
@@ -35,7 +34,6 @@ echo GridView::widget([
                 return [
                     'value' => (isset($model['id']) ? $model['id'] : null),
                     'checked' => (isset($model['id']) and $model['id'] == $selectedDeliveryId),
-                    'class' => 'icheck-inline'
                 ];
             },
             'visible' => $isSelectMode,
