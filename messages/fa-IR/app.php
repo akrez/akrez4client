@@ -35,7 +35,7 @@ return [
     'Delete' => 'حذف',
     'Total Price' => 'قیمت نهایی',
     //
-    'receipt_file' => 'رسید پرداخت',
+    'payment_name_file' => 'رسید پرداخت',
     //
     'alertRemoveSuccessfull' => 'اطلاعات با موفقیت حذف شد.',
     'alertRemoveUnSuccessfull' => 'حذف اطلاعات با خطا مواجه شد.',
@@ -47,7 +47,7 @@ return [
     'alertVerifyRequestSuccessfull' => 'کد فعال‌سازی برای شما ارسال شد.',
     'alertVerifySuccessfull' => 'فعال‌سازی با موفقیت انجام شد.',
     'alertLoginSuccessfull' => 'با موفقیت وارد شدید، خوش آمدید!',
-    'upload payment receipt image' => 'عکس رسید پرداخت را بارگذاری کنید',
+    'upload payment image' => 'عکس رسید پرداخت را بارگذاری کنید',
     //
     'Max per cart' => 'حداکثر مقدار مجاز در سبد خرید',
     //

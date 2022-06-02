@@ -16,5 +16,5 @@ return [
     'Inventory left in stock is less than the specified amount' => 'Inventory left in stock is less than the specified amount',
 
     
-    'receipt_file' => 'receipt',
+    'payment_name_file' => 'payment',
 ];
